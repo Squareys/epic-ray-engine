@@ -197,7 +197,7 @@ public class EpicRayRay implements IRay {
 	    	  
 	    	 
 	    	  if(ra.m_textured){
-	    	      int texY = (int) (((float)(i-drawStart)/lineHeight) * texture.getHeight());
+	    	      int texY = (int) (((float)(i+((lineHeight - m_height)/2.0))/lineHeight) * texture.getHeight());
 	    		  
 		          color = texture.getPixel(texX, texY);
 		          

@@ -20,7 +20,10 @@ public class Main extends JFrame {
 
 		IBitmap bmp = ResourceManager.getInstance().loadBitmap("CheepTexture.png");
 		ResourceManager.getInstance().createTexture(bmp);
-			
+		
+		IBitmap bmp1 = ResourceManager.getInstance().loadBitmap("CrappyHiresTexture.png");
+		ResourceManager.getInstance().createTexture(bmp1);
+		
 		setLayout(new FlowLayout());
 		
 		TileMap map = new TileMap (40, 40, true);

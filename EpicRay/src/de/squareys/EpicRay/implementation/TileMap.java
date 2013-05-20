@@ -47,6 +47,8 @@ public class TileMap implements ITileMap {
 		ra.m_textured = true;
 		EpicRayRenderingAttributes ra1 = new EpicRayRenderingAttributes();
 		ra1.m_wallColor = Color.yellow.getRGB();
+		ra1.m_textured = true;
+		ra1.m_wallTexture = ResourceManager.getInstance().getTexture(1);
 		
 		Tile wall1Tile = new Tile(true, true, ra);
 		Tile wall2Tile  = new Tile(true, true, ra1);
