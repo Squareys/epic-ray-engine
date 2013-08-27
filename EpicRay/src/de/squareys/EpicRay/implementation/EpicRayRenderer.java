@@ -66,17 +66,9 @@ public class EpicRayRenderer implements IRenderer {
 	      double rayDirX = m_camEntity.getViewDirectionX() + m_planeX * cameraX;
 		  double rayDirY = m_camEntity.getViewDirectionY() + m_planeY * cameraX;
 		   
-	      EpicRayRay ray = new EpicRayRay(m_height, m_camEntity.getX(), m_camEntity.getY(), rayDirX, rayDirY);
+	      EpicRayRay ray = new EpicRayRay(m_height, m_camEntity.getX(), m_camEntity.getY(), rayDirX, rayDirY, bitmap, x*m_height);
 	      
 	      ray.cast(tileMap);
-	      
-	      //copy pixels
-	      
-	      for (int i = 0; i < m_height; i++){
-	    	  int col = ray.m_pixels[i];
-	    	  if (col == -1) continue;
-	    	  bitmap.putPixel(x, i, col);
-	      }
 		}
 	}
 

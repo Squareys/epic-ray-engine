@@ -25,7 +25,6 @@ public abstract class Screen extends Canvas {
 		img = new BufferedImage(m_width, m_height, BufferedImage.TYPE_INT_RGB);		
 		pixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
 		
-		
 		this.setSize(m_width, m_height);
 		this.setPreferredSize(new Dimension(m_width, m_height));
 	}

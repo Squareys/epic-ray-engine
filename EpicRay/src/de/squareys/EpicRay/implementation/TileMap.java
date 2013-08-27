@@ -44,7 +44,13 @@ public class TileMap implements ITileMap {
 		EpicRayRenderingAttributes ra = new EpicRayRenderingAttributes();
 		ra.m_wallColor = Color.blue.getRGB();
 		ra.m_wallTexture = ResourceManager.getInstance().getTexture(0);
+		ra.m_floorColor = Color.white.getRGB();
 		ra.m_textured = true;
+		
+		EpicRayRenderingAttributes ra0 = new EpicRayRenderingAttributes();
+		ra0.m_floorColor = Color.gray.getRGB();
+		ra0.m_textured = false;
+		
 		EpicRayRenderingAttributes ra1 = new EpicRayRenderingAttributes();
 		ra1.m_wallColor = Color.yellow.getRGB();
 		ra1.m_textured = true;
@@ -53,6 +59,7 @@ public class TileMap implements ITileMap {
 		Tile wall1Tile = new Tile(true, true, ra);
 		Tile wall2Tile  = new Tile(true, true, ra1);
 		Tile airTile = new Tile(false, false, ra);
+		Tile floorTile = new Tile(false, false, ra0);
 		
 		for (int i = 0; i < m_width * m_height; i++){
 			if (i < m_width || i > m_width * (m_height-1) || i % m_width == 0 || i % m_width == m_width-1) {
@@ -64,7 +71,11 @@ public class TileMap implements ITileMap {
 			} else if (i % 25 == 0){
 				m_tiles[i] = new Tile(wall1Tile, false);
 			} else {
-				m_tiles[i] = new Tile(airTile, false);
+				if (i % 2 == 0){
+					m_tiles[i] = new Tile(airTile, false);
+				} else {
+					m_tiles[i] = new Tile(floorTile, false);
+				}
 			}
 		}
 	}

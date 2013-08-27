@@ -1,16 +1,15 @@
 package de.squareys.EpicRay.implementation;
 
 import java.awt.AWTEvent;
-import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Panel;
 import java.awt.Toolkit;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.BorderFactory;
 
-import de.squareys.EpicRay.framework.AbstractJoypad;
-import de.squareys.EpicRay.framework.IEntity;
 import de.squareys.EpicRay.framework.IGame;
 import de.squareys.EpicRay.framework.ITileMap;
 import de.squareys.EpicRay.framework.IWorld;
@@ -21,7 +20,7 @@ import de.squareys.EpicRay.framework.Screen;
  * @author Squareys
  *
  */
-public class Game extends Panel implements IGame, Runnable {
+public class Game extends Container implements IGame, Runnable {
 
 	/**
 	 * 
@@ -46,7 +45,10 @@ public class Game extends Panel implements IGame, Runnable {
 		screen = new Viewport3D(m_world, m_player, 640, 480);
 		running = true;
 		
+		setBackground(Color.pink);
+		
 		add(screen);
+		
 		setPreferredSize(new Dimension(640, 480));
 	}
 	

@@ -12,7 +12,7 @@ public class EpicRayEditor extends JFrame {
 		
 		EpicRayEditorListener eventListener = new EpicRayEditorListener(this);
 		
-		//build window:
+		//buiwld window:
 		setSize(new Dimension(1000, 600));
 		EpicRayEditorMenu menu = new EpicRayEditorMenu();
 		menu.addEventListener(eventListener);
@@ -30,7 +30,6 @@ public class EpicRayEditor extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EpicRayEditor editor = new EpicRayEditor();
-
 	}
 
 }

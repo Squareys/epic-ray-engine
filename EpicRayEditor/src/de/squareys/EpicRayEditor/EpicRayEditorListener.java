@@ -17,6 +17,7 @@ import de.squareys.EpicRay.implementation.Tile;
 import de.squareys.EpicRay.implementation.TileMap;
 import de.squareys.EpicRayEditor.Dialogs.CreateTileMapDialog;
 import de.squareys.EpicRayEditor.Dialogs.EditTileDialog;
+import de.squareys.EpicRayEditor.Dialogs.TextureEditorDialog;
 
 public class EpicRayEditorListener implements ActionListener, ListSelectionListener {
 
@@ -50,6 +51,8 @@ public class EpicRayEditorListener implements ActionListener, ListSelectionListe
 			m_editor.setContentPane(m_gameView);	
 			m_gameView.play();	
 			m_editor.revalidate();
+			
+			return;
 		}
 		
 		if (command.equals("stopGame")){
@@ -57,6 +60,8 @@ public class EpicRayEditorListener implements ActionListener, ListSelectionListe
 			
 			m_editor.setContentPane(m_mainView);
 			m_editor.revalidate();
+			
+			return;
 		}
 		
 		if (command.equals("newMap")){
@@ -77,6 +82,8 @@ public class EpicRayEditorListener implements ActionListener, ListSelectionListe
             }
             
             dialog.dispose();
+            
+            return;
 		}
 		
 		if (command.equals("saveMap")){
@@ -87,6 +94,8 @@ public class EpicRayEditorListener implements ActionListener, ListSelectionListe
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
+			
+			return;
 		}
 		
 		if (command.equals("loadMap")){
@@ -99,6 +108,8 @@ public class EpicRayEditorListener implements ActionListener, ListSelectionListe
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
+			
+			return;
 		}
 		
 		if (command.equals("newTile")){
@@ -108,14 +119,32 @@ public class EpicRayEditorListener implements ActionListener, ListSelectionListe
 			editTile();
 			
 			m_tileListModel.addElement(m_curTile);
+			
+			return;
 		}
 		
 		if (command.equals("editTile")){
 			editTile();
+			return;
+		}
+		
+		if (command.equals("editTextures")){
+			editTextures();
 		}
 	}
 	
-	public void editTile(){
+	private void editTextures() {
+		TextureEditorDialog dialog = new TextureEditorDialog(m_editor);
+		
+		dialog.setLocationRelativeTo(m_editor);
+        dialog.setVisible(true);
+        
+        //waiting for dialog
+        
+        dialog.dispose();
+	}
+
+	private void editTile(){
 		EditTileDialog dialog = new EditTileDialog(m_editor, m_curTile);
 		
 		dialog.setLocationRelativeTo(m_editor);

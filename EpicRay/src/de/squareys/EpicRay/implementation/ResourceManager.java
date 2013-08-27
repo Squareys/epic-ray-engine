@@ -1,5 +1,7 @@
 package de.squareys.EpicRay.implementation;
 
+import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.Vector;
@@ -39,9 +41,17 @@ public class ResourceManager implements IResourceManager {
 			int w = img.getWidth();
 			int h = img.getHeight();
 
-			Bitmap result = new Bitmap(w, h);
-			img.getRGB(0, 0, w, h, result.m_pixels, 0, w);
+			Bitmap loaded = new Bitmap(w, h);
 			
+			img.getRGB(0, 0, w, h, loaded.m_pixels, 0, w);
+			
+			Bitmap result = new Bitmap(h, w);
+			
+			for (int i = 0; i < w*h; i++){
+				Point2D p = result.indexToPoint(i);
+				result.putPixel(i, loaded.getPixel((int)p.getY(), (int)p.getX()));
+			}
+			//switch vertical and horizontal
 			m_bitmaps.add(result);
 			
 			return result;

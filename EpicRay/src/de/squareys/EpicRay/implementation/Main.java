@@ -12,7 +12,11 @@ import de.squareys.EpicRay.framework.IBitmap;
 
 public class Main extends JFrame {
 
-	Game game;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1463239069480580611L;
+	private Game game;
 	
 	public Main() {
 		super("EpicRay Game");
@@ -30,12 +34,12 @@ public class Main extends JFrame {
 		map.autoGenerate();
 		game = new Game(map);
 		
-		add(game);		
+		setContentPane(game);		
 		
-		pack();
-		setLocationRelativeTo(null);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		pack();
 		setVisible(true);
 		
 		createBufferStrategy(3);

@@ -1,12 +1,14 @@
 package de.squareys.EpicRay.framework;
 
+/**
+ * IRay Interface
+ * 
+ * A ray to be cast through a tilemap.
+ * 
+ * @author Squareys
+ *
+ */
 public interface IRay {
-
-	/**
-	 * Get the rendered vertical stripe of pixels
-	 * @return
-	 */
-	public int[] getPixels();
 	
 	/**
 	 * Get the Rays x position

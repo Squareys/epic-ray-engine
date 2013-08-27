@@ -2,6 +2,7 @@ package de.squareys.EpicRay.implementation;
 
 import java.awt.Color;
 
+import de.squareys.EpicRay.framework.IBitmap;
 import de.squareys.EpicRay.framework.IEntity;
 import de.squareys.EpicRay.framework.IRay;
 import de.squareys.EpicRay.framework.ITexture;
@@ -16,12 +17,13 @@ public class EpicRayRay implements IRay {
 	protected double m_dirX;
 	protected double m_dirY;
 		
-	public int[] m_pixels;
+	private IBitmap m_dest;
+	private int m_drawOffs;
 	protected int m_height; //length of m_pixels
 	
 	protected double m_length; //distance traveled
 	
-	public EpicRayRay(int height, double startposX, double startposY, double dirX, double dirY){
+	public EpicRayRay(int height, double startposX, double startposY, double dirX, double dirY, IBitmap dest, int offset){
 		m_x = startposX;
 		m_y = startposY;
 		
@@ -29,16 +31,8 @@ public class EpicRayRay implements IRay {
 		m_dirY = dirY;
 		
 		m_height = height;
-		m_pixels = new int[m_height];
-		
-		for (int i = 0; i < m_height; i++){
-			m_pixels[i] = -1; //transparent
-		}
-	}
-
-	@Override
-	public int[] getPixels() {
-		return m_pixels;
+		m_drawOffs = offset;
+		m_dest = dest;
 	}
 
 	@Override
@@ -167,24 +161,29 @@ public class EpicRayRay implements IRay {
 	      } else {
 	    	  ra = new EpicRayRenderingAttributes();
 	    	  ra.m_wallColor = Color.BLACK.getRGB();
+	    	  ra.m_floorColor = Color.green.getRGB();
 	      }
 	      
 	      int texX = 0;
 	      ITexture texture = null;
-	      if (ra.m_textured){
+	      
+	      if(ra.m_textured){
 	    	  texture = ra.getWallTexture();
-    		  
-    		  double wallX; //where exactly the wall was hit
-    	      if (side == 1) {
-    	    	  wallX = m_x + ((mapY - m_y + (1.0 - stepY) / 2.0) / m_dirY) * m_dirX;
-    	      } else {
-    	    	  wallX = m_y + ((mapX - m_x + (1.0 - stepX) / 2.0) / m_dirX) * m_dirY;
-    	      }
-    	      
-    	      wallX -= Math.floor(wallX);
-    	      
-    		  texX = (int) (wallX * (float)(texture.getWidth()));
 	      }
+    		  
+		  double wallX; //where exactly the wall was hit
+	      if (side == 1) {
+	    	  wallX = m_x + ((mapY - m_y + (1.0 - stepY) / 2.0) / m_dirY) * m_dirX;
+	      } else {
+	    	  wallX = m_y + ((mapX - m_x + (1.0 - stepX) / 2.0) / m_dirX) * m_dirY;
+	      }
+	      
+	      wallX -= Math.floor(wallX);
+	      
+	      if (ra.m_textured){
+	    	  texX = (int) (wallX * (float)(texture.getWidth()));
+	      }
+    		  
 	      //draw the pixels of the stripe as a vertical line
 	      for ( int i = drawStart; i < drawEnd; i++){
 	    	  int color = -1;
@@ -207,7 +206,60 @@ public class EpicRayRay implements IRay {
 		          }
 	    	  }
 	    	  
-	    	  m_pixels[i] = color;
+	    	  m_dest.putPixel(m_drawOffs + i, color);
 	      }
+	      
+		// FLOOR CASTING
+		double floorXWall, floorYWall; // x, y position of the floor texel at
+										// the bottom of the wall
+
+		// 4 different wall directions possible
+		if (side == 0 && m_dirX > 0) {
+			floorXWall = mapX;
+			floorYWall = mapY + wallX;
+		} else if (side == 0 && m_dirX < 0) {
+			floorXWall = mapX + 1.0;
+			floorYWall = mapY + wallX;
+		} else if (side == 1 && m_dirY > 0) {
+			floorXWall = mapX + wallX;
+			floorYWall = mapY;
+		} else {
+			floorXWall = mapX + wallX;
+			floorYWall = mapY + 1.0;
+		}
+
+		double distWall, distPlayer, currentDist;
+
+		distWall = perpWallDist;
+		distPlayer = 0.0;
+
+		if (drawEnd < 0)
+			drawEnd = m_height; // becomes < 0 when the integer overflows
+
+		// draw the floor from drawEnd to the bottom of the screen
+		for (int y = drawEnd + 1; y < m_height; y++) {
+			currentDist = m_height / (2.0 * y - m_height); // you could make a small lookup table for this instead
+
+			double weight = (currentDist - distPlayer) / (distWall - distPlayer);
+
+			double currentFloorX = weight * floorXWall + (1.0 - weight) * m_x;
+			double currentFloorY = weight * floorYWall + (1.0 - weight) * m_y;
+
+			/*
+			 * int floorTexX, floorTexY; floorTexX = int(currentFloorX *
+			 * texWidth) % texWidth; floorTexY = int(currentFloorY * texHeight)
+			 * % texHeight;
+			 * 
+			 * //floor buffer[x][y] = (texture[3][texWidth * floorTexY +
+			 * floorTexX] >> 1) & 8355711; //ceiling (symmetrical!) buffer[x][h
+			 * - y] = texture[6][texWidth * floorTexY + floorTexX]; }
+			 */
+			
+			ITile t = map.getTileAt((int) currentFloorX, (int) currentFloorY);
+			EpicRayRenderingAttributes r = (EpicRayRenderingAttributes)t.getRenderingAttributes();
+			
+			if (r == null) continue;
+			m_dest.putPixel(m_drawOffs + y, r.m_floorColor);
+		}
 	}
 }

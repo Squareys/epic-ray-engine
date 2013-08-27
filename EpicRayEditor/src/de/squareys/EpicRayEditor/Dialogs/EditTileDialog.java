@@ -147,7 +147,6 @@ public class EditTileDialog extends JDialog implements ActionListener, ChangeLis
 		setContentPane(m_contentPanel);
 		pack();
 		
-		
 		m_positiveClose = false;
 	}
 

@@ -50,7 +50,7 @@ public class Bitmap implements IBitmap {
 
 	@Override
 	public int pointToIndex(int x, int y) {
-		return (y * m_width + x);
+		return (x * m_height + y);
 	}
 
 	@Override
