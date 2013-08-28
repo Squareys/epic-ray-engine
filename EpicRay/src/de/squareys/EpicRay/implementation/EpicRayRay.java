@@ -22,6 +22,7 @@ public class EpicRayRay implements IRay {
 	protected int m_height; //length of m_pixels
 	
 	protected double m_length; //distance traveled
+	protected double m_nPerpWallDist = 0.0; //precalculated perpWallDist for floor rendering
 	
 	public EpicRayRay(int height, double startposX, double startposY, double dirX, double dirY, IBitmap dest, IBitmap zBuffer, int offset){
 		m_x = startposX;
@@ -108,8 +109,6 @@ public class EpicRayRay implements IRay {
 	        sideDistY = (mapY + 1.0 - m_y) * deltaDistY;
 	      }
 	      
-	      
-	      
 	      //cast the ray
 	      while (!hit) {
 	        //jump to next map square, OR in x-direction, OR in y-direction
@@ -133,23 +132,39 @@ public class EpicRayRay implements IRay {
 	        }
 	        
 	        //Calculate distance projected on camera direction (oblique distance will give fisheye effect!)
-	        if (side == 0) {
+	        //precalc 
+	        
+	        int nSide = -1;
+	        int nmapX = mapX;
+	        int nmapY = mapY;
+	        if (sideDistX < sideDistY) {
+	          nmapX += stepX;
+	          nSide = 0;
+	        } else {
+	          nmapY += stepY;
+	          nSide = 1;
+	        }
+	        
+	        perpWallDist = m_nPerpWallDist;
+	        
+	        if (nSide == 0) {
 	        	double add = (stepX == 1) ? 0.0 : 1.0;
-	        	perpWallDist = Math.abs((mapX - m_x + add) / m_dirX);
+	        	m_nPerpWallDist = Math.abs(((nmapX) - m_x + add) / m_dirX);
 	        } else {
 	        	double add = (stepY == 1) ? 0.0 : 1.0;
-	        	perpWallDist = Math.abs((mapY - m_y + add) / m_dirY);
+	        	m_nPerpWallDist = Math.abs(((nmapY) - m_y + add) / m_dirY);
 	        }
+	        
 		      
 	        //draw the tile:
 	        drawTile(hitTile, mapX, mapY, stepX, stepY, side, perpWallDist, outOfWorld);
 	      }    
 	}
-	
+
 	private void drawTile(ITile tile, int mapX, int mapY, int stepY, int stepX, int side, double perpWallDist, boolean outOfWorld) {
 	      	      
 	      //Calculate height of line to draw on screen
-	      int lineHeight = Math.abs((int)((double) m_height / perpWallDist));
+		  int lineHeight = Math.abs((int)((double) m_height / perpWallDist));
 	       
 	      //calculate lowest and highest pixel to fill in current stripe
 	      int drawStart = (m_height - lineHeight  ) / 2;
@@ -159,7 +174,7 @@ public class EpicRayRay implements IRay {
 	    	  drawStart = 0;
 	      }
 	      
-	      int drawEnd = lineHeight / 2 + m_height / 2;
+	      int drawEnd = (lineHeight + m_height) / 2;
 	      
 	      if (drawEnd >= m_height){
 	    	  drawEnd = m_height - 1;
@@ -203,7 +218,7 @@ public class EpicRayRay implements IRay {
 		    	  }
 		      }
 	  		  
-		      int zValue = (int) (perpWallDist * 1024.0);
+		      int zValue = (int) (perpWallDist * 1024.0); //TODO: Hard coded z-Buffer resolution here... Warning: perpWallDist can be anything way over 1.0
 		      
 		      //draw the pixels of the stripe as a vertical line
 		      for ( int i = drawStart; i < drawEnd; i++){
@@ -253,42 +268,25 @@ public class EpicRayRay implements IRay {
 		      }
 	      }
 	      
-		/*// FLOOR CASTING
-		double floorXWall, floorYWall; // x, y position of the floor texel at
-										// the bottom of the wall
-
-		// 4 different wall directions possible
-		if (side == 0 && m_dirX > 0) {
-			floorXWall = mapX;
-			floorYWall = mapY + wallX;
-		} else if (side == 0 && m_dirX < 0) {
-			floorXWall = mapX + 1.0;
-			floorYWall = mapY + wallX;
-		} else if (side == 1 && m_dirY > 0) {
-			floorXWall = mapX + wallX;
-			floorYWall = mapY;
-		} else {
-			floorXWall = mapX + wallX;
-			floorYWall = mapY + 1.0;
-		}
-
-		double distWall, distPlayer, currentDist;
-
-		distWall = perpWallDist;
-		distPlayer = 0.0;
-
-		if (drawEnd < 0)
-			drawEnd = m_height; // becomes < 0 when the integer overflows
-
-		// draw the floor from drawEnd to the bottom of the screen
-		for (int y = drawEnd + 1; y < m_height; y++) {
-			currentDist = m_height / (2.0 * y - m_height); // you could make a small lookup table for this instead
-
-			double weight = (currentDist - distPlayer) / (distWall - distPlayer);
-
-			double currentFloorX = weight * floorXWall + (1.0 - weight) * m_x;
-			double currentFloorY = weight * floorYWall + (1.0 - weight) * m_y;
-
+	      if (tile.isOpaque()) return; //done here, don't need to draw floor or ceiling
+	      
+	      int nLineHeight = Math.abs((int)((double) m_height / m_nPerpWallDist)); //next Line Height
+	      int nLineStart = (m_height - nLineHeight) / 2;
+	      int nLineEnd = (m_height + nLineHeight) / 2;
+	      	      
+	      if (nLineStart < 0){
+	    	  nLineStart = 0;
+	      }
+	      	      
+	      if (nLineEnd >= m_height){
+	    	  nLineEnd = m_height-1;
+	      }
+	      
+	      int nInvLineHeight = nLineStart - drawStart;
+	    
+	      
+	      // draw the floor and ceiling
+	      for (int y = 0; y < nInvLineHeight; y++) {
 			/*
 			 * int floorTexX, floorTexY; floorTexX = int(currentFloorX *
 			 * texWidth) % texWidth; floorTexY = int(currentFloorY * texHeight)
@@ -298,12 +296,9 @@ public class EpicRayRay implements IRay {
 			 * floorTexX] >> 1) & 8355711; //ceiling (symmetrical!) buffer[x][h
 			 * - y] = texture[6][texWidth * floorTexY + floorTexX]; }
 			 */
-			/*
-			ITile t = map.getTileAt((int) currentFloorX, (int) currentFloorY);
-			EpicRayRenderingAttributes r = (EpicRayRenderingAttributes)t.getRenderingAttributes();
-			
-			if (r == null) continue;
-			m_dest.putPixel(m_drawOffs + y, r.m_floorColor);
-		} */
+						
+			m_dest.putPixel(m_drawOffs + y + drawStart, ra.m_ceilColor); //ceiling
+			m_dest.putPixel(m_drawOffs + y + nLineEnd, ra.m_floorColor); //floor
+		}
 	}
 }
