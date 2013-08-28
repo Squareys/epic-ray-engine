@@ -25,7 +25,10 @@ import de.squareys.EpicRay.framework.IWorld;
 
 public class EpicRayRenderer implements IRenderer {
 
-	private IBitmap bitmap;
+	private static final int INFINITY = 2147483646;
+	
+	private IBitmap m_bitmap;
+	private IBitmap m_zBuffer;
 	
 	private int m_width;
 	private int m_height;
@@ -43,7 +46,8 @@ public class EpicRayRenderer implements IRenderer {
 		m_width = width;
 		m_height = height;
 		
-		bitmap = new Bitmap(width, height);
+		m_bitmap = new Bitmap(width, height);
+		m_zBuffer = new Bitmap(width, height);
 		
 		m_world = world;
 		m_camEntity = camEntity;
@@ -57,7 +61,8 @@ public class EpicRayRenderer implements IRenderer {
 		m_planeX = -m_camEntity.getViewDirectionY() * m_planeLength; //only works if rayDir is normalized!
 		m_planeY = m_camEntity.getViewDirectionX() * m_planeLength;
 		
-		bitmap.clear(Color.gray.getRGB());
+		m_bitmap.clear(Color.gray.getRGB());
+		m_zBuffer.clear(INFINITY);
 		
 		for(int x = 0; x < m_width; x++){
 	      //calculate ray position and direction 
@@ -66,7 +71,7 @@ public class EpicRayRenderer implements IRenderer {
 	      double rayDirX = m_camEntity.getViewDirectionX() + m_planeX * cameraX;
 		  double rayDirY = m_camEntity.getViewDirectionY() + m_planeY * cameraX;
 		   
-	      EpicRayRay ray = new EpicRayRay(m_height, m_camEntity.getX(), m_camEntity.getY(), rayDirX, rayDirY, bitmap, x*m_height);
+	      EpicRayRay ray = new EpicRayRay(m_height, m_camEntity.getX(), m_camEntity.getY(), rayDirX, rayDirY, m_bitmap, m_zBuffer, x*m_height);
 	      
 	      ray.cast(tileMap);
 		}
@@ -74,7 +79,7 @@ public class EpicRayRenderer implements IRenderer {
 
 	@Override
 	public IBitmap getRenderResult() {
-		return bitmap;
+		return m_bitmap;
 	}
 
 	public void setCameraEntity(IEntity e){

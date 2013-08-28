@@ -56,9 +56,9 @@ public class TileMap implements ITileMap {
 		ra1.m_textured = true;
 		ra1.m_wallTexture = ResourceManager.getInstance().getTexture(1);
 		
-		Tile wall1Tile = new Tile(true, true, ra);
+		Tile wall1Tile = new Tile(true, true, ra); //Wall
 		Tile wall2Tile  = new Tile(true, true, ra1);
-		Tile airTile = new Tile(false, false, ra);
+		Tile airTile = new Tile(false, false, ra0); 
 		Tile floorTile = new Tile(false, false, ra0);
 		
 		for (int i = 0; i < m_width * m_height; i++){
