@@ -32,7 +32,7 @@ public class Main extends JFrame {
 		
 		TileMap map = new TileMap (40, 40, true);
 		map.autoGenerate();
-		game = new Game(map);
+		game = new Game(map, 800, 600);
 		
 		setContentPane(game);		
 		

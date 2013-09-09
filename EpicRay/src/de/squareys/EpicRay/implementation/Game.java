@@ -35,21 +35,25 @@ public class Game extends Container implements IGame, Runnable {
 	private IWorld m_world;
 	private Player m_player;
 	
-	public Game(ITileMap tileMap){
+	public Game(ITileMap map){
+		this(map, 640, 480);
+	}
+	
+	public Game(ITileMap tileMap, int windowWidth, int windowHeight){
 		m_world = new World(tileMap);
 		
 		Toolkit.getDefaultToolkit().addAWTEventListener(CustomJoypad.getInstance(), AWTEvent.KEY_EVENT_MASK);
 		
 		m_player = new Player(11, 12, 10, 10, null, m_world);
 		
-		screen = new Viewport3D(m_world, m_player, 640, 480);
+		screen = new Viewport3D(m_world, m_player, windowWidth, windowHeight);
 		running = true;
 		
 		setBackground(Color.pink);
 		
 		add(screen);
 		
-		setPreferredSize(new Dimension(640, 480));
+		setPreferredSize(new Dimension(windowWidth, windowHeight));
 	}
 	
 	private void update(){
