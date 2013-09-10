@@ -218,6 +218,10 @@ public class EpicRayRay implements IRay {
 	}
 
 	private void drawTile(ITile tile, int stepY, int stepX, boolean outOfWorld) {
+		if(outOfWorld){
+			return;
+		}
+		
 		RenderVariables cur = stor.getVariables();
 		RenderVariables next = stor.getNextVariables();
 		
@@ -239,13 +243,7 @@ public class EpicRayRay implements IRay {
 		}
 
 		EpicRayRenderingAttributes ra;
-		if (!outOfWorld) {
-			ra = (EpicRayRenderingAttributes) tile.getRenderingAttributes();
-		} else {
-			ra = new EpicRayRenderingAttributes();
-			ra.m_wallColor = Color.BLACK.getRGB();
-			ra.m_floorColor = Color.green.getRGB();
-		}
+		ra = (EpicRayRenderingAttributes) tile.getRenderingAttributes();
 
 		if ((ra.m_wallTexture != null && ra.m_textured) || ra.m_wallColor != -1) {
 			int texX = 0;

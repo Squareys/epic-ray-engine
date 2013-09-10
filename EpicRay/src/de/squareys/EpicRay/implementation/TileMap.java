@@ -33,7 +33,11 @@ public class TileMap implements ITileMap {
 		
 		m_tiles = new ITile[m_width * m_height];
 		
-		Tile air = new Tile(false, false, null);
+		EpicRayRenderingAttributes air_ra = new EpicRayRenderingAttributes();
+		air_ra.m_wallColor = Color.BLACK.getRGB();
+		air_ra.m_ceilColor = air_ra.m_floorColor = Color.DARK_GRAY.getRGB();
+		
+		Tile air = new Tile(false, false, air_ra);
 		
 		for (int i = 0; i < m_width * m_height; i++){
 			m_tiles[i] = new Tile(air, false);
