@@ -69,10 +69,12 @@ public class MainView extends JPanel {
 		
 		m_tileListModel = new DefaultListModel<ITile>();
 		m_tileList = new JList<ITile>(m_tileListModel);
-		m_tileList.setPreferredSize(new Dimension(150, 300));
 		m_tileList.setCellRenderer(new TileCellRenderer());
 		
-		this.add(m_tileList, gbc_tl);
+		JScrollPane tileListScroll = new JScrollPane(m_tileList);
+		tileListScroll.setPreferredSize(new Dimension(150, 300));
+		
+		this.add(tileListScroll, gbc_tl);
 		
 		GridBagConstraints gbc_newBtn = new GridBagConstraints(); //addTileBtn
 		gbc_newBtn.fill = GridBagConstraints.HORIZONTAL;

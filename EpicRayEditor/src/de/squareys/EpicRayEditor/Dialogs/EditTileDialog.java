@@ -84,7 +84,7 @@ public class EditTileDialog extends JDialog implements ActionListener, ChangeLis
 		m_tilePreview = new TileRenderPanel(200);
 		m_tilePreview.setTile(m_tile);
 		
-		m_nameField = new JTextField(10);
+		m_nameField = new JTextField(m_tile.getName(), 15);
 		
 		m_solidCB = new JCheckBox("solid", m_tile.isSolid());
 		m_opaqueCB = new JCheckBox("opaque", m_tile.isOpaque());
@@ -165,6 +165,7 @@ public class EditTileDialog extends JDialog implements ActionListener, ChangeLis
 			m_tile.setOpaque(m_opaqueCB.isSelected());
 			m_tile.setSolid (m_solidCB.isSelected());
 			m_tile.setName(m_nameField.getText());
+			m_tile.setRenderingAttributes(m_ra);
 			
 			m_positiveClose = true;
 			this.setVisible(false);

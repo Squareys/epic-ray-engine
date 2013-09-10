@@ -1,5 +1,6 @@
 package de.squareys.EpicRayEditor;
 
+import java.util.Random;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -103,6 +104,17 @@ public class EpicRayEditorListener implements ActionListener, ListSelectionListe
 			
 			try {
 				ITileMap tileMap = (ITileMap) file.readSaveable();
+				
+				for (int x = 0; x < tileMap.getWidth(); x++) {
+					for (int y = 0; y < tileMap.getHeight(); y++){
+						ITile t = tileMap.getTileAt(x, y);
+						
+						if (!m_mainView.m_tileListModel.contains(t)) {
+							m_mainView.m_tileListModel.addElement(t);
+						}
+					}
+				}
+				
 				m_mainView.m_tileMapView.setTileMap(tileMap);
 				m_mainView.revalidate();
 			} catch (IOException e1) {
@@ -114,7 +126,7 @@ public class EpicRayEditorListener implements ActionListener, ListSelectionListe
 		
 		if (command.equals("newTile")){
 			EpicRayRenderingAttributes def = new EpicRayRenderingAttributes();
-			m_curTile = new Tile(false, false, def);
+			m_curTile = new Tile(generateTypeID(), false, false, def);
 			
 			editTile();
 			
@@ -133,6 +145,17 @@ public class EpicRayEditorListener implements ActionListener, ListSelectionListe
 		}
 	}
 	
+	private String generateTypeID() {
+		String id = "";
+		
+		Random rand = new Random();
+		for ( int i = 0; i < 12; i++){
+			id += (char) rand.nextInt();
+		}
+		
+		return id;
+	}
+
 	private void editTextures() {
 		TextureEditorDialog dialog = new TextureEditorDialog(m_editor);
 		

@@ -47,7 +47,7 @@ public class TileMapView2D extends JPanel implements MouseListener, MouseMotionL
 		ra.m_floorColor = Color.BLUE.getRGB();
 		ra.m_ceilColor = Color.DARK_GRAY.getRGB();
 		
-		m_brushTile = new Tile(true, true, ra);
+		m_brushTile = new Tile("defaultBrushTile", true, true, ra);
 		
 		setPreferredSize(new Dimension(m_tileW * m_tileMap.getWidth(), m_tileH * m_tileMap.getHeight()));
 		

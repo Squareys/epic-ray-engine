@@ -37,7 +37,7 @@ public class TileMap implements ITileMap {
 		air_ra.m_wallColor = Color.BLACK.getRGB();
 		air_ra.m_ceilColor = air_ra.m_floorColor = Color.DARK_GRAY.getRGB();
 		
-		Tile air = new Tile(false, false, air_ra);
+		Tile air = new Tile("TileMapAir", false, false, air_ra);
 		
 		for (int i = 0; i < m_width * m_height; i++){
 			m_tiles[i] = new Tile(air, false);
@@ -60,10 +60,10 @@ public class TileMap implements ITileMap {
 		ra1.m_textured = true;
 		ra1.m_wallTexture = ResourceManager.getInstance().getTexture(1);
 		
-		Tile wall1Tile = new Tile(true, true, ra); //Wall
-		Tile wall2Tile  = new Tile(true, true, ra1);
-		Tile airTile = new Tile(false, false, ra0); 
-		Tile floorTile = new Tile(false, false, ra0);
+		Tile wall1Tile = new Tile("TileMapGenWall1", true, true, ra); //Wall
+		Tile wall2Tile  = new Tile("TileMapGenWall2", true, true, ra1);
+		Tile airTile = new Tile("TileMapGenAir", false, false, ra0); 
+		Tile floorTile = new Tile("TileMapGenFloor", false, false, ra0);
 		
 		for (int i = 0; i < m_width * m_height; i++){
 			if (i < m_width || i > m_width * (m_height-1) || i % m_width == 0 || i % m_width == m_width-1) {

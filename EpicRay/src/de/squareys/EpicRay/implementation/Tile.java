@@ -8,7 +8,6 @@ import de.squareys.EpicRay.framework.IEntity;
 import de.squareys.EpicRay.framework.IGameFile;
 import de.squareys.EpicRay.framework.IRenderingAttributes;
 import de.squareys.EpicRay.framework.ISprite;
-import de.squareys.EpicRay.framework.ITexture;
 import de.squareys.EpicRay.framework.ITile;
 
 public class Tile implements ITile {
@@ -25,12 +24,12 @@ public class Tile implements ITile {
 	
 	protected String m_name;
 	
-	public Tile () {
-		this(false, false, null);
+	Tile () {
+		this("", false, false, null);
 	}
 	
-	public Tile(boolean opaque, boolean solid, IRenderingAttributes ra){
-		m_typeID = "";
+	public Tile(String typeID, boolean opaque, boolean solid, IRenderingAttributes ra){
+		m_typeID = typeID;
 		
 		m_entities = new Vector<IEntity>();
 		m_sprites = new Vector<ISprite>();
@@ -64,6 +63,7 @@ public class Tile implements ITile {
 	@Override
 	public boolean saveToFile(IGameFile gameFile) throws IOException {
 		gameFile.writeString(m_typeID);
+		gameFile.writeString(m_name);
 		
 		gameFile.writeBoolean(m_opaque);
 		gameFile.writeBoolean(m_solid);
@@ -81,6 +81,7 @@ public class Tile implements ITile {
 	@Override
 	public boolean loadFromFile(IGameFile gameFile) throws IOException {
 		m_typeID = gameFile.readString();
+		m_name 	 = gameFile.readString();
 		
 		m_opaque = gameFile.readBoolean();
 		m_solid = gameFile.readBoolean();
@@ -165,6 +166,15 @@ public class Tile implements ITile {
 	@Override
 	public void setName(String text) {
 		m_name = text;
+	}
+	
+	public boolean equals(Object o){
+		if (o instanceof ITile){
+			ITile t = (ITile) o;
+			
+			return getTypeId().equals(t.getTypeId());
+		}
+		return false;
 	}
 
 }

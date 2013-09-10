@@ -4,11 +4,7 @@ import java.awt.AWTEvent;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Panel;
 import java.awt.Toolkit;
-
-import javax.swing.BorderFactory;
 
 import de.squareys.EpicRay.framework.IGame;
 import de.squareys.EpicRay.framework.ITileMap;
@@ -44,7 +40,7 @@ public class Game extends Container implements IGame, Runnable {
 		
 		Toolkit.getDefaultToolkit().addAWTEventListener(CustomJoypad.getInstance(), AWTEvent.KEY_EVENT_MASK);
 		
-		m_player = new Player(11, 12, 10, 10, null, m_world);
+		m_player = new Player(tileMap.getWidth() / 2, tileMap.getHeight() / 2, 10, 10, null, m_world);
 		
 		screen = new Viewport3D(m_world, m_player, windowWidth, windowHeight);
 		running = true;
