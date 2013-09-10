@@ -20,6 +20,7 @@ The current features are implemented at the moment
 - Editor: 
   - Basic tilemap editor
   - Basic tilecreator/editor
+  - Loading and saving
   - Play the game directly in the editor! :)
 
 Todos
@@ -37,6 +38,7 @@ Here are some todos you could do, if you are thinking of contributing:
   - Resource manager dialog for textures and other assets
   - Player spawn
   - Background image
+  - Better data<>gui separation
 
 Contact
 =======
