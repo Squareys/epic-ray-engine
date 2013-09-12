@@ -124,6 +124,8 @@ public class EpicRayRay implements IRay {
 		return m_height;
 	}
 
+	double deltaDistX;
+	double deltaDistY;
 	@Override
 	public void cast(ITileMap map) {
 		RenderVariables cur = stor.getVariables();
@@ -135,9 +137,9 @@ public class EpicRayRay implements IRay {
 
 
 		// distance of side to next side
-		double deltaDistX = Math
+		deltaDistX = Math
 				.sqrt(1 + (m_dirY * m_dirY) / (m_dirX * m_dirX));
-		double deltaDistY = Math
+		deltaDistY = Math
 				.sqrt(1 + (m_dirX * m_dirX) / (m_dirY * m_dirY));
 
 		// the directions signature (-1/+1)
@@ -358,26 +360,72 @@ public class EpicRayRay implements IRay {
 
 		int zValue = (int) (next.perpWallDist * 1024.0 - 5.0);
 
+		boolean texCeil = ra.m_textured && (ra.m_ceilTexture != null);
+		boolean texFloor = ra.m_textured && (ra.m_floorTexture != null);
+		
 		// draw the floor and ceiling
 		for (int y = 0; y < nInvLineHeight; y++) {
-			/*
-			 * int floorTexX, floorTexY; floorTexX = int(currentFloorX *
-			 * texWidth) % texWidth; floorTexY = int(currentFloorY * texHeight)
-			 * % texHeight;
-			 * 
-			 * //floor buffer[x][y] = (texture[3][texWidth * floorTexY +
-			 * floorTexX] >> 1) & 8355711; //ceiling (symmetrical!) buffer[x][h
-			 * - y] = texture[6][texWidth * floorTexY + floorTexX]; }
-			 */
+			int floorColor = -1;
+			int ceilColor  = -1;
+			
+			if (texFloor){
+				//Calculate position on texture:
+				int texW = ra.m_floorTexture.getWidth();
+				int texH = ra.m_floorTexture.getHeight();
+				
+				double dirLength = Math.sqrt(m_dirX * m_dirX + m_dirY * m_dirY);
+				
+				double startX = 0.0;
+				double startY = 0.0;
+				
+				double endX = 1.0;
+				double endY = 1.0;
+				
+				//TODO: More redundant calculation, optimize!
+				if (cur.side == 1) {
+					double add = (stepX == 1) ? 0.0 : 1.0;
+					startX = m_x + (((double) cur.mapY - m_y + add) / m_dirY) * m_dirX;
+				} else {
+					double add = (stepY == 1) ? 0.0 : 1.0;
+					startY = m_y + (((double) cur.mapX - m_x + add) / m_dirX) * m_dirY;
+				}
+				
+				startX -= Math.floor(startX);
+				startY -= Math.floor(startY);
+				
+				if (next.side == 1) {
+					double add = (stepX == 1) ? 0.0 : 1.0;
+					endX = m_x + (((double) next.mapY - m_y + add) / m_dirY) * m_dirX;
+					endX -= Math.floor(endX);
+				} else {
+					double add = (stepY == 1) ? 0.0 : 1.0;
+					endY = m_y + (((double) next.mapX - m_x + add) / m_dirX) * m_dirY;
+					endY -= Math.floor(endY);
+				}
+				
+				double factor = (double) y / (double) nInvLineHeight;
+				int texX = (int) (((Math.abs(endX - startX) * factor) + startX) * texW);
+				int texY = (int) (((Math.abs(endY - startY) * factor) + startY) * texH);
+				
+				if (texX >= texW || texY >= texH) {
+					floorColor = new Color(255, 0, 255).getRGB();
+				} else {
+					floorColor = ra.m_floorTexture.getPixel(texX, texY);
+				}
+			} else {
+				floorColor = ra.m_floorColor;
+			}
+			
+			ceilColor = ra.m_ceilColor;
 
 			// zBuffer Check
 			if (m_zBuf.getPixel(m_drawOffs + y + drawStart) >= zValue) {
-				m_dest.putPixel(m_drawOffs + y + drawStart, ra.m_ceilColor); // ceiling
+				m_dest.putPixel(m_drawOffs + y + drawStart, ceilColor); // ceiling
 			}
 
 			// zBuffer Check
 			if (m_zBuf.getPixel(m_drawOffs + y + nLineEnd) >= zValue) {
-				m_dest.putPixel(m_drawOffs + y + nLineEnd, ra.m_floorColor); // floor
+				m_dest.putPixel(m_drawOffs + y + nLineEnd, floorColor); // floor
 			}
 		}
 	}

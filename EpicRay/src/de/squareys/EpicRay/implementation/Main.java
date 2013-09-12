@@ -28,6 +28,9 @@ public class Main extends JFrame {
 		IBitmap bmp1 = ResourceManager.getInstance().loadBitmap("CrappyHiresTexture.png");
 		ResourceManager.getInstance().createTexture(bmp1);
 		
+		IBitmap floorTex = ResourceManager.getInstance().loadBitmap("RidiculousFloorTexture.png");
+		ResourceManager.getInstance().createTexture(floorTex);
+		
 		setLayout(new FlowLayout());
 		
 		TileMap map = new TileMap (40, 40, true);
