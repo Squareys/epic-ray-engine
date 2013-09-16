@@ -8,6 +8,8 @@ If interested in helping  me with this project, be free to contact me via twitte
 This is a true raycasting engine. Meaning, the rendering code actually uses raycasting tecniques and 
 doesn't just immitate them. An editor comes along in the code aswell.
 
+Warning: The current Floor/Ceiling texturing is in development and not really of any use yet.
+
 Features
 --------
 
