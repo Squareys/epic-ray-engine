@@ -26,58 +26,62 @@ public class EpicRayRay implements IRay {
 
 	protected class RenderVariables {
 		double perpWallDist;
-		
+
 		// distance from position to next side
 		double sideDistX;
 		double sideDistY;
-		
+
 		// the tile position
 		int mapX;
 		int mapY;
-		
+
 		int side;
-		
+
+		public double wallX;
+
 		public RenderVariables() {
 			perpWallDist = 0.0;
-			
+
 			sideDistX = 0.0;
 			sideDistY = 0.0;
-			
+
 			mapX = 0;
 			mapY = 0;
-			
+
 			side = -1;
+
+			wallX = -1.0;
 		}
 	}
-	
+
 	protected class VariableStorage {
 		boolean cur;
-		
+
 		RenderVariables a;
 		RenderVariables b;
-		
+
 		public VariableStorage() {
 			cur = false;
-			
+
 			a = new RenderVariables();
 			b = new RenderVariables();
 		}
-		
+
 		RenderVariables getVariables() {
 			return (cur) ? a : b;
 		}
-		
+
 		RenderVariables getNextVariables() {
 			return (cur) ? b : a;
 		}
-		
-		void exchange () {
+
+		void exchange() {
 			cur = !cur;
 		}
 	}
-	
+
 	VariableStorage stor;
-	
+
 	public EpicRayRay(int height, double startposX, double startposY,
 			double dirX, double dirY, IBitmap dest, IBitmap zBuffer, int offset) {
 		m_x = startposX;
@@ -90,7 +94,7 @@ public class EpicRayRay implements IRay {
 		m_drawOffs = offset;
 		m_dest = dest;
 		m_zBuf = zBuffer;
-		
+
 		stor = new VariableStorage();
 	}
 
@@ -126,21 +130,19 @@ public class EpicRayRay implements IRay {
 
 	double deltaDistX;
 	double deltaDistY;
+
 	@Override
 	public void cast(ITileMap map) {
 		RenderVariables cur = stor.getVariables();
 		RenderVariables next = stor.getNextVariables();
-		
+
 		// the tile position
 		next.mapX = (int) m_x;
 		next.mapY = (int) m_y;
 
-
 		// distance of side to next side
-		deltaDistX = Math
-				.sqrt(1 + (m_dirY * m_dirY) / (m_dirX * m_dirX));
-		deltaDistY = Math
-				.sqrt(1 + (m_dirX * m_dirX) / (m_dirY * m_dirY));
+		deltaDistX = Math.sqrt(1 + (m_dirY * m_dirY) / (m_dirX * m_dirX));
+		deltaDistY = Math.sqrt(1 + (m_dirX * m_dirX) / (m_dirY * m_dirY));
 
 		// the directions signature (-1/+1)
 		int stepX;
@@ -149,7 +151,6 @@ public class EpicRayRay implements IRay {
 		ITile hitTile = null;
 		boolean hit = false; // wall hit flag
 		boolean outOfWorld = false;
-		
 
 		// calculate step and initial sideDist
 		if (m_dirX < 0) {
@@ -170,18 +171,20 @@ public class EpicRayRay implements IRay {
 
 		if (next.sideDistX < next.sideDistY) {
 			double add = (stepX == 1) ? 0.0 : 1.0;
-			next.perpWallDist = Math.abs(((double) next.mapX - m_x + add) / m_dirX);
+			next.perpWallDist = Math.abs(((double) next.mapX - m_x + add)
+					/ m_dirX);
 		} else {
 			double add = (stepY == 1) ? 0.0 : 1.0;
-			next.perpWallDist = Math.abs(((double) next.mapY - m_y + add) / m_dirY);
+			next.perpWallDist = Math.abs(((double) next.mapY - m_y + add)
+					/ m_dirY);
 		}
 
 		// cast the ray
-		do {			
+		do {
 			stor.exchange();
 			cur = stor.getVariables();
 			next = stor.getNextVariables();
-			
+
 			// jump to next map square, OR in x-direction, OR in y-direction
 			if (cur.sideDistX < cur.sideDistY) {
 				next.sideDistX = cur.sideDistX + deltaDistX;
@@ -199,34 +202,36 @@ public class EpicRayRay implements IRay {
 
 			if (next.side == 0) {
 				double add = (stepX == 1) ? 0.0 : 1.0;
-				next.perpWallDist = Math.abs(((next.mapX) - m_x + add) / m_dirX);
+				next.perpWallDist = Math
+						.abs(((next.mapX) - m_x + add) / m_dirX);
 			} else {
 				double add = (stepY == 1) ? 0.0 : 1.0;
-				next.perpWallDist = Math.abs(((next.mapY) - m_y + add) / m_dirY);
+				next.perpWallDist = Math
+						.abs(((next.mapY) - m_y + add) / m_dirY);
 			}
-			
+
 			hitTile = map.getTileAt(cur.mapX, cur.mapY);
-			
+
 			if (hitTile == null) {
 				outOfWorld = true;
 				hit = true;
-			} else if(hitTile.isOpaque()){
+			} else if (hitTile.isOpaque()) {
 				hit = true;
 			}
-			
+
 			// draw the tile:
-			drawTile(hitTile, stepX, stepY,	outOfWorld);
+			drawTile(hitTile, stepX, stepY, outOfWorld);
 		} while (!hit);
 	}
 
 	private void drawTile(ITile tile, int stepY, int stepX, boolean outOfWorld) {
-		if(outOfWorld){
+		if (outOfWorld) {
 			return;
 		}
-		
+
 		RenderVariables cur = stor.getVariables();
 		RenderVariables next = stor.getNextVariables();
-		
+
 		// Calculate height of line to draw on screen
 		int lineHeight = 2 * (int) (((double) m_height / cur.perpWallDist) / 2.0);
 
@@ -244,6 +249,19 @@ public class EpicRayRay implements IRay {
 			drawEnd = m_height - 1;
 		}
 
+		/* Calculate WallX */
+		if (next.side == 1) {
+			double add = (stepX == 1) ? 0.0 : 1.0;
+			next.wallX = m_x + (((double) next.mapY - m_y + add) / m_dirY)
+					* m_dirX;
+		} else {
+			double add = (stepY == 1) ? 0.0 : 1.0;
+			next.wallX = m_y + (((double) next.mapX - m_x + add) / m_dirX)
+					* m_dirY;
+		}
+
+		next.wallX -= Math.floor(next.wallX);
+
 		EpicRayRenderingAttributes ra;
 		ra = (EpicRayRenderingAttributes) tile.getRenderingAttributes();
 
@@ -251,21 +269,9 @@ public class EpicRayRay implements IRay {
 			int texX = 0;
 			ITexture texture = null;
 
-			double wallX; // where exactly the wall was hit
-
-			if (cur.side == 1) {
-				double add = (stepX == 1) ? 0.0 : 1.0;
-				wallX = m_x + (((double) cur.mapY - m_y + add) / m_dirY) * m_dirX;
-			} else {
-				double add = (stepY == 1) ? 0.0 : 1.0;
-				wallX = m_y + (((double) cur.mapX - m_x + add) / m_dirX) * m_dirY;
-			}
-
-			wallX -= Math.floor(wallX);
-
 			if (ra.m_textured) {
 				texture = ra.getWallTexture();
-				texX = (int) (wallX * (double) texture.getWidth());
+				texX = (int) (cur.wallX * (double) texture.getWidth());
 
 				// This is some unnecessary code to flip the texture
 				if (cur.side == 0 && m_dirX > 0) {
@@ -276,10 +282,10 @@ public class EpicRayRay implements IRay {
 			}
 
 			int zValue = (int) (cur.perpWallDist * 1024.0); // TODO: Hard coded
-														// z-Buffer resolution
-														// here... Warning:
-														// perpWallDist can be
-														// anything way over 1.0
+			// z-Buffer resolution
+			// here... Warning:
+			// perpWallDist can be
+			// anything way over 1.0
 
 			// draw the pixels of the stripe as a vertical line
 			for (int i = drawStart; i < drawEnd; i++) {
@@ -291,11 +297,11 @@ public class EpicRayRay implements IRay {
 
 				int color = -1;
 
-//				if (cur.side == 1) { //for shading
-//					color = ra.m_wallColor;
-//				} else {
-					color = ra.m_wallColor;
-//				}
+				// if (cur.side == 1) { //for shading
+				// color = ra.m_wallColor;
+				// } else {
+				color = ra.m_wallColor;
+				// }
 
 				if (ra.m_textured) {
 					int texY = (int) ((double) (((i - startIndex) * texture
@@ -326,12 +332,13 @@ public class EpicRayRay implements IRay {
 				}
 
 				m_dest.putPixel(m_drawOffs + i, color);
-				//m_zBuf.putPixel(m_drawOffs + i, zValue);
+				// m_zBuf.putPixel(m_drawOffs + i, zValue);
 			}
 		}
-		
-		if(tile.isOpaque()) return; //no floor visible.
-		
+
+		if (tile.isOpaque())
+			return; // no floor visible.
+
 		// TODO: Lot of optimisation potential
 		int nLineHeight = 2 * (int) Math
 				.floor(((double) m_height / next.perpWallDist) / 2.0); // next
@@ -362,61 +369,84 @@ public class EpicRayRay implements IRay {
 
 		boolean texCeil = ra.m_textured && (ra.m_ceilTexture != null);
 		boolean texFloor = ra.m_textured && (ra.m_floorTexture != null);
+
+		double startX = 0.0;
+		double startY = 0.0;
+
+		double endX = 1.0;
+		double endY = 1.0;
+
+		int texW = ra.m_floorTexture.getWidth();
+		int texH = ra.m_floorTexture.getHeight();
+
+		if (cur.side == 0) {
+			startX = cur.wallX;
+		} else {
+			startY = cur.wallX;
+		}
 		
+		if (cur.side == 0) {
+			endX = cur.wallX;
+		} else {
+			endY = cur.wallX;
+		}
+
+		if (drawEnd < 0)
+			drawEnd = m_height; // becomes < 0 when the integer overflows
+
 		// draw the floor and ceiling
 		for (int y = 0; y < nInvLineHeight; y++) {
 			int floorColor = -1;
-			int ceilColor  = -1;
-			
-			if (texFloor){
-				//Calculate position on texture:
-				int texW = ra.m_floorTexture.getWidth();
-				int texH = ra.m_floorTexture.getHeight();
+			int ceilColor = -1;
+
+			if (texCeil || texFloor) {
+				// Calculate position on texture:
+				// double dirLength = Math.sqrt(m_dirX * m_dirX + m_dirY *
+				// m_dirY);
 				
-				double dirLength = Math.sqrt(m_dirX * m_dirX + m_dirY * m_dirY);
+				double tan = cur.perpWallDist / (((double) m_height - 2.0 * (double) (drawStart + y)) / (double) m_height) ;
+				 
+				double theDist = (2.0 * (double) ((drawStart + y)) / (double) m_height) * tan;
+						
+				double theFactor = theDist / (next.perpWallDist - cur.perpWallDist);
 				
-				double startX = 0.0;
-				double startY = 0.0;
-				
-				double endX = 1.0;
-				double endY = 1.0;
-				
-				//TODO: More redundant calculation, optimize!
-				if (cur.side == 1) {
-					double add = (stepX == 1) ? 0.0 : 1.0;
-					startX = m_x + (((double) cur.mapY - m_y + add) / m_dirY) * m_dirX;
+				double weighted = theFactor;
+				double xFact = weighted * (endX - startX) + startX;
+				double yFact = weighted * (endY - startY) + startY;
+
+				int texX = (int) (xFact * (double) texW) % texW;
+				int texY = (int) (yFact * (double) texH) % texH;
+
+				if (texCeil) {
+	 				if (texX >= texW || texY >= texH || texX < 0 || texY < 0) {
+						ceilColor = new Color(255, 0, 255).getRGB();
+					} else {
+						ceilColor = ra.m_ceilTexture.getPixel(texX, texY);
+	
+						int value = (int) (yFact * 255.0);
+					}
 				} else {
-					double add = (stepY == 1) ? 0.0 : 1.0;
-					startY = m_y + (((double) cur.mapX - m_x + add) / m_dirX) * m_dirY;
+					ceilColor = ra.m_ceilColor;
 				}
 				
-				startX -= Math.floor(startX);
-				startY -= Math.floor(startY);
-				
-				if (next.side == 1) {
-					double add = (stepX == 1) ? 0.0 : 1.0;
-					endX = m_x + (((double) next.mapY - m_y + add) / m_dirY) * m_dirX;
-					endX -= Math.floor(endX);
+				if (texFloor) {
+	 				if (texX >= texW || texY >= texH || texX < 0 || texY < 0) {
+						floorColor = new Color(255, 0, 255).getRGB();
+					} else {
+						floorColor = ra.m_floorTexture.getPixel(texX, texY);
+	
+						int value = (int) (yFact * 255.0);
+					}
 				} else {
-					double add = (stepY == 1) ? 0.0 : 1.0;
-					endY = m_y + (((double) next.mapX - m_x + add) / m_dirX) * m_dirY;
-					endY -= Math.floor(endY);
+					floorColor = ra.m_floorColor;
 				}
 				
-				double factor = (double) y / (double) nInvLineHeight;
-				int texX = (int) (((Math.abs(endX - startX) * factor) + startX) * texW);
-				int texY = (int) (((Math.abs(endY - startY) * factor) + startY) * texH);
-				
-				if (texX >= texW || texY >= texH) {
-					floorColor = new Color(255, 0, 255).getRGB();
-				} else {
-					floorColor = ra.m_floorTexture.getPixel(texX, texY);
-				}
 			} else {
 				floorColor = ra.m_floorColor;
+				ceilColor = ra.m_ceilColor;
 			}
+
 			
-			ceilColor = ra.m_ceilColor;
 
 			// zBuffer Check
 			if (m_zBuf.getPixel(m_drawOffs + y + drawStart) >= zValue) {
@@ -424,8 +454,8 @@ public class EpicRayRay implements IRay {
 			}
 
 			// zBuffer Check
-			if (m_zBuf.getPixel(m_drawOffs + y + nLineEnd) >= zValue) {
-				m_dest.putPixel(m_drawOffs + y + nLineEnd, floorColor); // floor
+			if (m_zBuf.getPixel(m_drawOffs + drawEnd - y ) >= zValue) {
+				m_dest.putPixel(m_drawOffs + drawEnd - y , floorColor); // floor
 			}
 		}
 	}

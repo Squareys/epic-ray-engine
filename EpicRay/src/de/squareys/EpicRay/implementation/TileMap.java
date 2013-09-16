@@ -55,6 +55,7 @@ public class TileMap implements ITileMap {
 		ra0.m_floorColor = Color.blue.getRGB();
 		ra0.m_textured = true;
 		ra0.m_floorTexture = ResourceManager.getInstance().getTexture(2);
+		ra0.m_ceilTexture = ResourceManager.getInstance().getTexture(1);
 		
 		EpicRayRenderingAttributes ra1 = new EpicRayRenderingAttributes();
 		ra1.m_wallColor = Color.yellow.getRGB();
