@@ -8,14 +8,14 @@ import java.awt.image.DataBufferInt;
 
 import javax.swing.JPanel;
 
+import de.squareys.EpicRay.framework.FastIntBitmap;
 import de.squareys.EpicRay.framework.ITile;
-import de.squareys.EpicRay.implementation.Bitmap;
 import de.squareys.EpicRay.implementation.EpicRayRenderingAttributes;
 
 public class TileRenderPanel extends JPanel {
 
 	private ITile m_tile;
-	private Bitmap m_bitmap;
+	private FastIntBitmap m_bitmap;
 	
 	private BufferedImage m_img;
 	
@@ -25,7 +25,7 @@ public class TileRenderPanel extends JPanel {
 		m_size = w;
 		setPreferredSize(new Dimension(w, w));
 		
-		m_bitmap = new Bitmap(w, w);
+		m_bitmap = new FastIntBitmap(w, w);
 
 		m_img = new BufferedImage(w, w, BufferedImage.TYPE_INT_RGB);		
 		m_bitmap.m_pixels = ((DataBufferInt) m_img.getRaster().getDataBuffer()).getData();
