@@ -1,11 +1,11 @@
 package de.squareys.EpicRay.framework;
 
-public interface IDrawable {
+public interface IDrawable<T> {
 	/**
 	 * draw this IDrawable on a bitmap
 	 * @param bitmap
 	 */
-	public void drawOnto(IBitmap bitmap);
+	public void drawOnto(IBitmap<T> bitmap);
 	
 	/**
 	 * Draw a horizontal Stripe of the bitmaps pixels onto dest
@@ -15,7 +15,7 @@ public interface IDrawable {
 	 * @param y
 	 * @param length
 	 */
-	public void drawHorizontalStripe(IBitmap dest, int x, int y, int length);
+	public void drawHorizontalStripe(IBitmap<T> dest, int x, int y, int length);
 	
 	/**
 	 * Draw a vertical Stripe of the bitmaps pixels onto dest
@@ -24,5 +24,5 @@ public interface IDrawable {
 	 * @param y
 	 * @param length
 	 */
-	public void drawVerticalStripe(IBitmap dest, int x, int y, int length);
+	public void drawVerticalStripe(IBitmap<T> dest, int x, int y, int length);
 }

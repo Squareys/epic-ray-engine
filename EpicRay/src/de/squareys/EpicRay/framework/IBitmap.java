@@ -1,8 +1,8 @@
 package de.squareys.EpicRay.framework;
 
-import java.awt.geom.Point2D;
 
-public interface IBitmap extends IResource<IBitmap>, IDrawable {
+
+public interface IBitmap<T> extends IResource<IBitmap<T>>, IDrawable<T> {
 
 	/**
 	 * Get index of pixel at x, y
@@ -17,7 +17,7 @@ public interface IBitmap extends IResource<IBitmap>, IDrawable {
 	 * @param index index of pixel
 	 * @return
 	 */
-	public Point2D indexToPoint(int index);
+	public Tuple<Integer, Integer> indexToPoint(int index);
 	
 	/**
 	 * Returns width of Bitmap
@@ -37,7 +37,7 @@ public interface IBitmap extends IResource<IBitmap>, IDrawable {
 	 * @param destX where to start drawing it
 	 * @param destY
 	 */
-	public void drawBitmap(IBitmap bitmap, int destX, int destY);
+	public void drawBitmap(IBitmap<T> bitmap, int destX, int destY);
 	
 	/**
 	 * Get Color of pixel at position x, y
@@ -45,14 +45,14 @@ public interface IBitmap extends IResource<IBitmap>, IDrawable {
 	 * @param y
 	 * @return
 	 */
-	public int getPixel(int x, int y);
+	public T getPixel(int x, int y);
 	
 	/**
 	 * Get Color of pixel at index 
 	 * @param index
 	 * @return
 	 */
-	public int getPixel(int index);
+	public T getPixel(int index);
 	
 	/**
 	 * Set pixel at position x, y to color
@@ -60,14 +60,14 @@ public interface IBitmap extends IResource<IBitmap>, IDrawable {
 	 * @param y
 	 * @param color
 	 */
-	public void putPixel(int x, int y, int color);
+	public void putPixel(int x, int y, T value);
 	
 	/**
 	 * Set pixel at index to color
 	 * @param index
 	 * @param color
 	 */
-	public void putPixel(int index, int color);
+	public void putPixel(int index, T value);
 	
 	/**
 	 * Draw a rectangle from (x/y) to (x2/y2)
@@ -77,7 +77,7 @@ public interface IBitmap extends IResource<IBitmap>, IDrawable {
 	 * @param w
 	 * @param h
 	 */
-	public void drawRect(int x, int y, int x2, int y2, int color);
+	public void drawRect(int x, int y, int x2, int y2, T value);
 	
 	/**
 	 * Draw a Arc around (x/y) with radius and angle
@@ -85,7 +85,7 @@ public interface IBitmap extends IResource<IBitmap>, IDrawable {
 	 * @param y
 	 * @param r
 	 */
-	public void drawArc(int x, int y, int radius, float angle);
+	public void drawArc(int x, int y, int radius, float angle, T value);
 	
 	/**
 	 * Draw a Line from (x1/y1) to (x2/y2)
@@ -94,11 +94,17 @@ public interface IBitmap extends IResource<IBitmap>, IDrawable {
 	 * @param x2
 	 * @param y2
 	 */
-	public void drawLine(int x1, int y1, int x2, int y2);
+	public void drawLine(int x1, int y1, int x2, int y2, T value);
 	
 	/**
 	 * Fills the hole bitmap with specific color
 	 * @param col
 	 */
-	public void clear(int col);
+	public void clear(T col);
+
+	/**
+	 * Get a cursor on this bitmap
+	 * @return
+	 */
+	public BitmapCursor<T> getCursor();
 }

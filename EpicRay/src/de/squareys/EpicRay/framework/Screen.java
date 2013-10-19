@@ -8,7 +8,7 @@ import java.awt.image.DataBufferInt;
 import javax.swing.JPanel;
 
 public abstract class Screen extends Canvas {
-	protected IRenderer renderer;
+	protected IRenderer<? extends IBitmap<Integer>> renderer;
 	
 	protected int m_width;
 	protected int m_height;

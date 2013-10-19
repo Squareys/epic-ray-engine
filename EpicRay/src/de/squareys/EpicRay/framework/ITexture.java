@@ -10,11 +10,11 @@ package de.squareys.EpicRay.framework;
  * @author Squareys
  *
  */
-public interface ITexture extends IBitmap {
+public interface ITexture extends IBitmap<Integer> {
 	/**
 	 * Returns the parent bitmap
 	 * @return
 	 */
-	public IBitmap getParentBitmap();
+	public IBitmap<Integer> getParentBitmap();
 
 }

@@ -7,7 +7,7 @@ package de.squareys.EpicRay.framework;
  * @author Squareys
  *
  */
-public interface IRenderer {
+public interface IRenderer<B extends IBitmap> {
 
 	/**
 	 * Renders everything to a 
@@ -20,5 +20,5 @@ public interface IRenderer {
 	 * Returns the rendered bitmap
 	 * @return
 	 */
-	public IBitmap getRenderResult();
+	public B getRenderResult();
 }
