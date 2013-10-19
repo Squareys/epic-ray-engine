@@ -1,28 +1,29 @@
 package de.squareys.EpicRay.implementation;
 
-import java.awt.Point;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
 
+import de.squareys.EpicRay.framework.FastIntBitmap;
 import de.squareys.EpicRay.framework.IBitmap;
 import de.squareys.EpicRay.framework.IResourceManager;
 import de.squareys.EpicRay.framework.ISound;
 import de.squareys.EpicRay.framework.ITexture;
+import de.squareys.EpicRay.framework.Texture;
+import de.squareys.EpicRay.framework.Tuple;
 
 public class ResourceManager implements IResourceManager {
 	private static ResourceManager m_instance;
 	
 	private Vector<ISound> m_sounds;
-	private Vector<IBitmap> m_bitmaps;
+	private Vector<IBitmap<?>> m_bitmaps;
 	private Vector<ITexture> m_textures;
 	
 	private ResourceManager(){
 		m_sounds   = new Vector<ISound>();
-		m_bitmaps  = new Vector<IBitmap>();
+		m_bitmaps  = new Vector<IBitmap<?>>();
 		m_textures = new Vector<ITexture>();
 	}
 
@@ -41,15 +42,15 @@ public class ResourceManager implements IResourceManager {
 			int w = img.getWidth();
 			int h = img.getHeight();
 
-			Bitmap loaded = new Bitmap(w, h);
+			FastIntBitmap loaded = new FastIntBitmap(w, h);
 			
 			img.getRGB(0, 0, w, h, loaded.m_pixels, 0, w);
 			
-			Bitmap result = new Bitmap(h, w);
+			FastIntBitmap result = new FastIntBitmap(h, w);
 			
 			for (int i = 0; i < w*h; i++){
-				Point2D p = result.indexToPoint(i);
-				result.putPixel(i, loaded.getPixel((int)p.getY(), (int)p.getX()));
+				Tuple<Integer, Integer> p = result.indexToPoint(i);
+				result.putPixel(i, loaded.getPixel((int)p.getA(), (int)p.getB()));
 			}
 			//switch vertical and horizontal
 			m_bitmaps.add(result);

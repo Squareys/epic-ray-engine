@@ -2,7 +2,11 @@ package de.squareys.EpicRay.implementation;
 
 import java.awt.Color;
 
+import de.squareys.EpicRay.framework.Bitmap;
+import de.squareys.EpicRay.framework.FastFloatBitmap;
+import de.squareys.EpicRay.framework.FastIntBitmap;
 import de.squareys.EpicRay.framework.IBitmap;
+import de.squareys.EpicRay.framework.ICursor2D;
 import de.squareys.EpicRay.framework.IEntity;
 import de.squareys.EpicRay.framework.IGame;
 import de.squareys.EpicRay.framework.IRenderer;
@@ -11,6 +15,7 @@ import de.squareys.EpicRay.framework.ISprite;
 import de.squareys.EpicRay.framework.ITile;
 import de.squareys.EpicRay.framework.ITileMap;
 import de.squareys.EpicRay.framework.IWorld;
+import de.squareys.EpicRay.framework.RelativeCursor;
 
 /**
  * EpicRayRenderer is an implementation of Renderer
@@ -23,12 +28,10 @@ import de.squareys.EpicRay.framework.IWorld;
  *
  */
 
-public class EpicRayRenderer implements IRenderer {
+public class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 
-	private static final int INFINITY = 2147483646;
-	
-	private IBitmap m_bitmap;
-	private IBitmap m_zBuffer;
+	private FastIntBitmap m_bitmap;
+	private FastFloatBitmap m_zBuffer;
 	
 	private int m_width;
 	private int m_height;
@@ -46,8 +49,8 @@ public class EpicRayRenderer implements IRenderer {
 		m_width = width;
 		m_height = height;
 		
-		m_bitmap = new Bitmap(width, height);
-		m_zBuffer = new Bitmap(width, height);
+		m_bitmap = new FastIntBitmap(width, height);
+		m_zBuffer = new FastFloatBitmap(width, height);
 		
 		m_world = world;
 		m_camEntity = camEntity;
@@ -62,7 +65,10 @@ public class EpicRayRenderer implements IRenderer {
 		m_planeY = m_camEntity.getViewDirectionX() * m_planeLength;
 		
 		m_bitmap.clear(Color.gray.getRGB());
-		m_zBuffer.clear(INFINITY);
+		m_zBuffer.clear(Float.MAX_VALUE);
+		
+		ICursor2D<Integer> cursor = m_bitmap.getCursor();
+		ICursor2D<Float> zCursor = m_zBuffer.getCursor();
 		
 		for(int x = 0; x < m_width; x++){
 	      //calculate ray position and direction 
@@ -71,14 +77,17 @@ public class EpicRayRenderer implements IRenderer {
 	      double rayDirX = m_camEntity.getViewDirectionX() + m_planeX * cameraX;
 		  double rayDirY = m_camEntity.getViewDirectionY() + m_planeY * cameraX;
 		   
-	      EpicRayRay ray = new EpicRayRay(m_height, m_camEntity.getX(), m_camEntity.getY(), rayDirX, rayDirY, m_bitmap, m_zBuffer, x*m_height);
+		  cursor.setPosition(x*m_height);
+		  
+	      EpicRayRay ray = new EpicRayRay(m_height, m_camEntity.getX(), m_camEntity.getY(), rayDirX, rayDirY, 
+	    		  new RelativeCursor<Integer>(cursor), new RelativeCursor<Float>(zCursor));
 	      
 	      ray.cast(tileMap);
 		}
 	}
 
 	@Override
-	public IBitmap getRenderResult() {
+	public FastIntBitmap getRenderResult() {
 		return m_bitmap;
 	}
 

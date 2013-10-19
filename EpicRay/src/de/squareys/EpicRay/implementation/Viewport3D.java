@@ -26,7 +26,7 @@ public class Viewport3D extends Screen {
 	public void present() {
 		renderer.render();
 		
-		IBitmap result = renderer.getRenderResult();
+		IBitmap<Integer> result = renderer.getRenderResult();
 		for (int x = 0; x < m_width; x++) {
 			for (int y = 0; y < m_height; y++){
 				putPixel(x, y, result.getPixel(x, y));

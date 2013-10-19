@@ -2,11 +2,13 @@ package de.squareys.EpicRay.implementation;
 
 import java.awt.Color;
 
-import de.squareys.EpicRay.framework.IBitmap;
+import de.squareys.EpicRay.framework.ICursor1D;
+import de.squareys.EpicRay.framework.ICursor2D;
 import de.squareys.EpicRay.framework.IRay;
 import de.squareys.EpicRay.framework.ITexture;
 import de.squareys.EpicRay.framework.ITile;
 import de.squareys.EpicRay.framework.ITileMap;
+import de.squareys.EpicRay.framework.RelativeCursor;
 
 public class EpicRayRay implements IRay {
 
@@ -16,9 +18,8 @@ public class EpicRayRay implements IRay {
 	protected double m_dirX;
 	protected double m_dirY;
 
-	private IBitmap m_dest;
-	private IBitmap m_zBuf;
-	private int m_drawOffs;
+	private ICursor1D<Integer> m_dest;
+	private ICursor1D<Float> m_zBuf;
 	protected int m_height; // length of m_pixels
 
 	@Deprecated
@@ -83,7 +84,7 @@ public class EpicRayRay implements IRay {
 	VariableStorage stor;
 
 	public EpicRayRay(int height, double startposX, double startposY,
-			double dirX, double dirY, IBitmap dest, IBitmap zBuffer, int offset) {
+			double dirX, double dirY, ICursor1D<Integer> dest, ICursor1D<Float> zBuffer) {
 		m_x = startposX;
 		m_y = startposY;
 
@@ -91,7 +92,6 @@ public class EpicRayRay implements IRay {
 		m_dirY = dirY;
 
 		m_height = height;
-		m_drawOffs = offset;
 		m_dest = dest;
 		m_zBuf = zBuffer;
 
@@ -287,9 +287,13 @@ public class EpicRayRay implements IRay {
 			// perpWallDist can be
 			// anything way over 1.0
 
+			//store the initial Value of the pixel
+			
+			m_zBuf.setPosition(drawStart);
+			m_dest.setPosition(drawStart);
 			// draw the pixels of the stripe as a vertical line
-			for (int i = drawStart; i < drawEnd; i++) {
-				int z = m_zBuf.getPixel(m_drawOffs + i);
+			for (int i = drawStart; i < drawEnd; i++, m_zBuf.next(), m_dest.next()) {
+				float z = m_zBuf.get();
 				// zBuffer Check
 				if (z < zValue) {
 					continue;
@@ -331,7 +335,7 @@ public class EpicRayRay implements IRay {
 					}
 				}
 
-				m_dest.putPixel(m_drawOffs + i, color);
+				m_dest.set(color);
 				// m_zBuf.putPixel(m_drawOffs + i, zValue);
 			}
 		}
@@ -481,14 +485,20 @@ public class EpicRayRay implements IRay {
 				ceilColor = ra.m_ceilColor;
 			}
 
+			m_zBuf.setPosition(y + drawStart);
+			m_dest.setPosition(y + drawStart);
+			
 			// zBuffer Check
-			if (m_zBuf.getPixel(m_drawOffs + y + drawStart) >= zValue) {
-				m_dest.putPixel(m_drawOffs + y + drawStart, ceilColor); // ceiling
+			if (m_zBuf.get() >= zValue) {
+				m_dest.set(ceilColor); // ceiling
 			}
+			
+			m_zBuf.setPosition(drawEnd - y);
+			m_dest.setPosition(drawEnd - y);
 
 			// zBuffer Check
-			if (m_zBuf.getPixel(m_drawOffs + drawEnd - y) >= zValue) {
-				m_dest.putPixel(m_drawOffs + drawEnd - y, floorColor); // floor
+			if (m_zBuf.get() >= zValue) {
+				m_dest.set(floorColor); // floor
 			}
 		}
 	}
