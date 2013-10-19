@@ -1,14 +1,20 @@
 EpicRay
 =======
-A Java Raycasting Engine
+A Modern Raycasting Engine in Java
 
 
-If interested in helping  me with this project, be free to contact me via twitter, facebook or tumblr.
+If you are interested in helping me with this project, be free to contact me via twitter, facebook or tumblr.
 
-This is a true raycasting engine. Meaning, the rendering code actually uses raycasting tecniques and 
-doesn't just immitate them. An editor comes along in the code aswell.
+This is a "true" raycasting engine. Meaning, the rendering code actually uses raycasting techniques and doesn't just try to produce a look-alike result. An editor comes along in the code aswell.
 
-Warning: The current Floor/Ceiling texturing is in development and not really of any use yet.
+Technical
+--------
+
+The description says "Modern" raycasting engine. This is becaus I am looking to implement more contemprorary effects and filters in EpicRay (DOF maybe?).
+
+Recently I had the idea to make EpicRay optionally use hardware accelleration. Who knows, maybe one day :)
+
+For floor rendering I used my own "algorithm". I wanted to be able to have seperate textures/colors for each tile without having to cast each pixel. My way may be a speedup to the classic way.
 
 Features
 --------
@@ -16,7 +22,7 @@ Features
 The current features are implemented at the moment
 - Engine:
   - Wall rendering: textured or single color
-  - Floor/Ceiling Rendering: single color
+  - Floor/Ceiling Rendering: texture or single color
   - Keyboard movement and world collision
   - zBuffer (makes way for fog and masked texture implementation)
 - Editor: 
@@ -33,14 +39,13 @@ Here are some todos you could do, if you are thinking of contributing:
   - Sprite Rendering
   - Player spawn
   - Mouse movement
-  - Floor/Ceiling textures (working on that myself)
   - Post-Effects (fog, ...) [will do a basic system myself first]
   - Background image
 - Editor:
   - Resource manager dialog for textures and other assets
   - Player spawn
   - Background image
-  - Better data<>gui separation
+  - Better data/functionality/gui separation
 
 Contact
 =======
