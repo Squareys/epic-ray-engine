@@ -38,6 +38,13 @@ public class EpicRayRay implements IRay {
 		int mapY;
 
 		int side;
+		
+		int lineStart;
+		int lineEnd;
+		int lineHeight;
+		
+		int drawStart;
+		int drawEnd;
 
 		public float wallX;
 
@@ -53,6 +60,9 @@ public class EpicRayRay implements IRay {
 			side = 0;
 
 			wallX = 0.0f;
+			
+			lineStart = lineEnd = lineHeight = 0;
+			drawStart = drawEnd = 0;
 		}
 	}
 
@@ -181,6 +191,24 @@ public class EpicRayRay implements IRay {
 			next.perpWallDist = Math.abs(((float) next.mapY - m_y + add)
 					/ m_dirY);
 		}
+		
+		// Calculate height of line to draw on screen
+		next.lineHeight = 2 * (int) (((float) m_height / cur.perpWallDist) / 2.0);
+		// calculate lowest and highest pixel to fill in current stripe
+		next.lineStart = (m_height - cur.lineHeight) / 2;
+		next.lineEnd = (cur.lineHeight + m_height) / 2;
+		
+		next.drawStart = next.lineStart;
+
+		if (next.drawStart < 0) {
+			next.drawStart = 0;
+		}
+
+		next.drawEnd = next.lineEnd;
+		
+		if (next.drawEnd >= m_height) {
+			next.drawEnd = m_height - 1;
+		}
 
 		// cast the ray
 		do {
@@ -236,20 +264,21 @@ public class EpicRayRay implements IRay {
 		RenderVariables next = stor.getNextVariables();
 
 		// Calculate height of line to draw on screen
-		int lineHeight = 2 * (int) (((float) m_height / cur.perpWallDist) / 2.0);
-
+		next.lineHeight = 2 * (int) (((float) m_height / next.perpWallDist) / 2.0);
 		// calculate lowest and highest pixel to fill in current stripe
-		int drawStart = (m_height - lineHeight) / 2;
-		int startIndex = drawStart;
+		next.lineStart = (m_height - next.lineHeight) / 2;
+		next.lineEnd = (next.lineHeight + m_height) / 2;
+		
+		next.drawStart = next.lineStart;
 
-		if (drawStart < 0) {
-			drawStart = 0;
+		if (next.drawStart < 0) {
+			next.drawStart = 0;
 		}
 
-		int drawEnd = (lineHeight + m_height) / 2;
-
-		if (drawEnd >= m_height) {
-			drawEnd = m_height - 1;
+		next.drawEnd = next.lineEnd;
+		
+		if (next.drawEnd >= m_height) {
+			next.drawEnd = m_height - 1;
 		}
 
 		/* Calculate WallX */
@@ -288,13 +317,12 @@ public class EpicRayRay implements IRay {
 			
 			//store the initial Value of the pixel
 			
-			m_combined.setPosition(drawStart);
+			m_combined.setPosition(cur.drawStart);
 
 			// draw the pixels of the stripe as a vertical line
-			for (int i = drawStart; i < drawEnd; ++i, m_combined.next()) {
-				float z = m_zBuf.get();
+			for (int i = cur.drawStart; i < cur.drawEnd; ++i, m_combined.next()) {
 				// zBuffer Check
-				if (z < zValue) {
+				if (m_zBuf.get() < zValue) {
 					continue;
 				}
 
@@ -307,8 +335,7 @@ public class EpicRayRay implements IRay {
 				// }
 
 				if (ra.m_textured) {
-					int texY = (int) ((float) (((i - startIndex) * texture
-							.getHeight()) / (float) lineHeight));
+					int texY = (int) ((float) (((i - cur.lineStart) * texture.getHeight()) / (float) cur.lineHeight));
 
 					if (texX < 0) {
 						texX = 0;
@@ -341,33 +368,13 @@ public class EpicRayRay implements IRay {
 		if (tile.isOpaque())
 			return; // no floor visible.
 
-		// TODO: Lot of optimisation potential
-		int nLineHeight = 2 * (int) Math
-				.floor(((float) m_height / next.perpWallDist) / 2.0); // next
-																		// Line
-																		// Height,
-																		// asuring
-																		// round
-																		// numbers
-
-		int nLineStart = (m_height - nLineHeight) / 2;
-		int nLineEnd = (m_height + nLineHeight) / 2;
-
-		if (nLineStart < 0) {
-			nLineStart = 0;
-		}
-
-		if (nLineEnd >= m_height) {
-			nLineEnd = m_height - 1;
-		}
-
-		int nInvLineHeight = nLineStart - drawStart;
+		int nInvLineHeight = next.lineStart - cur.drawStart;
 
 		if (nInvLineHeight < 1) {
 			return; // floor not visible here.
 		}
 
-		int zValue = (int) (next.perpWallDist * 1024.0 - 5.0);
+		float zValue = next.perpWallDist;
 
 		boolean texCeil = ra.m_textured && (ra.m_ceilTexture != null);
 		boolean texFloor = ra.m_textured && (ra.m_floorTexture != null);
@@ -417,9 +424,6 @@ public class EpicRayRay implements IRay {
 			startX = 1.0f - startX;
 		}
 
-		if (drawEnd < 0)
-			drawEnd = m_height;
-
 		// draw the floor and ceiling
 		for (int y = 0; y < nInvLineHeight; y++) {
 			int floorColor = -1;
@@ -430,7 +434,7 @@ public class EpicRayRay implements IRay {
 				// ((float)m_height/2.0*(float)(drawStart+y+1)) -
 				// cur.perpWallDist; //amazing hypnotizing results
 
-				float theDist = ((float) m_height / ((float) m_height - 2.0f * (float) (drawStart + y)))
+				float theDist = ((float) m_height / ((float) m_height - 2.0f * (float) (cur.drawStart + y)))
 						- cur.perpWallDist;
 				float theFactor = theDist
 						/ (next.perpWallDist - cur.perpWallDist);
@@ -477,14 +481,14 @@ public class EpicRayRay implements IRay {
 				ceilColor = ra.m_ceilColor;
 			}
 
-			m_combined.setPosition(y + drawStart);
+			m_combined.setPosition(y + cur.drawStart);
 			
 			// zBuffer Check
 			if (m_zBuf.get() >= zValue) {
 				m_dest.set(ceilColor); // ceiling
 			}
 			
-			m_combined.setPosition(drawEnd - y);
+			m_combined.setPosition(cur.drawEnd - y);
 
 			// zBuffer Check
 			if (m_zBuf.get() >= zValue) {
