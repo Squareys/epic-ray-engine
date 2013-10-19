@@ -39,11 +39,11 @@ public class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 	protected IWorld m_world;
 	protected IEntity m_camEntity; //camera entity
 	
-	protected double m_planeX = 0;
-	protected double m_planeY = 0.66;
+	protected float m_planeX = 0;
+	protected float m_planeY = 0.66f;
 	
-	protected double fov = 66;
-	protected double m_planeLength = .66; //(Math.tan(fov/2)); //must be calculated for fov.
+	protected int fov = 66;
+	protected float m_planeLength = .66f; //(Math.tan(fov/2)); //must be calculated for fov.
 	
 	public EpicRayRenderer (IWorld world, IEntity camEntity, int width, int height){
 		m_width = width;
@@ -61,8 +61,8 @@ public class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 		ITileMap tileMap = m_world.getTileMap();
 		
 		//calculate perpendicular camera plane
-		m_planeX = -m_camEntity.getViewDirectionY() * m_planeLength; //only works if rayDir is normalized!
-		m_planeY = m_camEntity.getViewDirectionX() * m_planeLength;
+		m_planeX = (float)-m_camEntity.getViewDirectionY() * m_planeLength; //only works if rayDir is normalized!
+		m_planeY = (float)m_camEntity.getViewDirectionX() * m_planeLength;
 		
 		m_bitmap.clear(Color.gray.getRGB());
 		m_zBuffer.clear(Float.MAX_VALUE);
@@ -72,14 +72,14 @@ public class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 		
 		for(int x = 0; x < m_width; x++){
 	      //calculate ray position and direction 
-	      double cameraX = 2.0 * (double) x / ((double) m_width) - 1.0; //x-coordinate in camera space
+	      float cameraX = 2.0f * (float) x / ((float) m_width) - 1.0f; //x-coordinate in camera space
 	      
-	      double rayDirX = m_camEntity.getViewDirectionX() + m_planeX * cameraX;
-		  double rayDirY = m_camEntity.getViewDirectionY() + m_planeY * cameraX;
+	      float rayDirX = (float)m_camEntity.getViewDirectionX() + m_planeX * cameraX;
+		  float rayDirY = (float)m_camEntity.getViewDirectionY() + m_planeY * cameraX;
 		   
 		  cursor.setPosition(x*m_height);
 		  
-	      EpicRayRay ray = new EpicRayRay(m_height, m_camEntity.getX(), m_camEntity.getY(), rayDirX, rayDirY, 
+	      EpicRayRay ray = new EpicRayRay(m_height, (float)m_camEntity.getX(), (float)m_camEntity.getY(), rayDirX, rayDirY, 
 	    		  new RelativeCursor<Integer>(cursor), new RelativeCursor<Float>(zCursor));
 	      
 	      ray.cast(tileMap);
