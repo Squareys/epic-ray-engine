@@ -107,4 +107,5 @@ public interface IBitmap<T> extends IResource<IBitmap<T>>, IDrawable<T> {
 	 * @return
 	 */
 	public BitmapCursor<T> getCursor();
+	
 }

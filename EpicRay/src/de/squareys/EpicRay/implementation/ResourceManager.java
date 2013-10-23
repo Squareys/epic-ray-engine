@@ -50,7 +50,7 @@ public class ResourceManager implements IResourceManager {
 			
 			for (int i = 0; i < w*h; i++){
 				Tuple<Integer, Integer> p = result.indexToPoint(i);
-				result.putPixel(i, loaded.getPixel((int)p.getA(), (int)p.getB()));
+				result.m_pixels[i] = loaded.getPixel((int)p.getB(), (int)p.getA());
 			}
 			//switch vertical and horizontal
 			m_bitmaps.add(result);

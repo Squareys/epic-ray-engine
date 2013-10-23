@@ -12,16 +12,16 @@ public class VerticalFirstBitmapCursor<T> extends BitmapCursor<T> {
 
 	@Override
 	public void nextX() {
-		m_posIndex++;
+		m_posIndex += m_bitmap.getHeight();
 	}
 
 	@Override
 	public void nextY() {
-		m_posIndex += m_bitmap.getWidth();
+		++m_posIndex;
 	}
 
 	@Override
 	public void next() {
-		nextX();
+		nextY();
 	}
 }

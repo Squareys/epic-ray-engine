@@ -12,16 +12,16 @@ public class HorizontalFirstBitmapCursor<T> extends BitmapCursor<T> {
 
 	@Override
 	public void nextX() {
-		m_posIndex += m_bitmap.getHeight();
+		++m_posIndex;
 	}
 
 	@Override
 	public void nextY() {
-		m_posIndex++;
+		m_posIndex += m_bitmap.getWidth();
 	}
 
 	@Override
 	public void next() {
-		nextY();
+		++m_posIndex; //nextX
 	}
 }

@@ -7,7 +7,8 @@ public abstract class BitmapCursor<T> implements ICursor2D<T> {
 	protected int m_posIndex;
 	
 	public BitmapCursor (IBitmap<T> bmp) {
-		this(bmp, 0, 0);
+		m_bitmap = bmp;
+		m_posIndex = 0;
 	}
 
 	public BitmapCursor(IBitmap<T> bmp, int x, int y) {

@@ -22,7 +22,6 @@ public class FastIntBitmap implements IBitmap<Integer> {
 
 	@Override
 	public IBitmap<Integer> loadFromFile(String filename) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -107,7 +106,7 @@ public class FastIntBitmap implements IBitmap<Integer> {
 		
 		index = p_x * m_height + p_y;
 		for (int x = p_x; x < p_x2; x++, index += m_height){
-			for ( int y = p_y; p_y < p_y2; y++, index++){
+			for ( int y = p_y; y < p_y2; y++, index++){
 				putPixel(index, c);
 			}
 		}
@@ -137,6 +136,6 @@ public class FastIntBitmap implements IBitmap<Integer> {
 	
 	@Override
 	public BitmapCursor<Integer> getCursor() {
-		return new VerticalFirstBitmapCursor<Integer>(this);
+		return new FastIntBitmapCursor(this);
 	}
 }

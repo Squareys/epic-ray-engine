@@ -34,8 +34,7 @@ public class Texture implements ITexture {
 
 	@Override
 	public Tuple<Integer, Integer> indexToPoint(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		return m_parentBitmap.indexToPoint(index);
 	}
 
 	@Override
@@ -66,14 +65,12 @@ public class Texture implements ITexture {
 
 	@Override
 	public void putPixel(int x, int y, Integer color) {
-		// TODO Auto-generated method stub
-
+		m_parentBitmap.putPixel(x, y, color);
 	}
 
 	@Override
 	public void putPixel(int index, Integer color) {
-		// TODO Auto-generated method stub
-
+		m_parentBitmap.putPixel(index, color);
 	}
 
 	@Override
@@ -134,6 +131,6 @@ public class Texture implements ITexture {
 
 	@Override
 	public BitmapCursor<Integer> getCursor() {
-		return new VerticalFirstBitmapCursor<Integer>(this); //TODO: Is this really vertical first? Make sure.
+		throw new RuntimeException("Not implemented!");
 	}
 }

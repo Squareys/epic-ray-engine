@@ -70,14 +70,18 @@ public class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 		ICursor2D<Integer> cursor = m_bitmap.getCursor();
 		ICursor2D<Float> zCursor = m_zBuffer.getCursor();
 		
-		for(int x = 0; x < m_width; x++){
+		float factor = (float) 2 / m_width;
+		float f2 = 0.0f;
+		int index = 0;
+		
+		for(int x = 0; x < m_width; x++, f2 += factor, index += m_height){
 	      //calculate ray position and direction 
-	      float cameraX = 2.0f * (float) x / ((float) m_width) - 1.0f; //x-coordinate in camera space
+	      float cameraX = (float) f2 - 1.0f; //x-coordinate in camera space
 	      
 	      float rayDirX = (float)m_camEntity.getViewDirectionX() + m_planeX * cameraX;
 		  float rayDirY = (float)m_camEntity.getViewDirectionY() + m_planeY * cameraX;
 		   
-		  cursor.setPosition(x*m_height);
+		  cursor.setPosition(index);
 		  
 	      EpicRayRay ray = new EpicRayRay(m_height, (float)m_camEntity.getX(), (float)m_camEntity.getY(), rayDirX, rayDirY, 
 	    		  new RelativeCursor<Integer>(cursor), new RelativeCursor<Float>(zCursor));
