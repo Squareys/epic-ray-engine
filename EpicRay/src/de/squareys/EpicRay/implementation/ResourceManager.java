@@ -11,6 +11,7 @@ import de.squareys.EpicRay.framework.IBitmap;
 import de.squareys.EpicRay.framework.IResourceManager;
 import de.squareys.EpicRay.framework.ISound;
 import de.squareys.EpicRay.framework.ITexture;
+import de.squareys.EpicRay.framework.PowerOf2IntBitmap;
 import de.squareys.EpicRay.framework.Texture;
 import de.squareys.EpicRay.framework.Tuple;
 
@@ -46,9 +47,15 @@ public class ResourceManager implements IResourceManager {
 			
 			img.getRGB(0, 0, w, h, loaded.m_pixels, 0, w);
 			
-			FastIntBitmap result = new FastIntBitmap(h, w);
+			FastIntBitmap result;
 			
-			for (int i = 0; i < w*h; i++){
+			if (isPowerOf2(loaded.getWidth()) && isPowerOf2(loaded.getHeight())) {
+				result = new PowerOf2IntBitmap(h, w);
+			} else {
+				result = new FastIntBitmap(h, w);
+			}
+			
+			for (int i = 0; i < w * h; ++i){
 				Tuple<Integer, Integer> p = result.indexToPoint(i);
 				result.m_pixels[i] = loaded.getPixel((int)p.getB(), (int)p.getA());
 			}
@@ -61,6 +68,10 @@ public class ResourceManager implements IResourceManager {
 		}
 	}
 	
+	private boolean isPowerOf2(int x) {
+		return (x & (x - 1)) == 0;
+	}
+
 	@Override
 	public ITexture createTexture(IBitmap bitmap, int startx, int starty,
 			int endx, int endy) {

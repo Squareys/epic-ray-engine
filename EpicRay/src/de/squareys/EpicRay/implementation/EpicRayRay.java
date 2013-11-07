@@ -267,8 +267,8 @@ public class EpicRayRay implements IRay {
 		RenderVariables next = stor.getNextVariables();
 		
         // calculate lowest and highest pixel to fill in current stripe
-        next.lineStart = (m_height - next.lineHeight) / 2;
-        next.lineEnd = (next.lineHeight + m_height) / 2;
+        next.lineStart = (m_height - next.lineHeight) >> 1;
+        next.lineEnd = (next.lineHeight + m_height) >> 1;
         
         next.drawStart = next.lineStart;
 
@@ -305,13 +305,12 @@ public class EpicRayRay implements IRay {
 		
 		EpicRayRenderingAttributes ra = (EpicRayRenderingAttributes) tile.getRenderingAttributes();
 
-		if ((ra.m_wallTexture != null && ra.m_textured) || ra.m_wallColor != -1) {
+		if ((ra.m_textured && ra.m_wallTexture != null) || ra.m_wallColor != -1) {
 			int texX = 0;
 			ITexture texture = null;
 			float toTexture = 1.0f;
 			float texY = 0.0f;
-
-			float zValue = cur.perpWallDist; 
+			int lastTexY = -1;
 			
 			//store the initial Value of the pixel
 			
@@ -332,8 +331,8 @@ public class EpicRayRay implements IRay {
 				
 				toTexture = (float) texture.getHeight() / (float) cur.lineHeight;
 				
-				if ( cur.lineHeight > drawLength) {
-					texY = toTexture * Math.abs(cur.lineStart);
+				if ( cur.lineStart < 0 ) {
+					texY = toTexture * -cur.lineStart;
 				}
 				
 				if (texX < 0) {
@@ -345,33 +344,34 @@ public class EpicRayRay implements IRay {
 				}
 			}
 			
+			int color = ra.m_wallColor;
 			// draw the pixels of the stripe as a vertical line
-			for (int i = 0; i < drawLength; ++i, m_combined.next()) {
+			for (int i = 0; i < drawLength; ++i, m_combined.fwd()) {
 				// zBuffer Check
-				if (m_zBuf.get() < zValue) {
+				if (m_zBuf.get() < cur.perpWallDist) { // perpWallDist is our cur zValue.
 					continue;
 				}
 
-				int color = ra.m_wallColor;
-
 				if (ra.m_textured) {
-					if ( texY >= texture.getHeight()) {
-						color = 0;
-					} else {
-						color = texture.getPixel(texX,  (int) Math.floor(texY));
-						texY += toTexture;
+					//Note: Unsafe, but fast ;)
+					int ty = (int) Math.floor(texY);
+					
+					if (ty != lastTexY) {
+						color = texture.getPixel(texX, ty);
 						
-						// make color darker for y-sides: R, G and B byte each
-						// divided through two with a "shift" and an "and"
 						if (cur.side == 1) {
+							// make color darker for y-sides: R, G and B byte each
+							// divided through two with a "shift" and an "and"
 							color = (color >> 1) & 8355711;
 						}
 					}
-				}
+					
+					texY += toTexture;
+				} 
 
-				m_combined.set(color, zValue);
+				m_combined.set(color, cur.perpWallDist);
 			}
-		}
+		} 
 
 		if (tile.isOpaque())
 			return; // no floor visible.
@@ -381,8 +381,6 @@ public class EpicRayRay implements IRay {
 		if (nInvLineHeight < 1) {
 			return; // floor not visible here.
 		}
-
-		
 
 		boolean texCeil = ra.m_textured && (ra.m_ceilTexture != null);
 		boolean texFloor = ra.m_textured && (ra.m_floorTexture != null);
@@ -436,7 +434,6 @@ public class EpicRayRay implements IRay {
 		float diffY = (endY - startY);
 
 		float zValue = next.perpWallDist;
-		
 		// draw the floor and ceiling
 		for (int y = 0; y < nInvLineHeight; y++) {
 			int floorColor = -1;

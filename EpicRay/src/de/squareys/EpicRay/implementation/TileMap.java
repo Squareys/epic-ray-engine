@@ -34,7 +34,7 @@ public class TileMap implements ITileMap {
 		m_tiles = new ITile[m_width * m_height];
 		
 		EpicRayRenderingAttributes air_ra = new EpicRayRenderingAttributes();
-		air_ra.m_wallColor = Color.BLACK.getRGB();
+		air_ra.m_wallColor = -1;
 		air_ra.m_ceilColor = air_ra.m_floorColor = Color.DARK_GRAY.getRGB();
 		
 		Tile air = new Tile("TileMapAir", false, false, air_ra);
@@ -52,7 +52,6 @@ public class TileMap implements ITileMap {
 		ra.m_textured = true;
 		
 		EpicRayRenderingAttributes ra0 = new EpicRayRenderingAttributes();
-		ra0.m_floorColor = Color.blue.getRGB();
 		ra0.m_textured = true;
 		ra0.m_floorTexture = ResourceManager.getInstance().getTexture(2);
 		ra0.m_ceilTexture = ResourceManager.getInstance().getTexture(1);
