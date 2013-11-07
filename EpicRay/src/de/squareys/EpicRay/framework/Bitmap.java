@@ -13,19 +13,20 @@ public class Bitmap<T> implements IBitmap<T> {
 	
 	private int m_width;
 	private int m_height;
+	private int m_length;
 	
 	public T m_pixels[];
 	
 	public Bitmap (int width, int height, IType<T> t){
 		m_width = width;
 		m_height = height;
+		m_length = m_height * m_width;
 		
 		m_pixels = t.createArray(m_width * m_height);
 	}
 
 	@Override
 	public IBitmap<T> loadFromFile(String filename) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -137,5 +138,10 @@ public class Bitmap<T> implements IBitmap<T> {
 	@Override
 	public BitmapCursor<T> getCursor() {
 		return new VerticalFirstBitmapCursor<T>(this);
+	}
+
+	@Override
+	public int getLength() {
+		return m_length;
 	}
 }

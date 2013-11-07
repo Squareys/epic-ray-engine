@@ -9,6 +9,11 @@ public class FastIntBitmapCursor extends BitmapCursor<Integer> {
 		m_bitmap = bmp;
 	}
 
+	public FastIntBitmapCursor(FastIntBitmap bmp, int index) {
+		super(bmp, index);
+		m_bitmap = bmp;
+	}
+	
 	public FastIntBitmapCursor(FastIntBitmap bmp, int x, int y) {
 		super(bmp, x, y);
 		m_bitmap = bmp;
@@ -57,8 +62,8 @@ public class FastIntBitmapCursor extends BitmapCursor<Integer> {
 	}
 
 	@Override
-	public void next() {
-		++m_posIndex;
+	public Integer next() {
+		return m_bitmap.m_pixels[++m_posIndex];
 	}
 
 	@Override
@@ -69,5 +74,20 @@ public class FastIntBitmapCursor extends BitmapCursor<Integer> {
 	@Override
 	public void nextY() {
 		++m_posIndex;
+	}
+
+	@Override
+	public ICursor1D<Integer> copy() {
+		return new FastIntBitmapCursor(m_bitmap, m_posIndex);
+	}
+
+	@Override
+	public void bck() {
+		--m_posIndex;
+	}
+
+	@Override
+	public Integer prev() {
+		return m_bitmap.m_pixels[--m_posIndex];
 	}
 }

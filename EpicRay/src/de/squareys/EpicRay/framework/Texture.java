@@ -11,6 +11,7 @@ public class Texture implements ITexture {
 	
 	protected int m_width;
 	protected int m_height;
+	protected int m_length;
 	
 	public Texture(IBitmap<Integer> parent, int startx, int starty, int endx, int endy){
 		m_parentBitmap = parent;
@@ -25,6 +26,8 @@ public class Texture implements ITexture {
 		
 		m_width = m_endX - m_startX-1;
 		m_height = m_endY - m_startY-1;
+		
+		m_length = m_height + m_width;
 	}
 	
 	@Override
@@ -132,5 +135,10 @@ public class Texture implements ITexture {
 	@Override
 	public BitmapCursor<Integer> getCursor() {
 		throw new RuntimeException("Not implemented!");
+	}
+
+	@Override
+	public int getLength() {
+		return m_length;
 	}
 }

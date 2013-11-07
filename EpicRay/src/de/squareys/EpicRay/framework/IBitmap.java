@@ -107,5 +107,11 @@ public interface IBitmap<T> extends IResource<IBitmap<T>>, IDrawable<T> {
 	 * @return
 	 */
 	public BitmapCursor<T> getCursor();
+
+	/**
+	 * Get the length of the bitmap, usually this is width*height
+	 * @return
+	 */
+	public int getLength();
 	
 }

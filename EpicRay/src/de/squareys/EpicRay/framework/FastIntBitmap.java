@@ -10,14 +10,16 @@ public class FastIntBitmap implements IBitmap<Integer> {
 	
 	private int m_width;
 	private int m_height;
+	private int m_length;
 	
 	public int m_pixels[];
 	
 	public FastIntBitmap (int width, int height){
 		m_width = width;
 		m_height = height;
+		m_length = m_width * m_height;
 		
-		m_pixels = new int[width * m_height];
+		m_pixels = new int[m_length];
 	}
 
 	@Override
@@ -137,5 +139,10 @@ public class FastIntBitmap implements IBitmap<Integer> {
 	@Override
 	public BitmapCursor<Integer> getCursor() {
 		return new FastIntBitmapCursor(this);
+	}
+
+	@Override
+	public int getLength() {
+		return m_length;
 	}
 }

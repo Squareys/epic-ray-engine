@@ -21,7 +21,25 @@ public class VerticalFirstBitmapCursor<T> extends BitmapCursor<T> {
 	}
 
 	@Override
-	public void next() {
-		nextY();
+	public T next() {
+		fwd();
+		return get();
+	}
+
+	@Override
+	public ICursor1D<T> copy() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void bck() {
+		--m_posIndex;
+	}
+
+	@Override
+	public T prev() {
+		--m_posIndex;
+		return get();
 	}
 }

@@ -1,5 +1,7 @@
 package de.squareys.EpicRay.framework;
 
+import java.util.Iterator;
+
 
 public abstract class BitmapCursor<T> implements ICursor2D<T> {
 	protected IBitmap<T> m_bitmap;
@@ -14,6 +16,11 @@ public abstract class BitmapCursor<T> implements ICursor2D<T> {
 	public BitmapCursor(IBitmap<T> bmp, int x, int y) {
 		m_bitmap = bmp;
 		setPosition(x, y);
+	}
+	
+	public BitmapCursor(IBitmap<T> bmp, int index) {
+		m_bitmap = bmp;
+		setPosition(index);
 	}
 
 	public void setBitmap(IBitmap<T> bmp) {
@@ -48,5 +55,25 @@ public abstract class BitmapCursor<T> implements ICursor2D<T> {
 	@Override 
 	public Tuple<Integer, Integer> getPositionXY(){
 		return m_bitmap.indexToPoint(m_posIndex);
+	}
+	
+	@Override
+	public void fwd() {
+		++m_posIndex;
+	}
+	
+	@Override
+	public Iterator<T> iterator() {
+		return this;
+	}
+	
+	@Override
+	public boolean hasNext() {
+		return m_posIndex + 1 > m_bitmap.getLength();
+	}
+
+	@Override
+	public void remove() {
+		return; // one does not simply... "remove" pixels.
 	}
 }

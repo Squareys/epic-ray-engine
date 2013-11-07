@@ -12,14 +12,16 @@ public class FastFloatBitmap implements IBitmap<Float> {
 
 	private int m_width;
 	private int m_height;
+	private int m_length;
 
 	public float m_pixels[];
 
 	public FastFloatBitmap(int width, int height) {
 		m_width = width;
 		m_height = height;
+		m_length = m_width * m_height;
 
-		m_pixels = new float[width * m_height];
+		m_pixels = new float[m_length];
 	}
 
 	@Override
@@ -134,7 +136,7 @@ public class FastFloatBitmap implements IBitmap<Float> {
 	public void clear(Float col) {
 		float c = col; // no conversion every time.
 
-		for (int i = 0; i < m_width * m_height; i++) {
+		for (int i = 0; i < m_length; i++) {
 			m_pixels[i] = c;
 		}
 	}
@@ -142,5 +144,11 @@ public class FastFloatBitmap implements IBitmap<Float> {
 	@Override
 	public BitmapCursor<Float> getCursor() {
 		return new VerticalFirstBitmapCursor<Float>(this);
+	}
+
+	@Override
+	public int getLength() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
