@@ -2,16 +2,15 @@ package de.squareys.EpicRay.framework;
 
 import java.util.Iterator;
 
-
 public class FastFloatBitmapCursor extends BitmapCursor<Float> {
 	protected FastFloatBitmap m_bitmap;
-	
-	public FastFloatBitmapCursor (FastFloatBitmap bmp) {
+
+	public FastFloatBitmapCursor(FastFloatBitmap bmp) {
 		super(bmp);
 		m_bitmap = bmp;
 	}
-	
-	public FastFloatBitmapCursor (FastFloatBitmap bmp, int index) {
+
+	public FastFloatBitmapCursor(FastFloatBitmap bmp, int index) {
 		super(bmp, index);
 		m_bitmap = bmp;
 	}
@@ -24,7 +23,7 @@ public class FastFloatBitmapCursor extends BitmapCursor<Float> {
 	public void setBitmap(FastFloatBitmap bmp) {
 		this.m_bitmap = bmp;
 	}
-	
+
 	public float getNativeInt() {
 		return m_bitmap.m_pixels[m_posIndex];
 	}
@@ -38,7 +37,7 @@ public class FastFloatBitmapCursor extends BitmapCursor<Float> {
 	public void set(Float value) {
 		m_bitmap.m_pixels[m_posIndex] = value;
 	}
-	
+
 	public void set(float value) {
 		m_bitmap.m_pixels[m_posIndex] = value;
 	}

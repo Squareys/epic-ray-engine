@@ -1,15 +1,16 @@
 package de.squareys.EpicRay.framework;
 
 public class HorizontalFirstBitmapCursor<T> extends BitmapCursor<T> {
-	
-	public HorizontalFirstBitmapCursor (IBitmap<T> bmp, int x, int y) {
+
+	public HorizontalFirstBitmapCursor(IBitmap<T> bmp, int x, int y) {
 		super(bmp, x, y);
 	}
-	
-	public HorizontalFirstBitmapCursor (IBitmap<T> bmp, int index) {
+
+	public HorizontalFirstBitmapCursor(IBitmap<T> bmp, int index) {
 		super(bmp, index);
 	}
-	public HorizontalFirstBitmapCursor (IBitmap<T> bmp) {
+
+	public HorizontalFirstBitmapCursor(IBitmap<T> bmp) {
 		super(bmp);
 	}
 
@@ -25,7 +26,7 @@ public class HorizontalFirstBitmapCursor<T> extends BitmapCursor<T> {
 
 	@Override
 	public T next() {
-		++m_posIndex; //nextX
+		++m_posIndex; // nextX
 		return get();
 	}
 

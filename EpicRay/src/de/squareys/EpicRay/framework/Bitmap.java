@@ -2,26 +2,26 @@ package de.squareys.EpicRay.framework;
 
 import de.squareys.EpicRay.type.IType;
 
-
 /**
  * A Vertical First Bitmap
+ * 
  * @author Squareys
- *
+ * 
  */
 
 public class Bitmap<T> extends AbstractBitmap<T> {
-	
+
 	private int m_width;
 	private int m_height;
 	private int m_length;
-	
+
 	public T m_pixels[];
-	
-	public Bitmap (int width, int height, IType<T> t){
+
+	public Bitmap(int width, int height, IType<T> t) {
 		m_width = width;
 		m_height = height;
 		m_length = m_height * m_width;
-		
+
 		m_pixels = t.createArray(m_width * m_height);
 	}
 
@@ -39,7 +39,7 @@ public class Bitmap<T> extends AbstractBitmap<T> {
 	public Tuple<Integer, Integer> indexToPoint(int index) {
 		int y = index % m_height;
 		int x = (index - y) / m_height;
-		
+
 		return new Tuple<Integer, Integer>(x, y);
 	}
 
@@ -75,7 +75,7 @@ public class Bitmap<T> extends AbstractBitmap<T> {
 
 	@Override
 	public void clear(T col) {
-		for (int i = 0; i < m_width * m_height; i++){
+		for (int i = 0; i < m_width * m_height; i++) {
 			m_pixels[i] = col;
 		}
 	}

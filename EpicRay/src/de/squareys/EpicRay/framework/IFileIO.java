@@ -7,14 +7,16 @@ import java.io.OutputStream;
 public interface IFileIO {
 	/**
 	 * Opens an input file
+	 * 
 	 * @param filename
 	 * @return
 	 * @throws IOException
 	 */
 	public InputStream readFile(String filename) throws IOException;
-	
+
 	/**
 	 * Opens an output file
+	 * 
 	 * @param filename
 	 * @return
 	 * @throws IOException

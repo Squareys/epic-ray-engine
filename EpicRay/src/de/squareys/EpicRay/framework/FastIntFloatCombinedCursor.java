@@ -2,17 +2,18 @@ package de.squareys.EpicRay.framework;
 
 import java.util.Iterator;
 
-public class FastIntFloatCombinedCursor implements ICursor1D<Tuple<Integer, Float>> {
+public class FastIntFloatCombinedCursor implements
+		ICursor1D<Tuple<Integer, Float>> {
 
 	protected FastIntBitmapCursor m_cursor1;
 	protected FastFloatBitmapCursor m_cursor2;
-	
-	
-	public FastIntFloatCombinedCursor(FastIntBitmapCursor c1, FastFloatBitmapCursor c2) {
+
+	public FastIntFloatCombinedCursor(FastIntBitmapCursor c1,
+			FastFloatBitmapCursor c2) {
 		m_cursor1 = c1;
 		m_cursor2 = c2;
 	}
-	
+
 	@Override
 	public Tuple<Integer, Float> get() {
 		return new Tuple<Integer, Float>(m_cursor1.get(), m_cursor2.get());
@@ -35,7 +36,7 @@ public class FastIntFloatCombinedCursor implements ICursor1D<Tuple<Integer, Floa
 		m_cursor1.fwd(n);
 		m_cursor2.fwd(n);
 	}
-	
+
 	@Override
 	public void setPosition(int index) {
 		m_cursor1.setPosition(index);
@@ -47,19 +48,21 @@ public class FastIntFloatCombinedCursor implements ICursor1D<Tuple<Integer, Floa
 		return m_cursor1.getPosition();
 	}
 
-	public void set(Integer a, Float b ) {
+	public void set(Integer a, Float b) {
 		m_cursor1.set(a);
 		m_cursor2.set(b);
 	}
-	
-	public void set(int a, float b ) {
+
+	public void set(int a, float b) {
 		m_cursor1.set(a);
 		m_cursor2.set(b);
 	}
 
 	@Override
 	public ICursor1D<Tuple<Integer, Float>> copy() {
-		return new FastIntFloatCombinedCursor((FastIntBitmapCursor)m_cursor1.copy(), (FastFloatBitmapCursor)m_cursor2.copy());
+		return new FastIntFloatCombinedCursor(
+				(FastIntBitmapCursor) m_cursor1.copy(),
+				(FastFloatBitmapCursor) m_cursor2.copy());
 	}
 
 	@Override
@@ -88,7 +91,7 @@ public class FastIntFloatCombinedCursor implements ICursor1D<Tuple<Integer, Floa
 		m_cursor1.bck();
 		m_cursor2.bck();
 	}
-	
+
 	@Override
 	public void bck(int n) {
 		m_cursor1.bck(n);
@@ -98,7 +101,7 @@ public class FastIntFloatCombinedCursor implements ICursor1D<Tuple<Integer, Floa
 	public FastIntBitmapCursor getCursorA() {
 		return m_cursor1;
 	}
-	
+
 	public FastFloatBitmapCursor getCursorB() {
 		return m_cursor2;
 	}

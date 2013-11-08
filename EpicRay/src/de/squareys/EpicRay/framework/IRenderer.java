@@ -5,19 +5,21 @@ package de.squareys.EpicRay.framework;
  * 
  * 
  * @author Squareys
- *
+ * 
  */
 public interface IRenderer<B extends IBitmap> {
 
 	/**
-	 * Renders everything to a 
-	 * bitmap
-	 * @param world to render
+	 * Renders everything to a bitmap
+	 * 
+	 * @param world
+	 *            to render
 	 */
 	public void render();
 
 	/**
 	 * Returns the rendered bitmap
+	 * 
 	 * @return
 	 */
 	public B getRenderResult();

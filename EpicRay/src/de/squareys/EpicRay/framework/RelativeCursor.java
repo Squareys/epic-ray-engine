@@ -3,21 +3,20 @@ package de.squareys.EpicRay.framework;
 import java.util.Iterator;
 
 public class RelativeCursor<T> implements ICursor1D<T> {
-	
+
 	protected int m_indexOffset;
 	protected ICursor1D<T> m_cursor;
-	
-	
+
 	public RelativeCursor(ICursor1D<T> cursor) {
 		this(cursor, cursor.getPosition());
 	}
-	
+
 	public RelativeCursor(ICursor1D<T> cursor, int offset) {
 		setCursor(cursor);
-		
+
 		m_indexOffset = offset;
 	}
-	
+
 	public void setCursor(ICursor1D<T> cursor) {
 		m_cursor = cursor;
 	}
@@ -66,7 +65,7 @@ public class RelativeCursor<T> implements ICursor1D<T> {
 	public void fwd() {
 		m_cursor.fwd();
 	}
-	
+
 	@Override
 	public void fwd(int n) {
 		m_cursor.fwd(n);
@@ -81,7 +80,7 @@ public class RelativeCursor<T> implements ICursor1D<T> {
 	public void bck() {
 		m_cursor.bck();
 	}
-	
+
 	@Override
 	public void bck(int n) {
 		m_cursor.bck(n);
@@ -91,7 +90,7 @@ public class RelativeCursor<T> implements ICursor1D<T> {
 	public T prev() {
 		return m_cursor.prev();
 	}
-	
+
 	@Override
 	public void reset() {
 		m_cursor.setPosition(m_indexOffset);

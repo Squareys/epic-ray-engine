@@ -2,26 +2,26 @@ package de.squareys.EpicRay.framework;
 
 /**
  * A Vertical First Bitmap
+ * 
  * @author Squareys
- *
+ * 
  */
 
 public class FastIntBitmap extends AbstractBitmap<Integer> {
-	
+
 	protected int m_width;
 	protected int m_height;
 	protected int m_length;
-	
+
 	public int m_pixels[];
-	
-	public FastIntBitmap (int width, int height){
+
+	public FastIntBitmap(int width, int height) {
 		m_width = width;
 		m_height = height;
 		m_length = m_width * m_height;
-		
+
 		m_pixels = new int[m_length];
 	}
-
 
 	@Override
 	public int pointToIndex(int x, int y) {
@@ -32,7 +32,7 @@ public class FastIntBitmap extends AbstractBitmap<Integer> {
 	public Tuple<Integer, Integer> indexToPoint(int index) {
 		int y = index % m_height;
 		int x = (index - y) / m_height;
-		
+
 		return new Tuple<Integer, Integer>(x, y);
 	}
 
@@ -68,13 +68,13 @@ public class FastIntBitmap extends AbstractBitmap<Integer> {
 
 	@Override
 	public void clear(Integer col) {
-		int c = col; //no conversion every time.
-		
-		for (int i = 0; i < m_length; i++){
+		int c = col; // no conversion every time.
+
+		for (int i = 0; i < m_length; i++) {
 			m_pixels[i] = c;
 		}
 	}
-	
+
 	@Override
 	public BitmapCursor<Integer> getCursor() {
 		return new FastIntBitmapCursor(this);
@@ -84,7 +84,6 @@ public class FastIntBitmap extends AbstractBitmap<Integer> {
 	public int getLength() {
 		return m_length;
 	}
-
 
 	@Override
 	public IBitmap<Integer> loadFromFile(String filename) {

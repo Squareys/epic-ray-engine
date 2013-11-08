@@ -1,6 +1,5 @@
 package de.squareys.EpicRay.framework;
 
-
 /**
  * A Vertical First Bitmap
  * 
@@ -44,8 +43,7 @@ public class FastFloatBitmap implements IBitmap<Float> {
 	}
 
 	@Override
-	public void drawVerticalStripe(IBitmap<Float> dest, int x, int y,
-			int length) {
+	public void drawVerticalStripe(IBitmap<Float> dest, int x, int y, int length) {
 		// TODO Auto-generated method stub
 
 	}
@@ -140,7 +138,7 @@ public class FastFloatBitmap implements IBitmap<Float> {
 			m_pixels[i] = c;
 		}
 	}
-	
+
 	@Override
 	public BitmapCursor<Float> getCursor() {
 		return new FastFloatBitmapCursor(this);
