@@ -143,7 +143,7 @@ public class FastFloatBitmap implements IBitmap<Float> {
 	
 	@Override
 	public BitmapCursor<Float> getCursor() {
-		return new VerticalFirstBitmapCursor<Float>(this);
+		return new FastFloatBitmapCursor(this);
 	}
 
 	@Override

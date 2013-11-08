@@ -62,4 +62,9 @@ public interface ICursor1D <T> extends Iterable<T>, Iterator<T> {
 	 * bck() and get()
 	 */
 	public T prev();
+	
+	/**
+	 * reset position
+	 */
+	public void reset();
 }

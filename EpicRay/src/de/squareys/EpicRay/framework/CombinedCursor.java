@@ -32,7 +32,7 @@ public class CombinedCursor<S, T> implements ICursor1D<Tuple<S, T>> {
 	@Override
 	public void setPosition(int index) {
 		m_cursor1.setPosition(index);
-		m_cursor1.setPosition(index);
+		m_cursor2.setPosition(index);
 	}
 
 	@Override
@@ -84,10 +84,15 @@ public class CombinedCursor<S, T> implements ICursor1D<Tuple<S, T>> {
 		m_cursor2.bck();
 	}
 
-
 	@Override
 	public Tuple<S, T> prev() {
 		return new Tuple<S,T>(m_cursor1.prev(), m_cursor2.prev());
+	}
+	
+	@Override
+	public void reset() {
+		m_cursor1.reset();
+		m_cursor2.reset();
 	}
 
 }

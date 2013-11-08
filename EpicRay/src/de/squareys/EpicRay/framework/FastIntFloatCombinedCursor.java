@@ -96,4 +96,10 @@ public class FastIntFloatCombinedCursor implements ICursor1D<Tuple<Integer, Floa
 		bck();
 		return get();
 	}
+
+	@Override
+	public void reset() {
+		m_cursor1.reset();
+		m_cursor2.reset();
+	}
 }

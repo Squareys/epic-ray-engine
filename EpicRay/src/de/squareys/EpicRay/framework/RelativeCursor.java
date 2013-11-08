@@ -5,16 +5,20 @@ import java.util.Iterator;
 public class RelativeCursor<T> implements ICursor1D<T> {
 	
 	protected int m_indexOffset;
-	protected ICursor2D<T> m_cursor;
+	protected ICursor1D<T> m_cursor;
 	
 	
-	public RelativeCursor(ICursor2D<T> cursor) {
-		setCursor(cursor);
-		
-		m_indexOffset = cursor.getPosition();
+	public RelativeCursor(ICursor1D<T> cursor) {
+		this(cursor, cursor.getPosition());
 	}
 	
-	public void setCursor(ICursor2D<T> cursor) {
+	public RelativeCursor(ICursor1D<T> cursor, int offset) {
+		setCursor(cursor);
+		
+		m_indexOffset = offset;
+	}
+	
+	public void setCursor(ICursor1D<T> cursor) {
 		m_cursor = cursor;
 	}
 
@@ -76,6 +80,11 @@ public class RelativeCursor<T> implements ICursor1D<T> {
 	@Override
 	public T prev() {
 		return m_cursor.prev();
+	}
+	
+	@Override
+	public void reset() {
+		m_cursor.setPosition(m_indexOffset);
 	}
 
 }

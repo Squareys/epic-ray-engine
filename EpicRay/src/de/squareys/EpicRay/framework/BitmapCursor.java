@@ -76,4 +76,9 @@ public abstract class BitmapCursor<T> implements ICursor2D<T> {
 	public void remove() {
 		return; // one does not simply... "remove" pixels.
 	}
+	
+	@Override
+	public void reset() {
+		m_posIndex = 0;
+	}
 }
