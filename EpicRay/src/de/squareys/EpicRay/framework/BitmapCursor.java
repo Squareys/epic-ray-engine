@@ -6,20 +6,24 @@ public abstract class BitmapCursor<T> implements ICursor2D<T> {
 	protected IBitmap<T> m_bitmap;
 
 	protected int m_posIndex;
+	protected int m_offset;
 
 	public BitmapCursor(IBitmap<T> bmp) {
 		m_bitmap = bmp;
 		m_posIndex = 0;
+		m_offset = 0;
 	}
 
 	public BitmapCursor(IBitmap<T> bmp, int x, int y) {
 		m_bitmap = bmp;
+		m_offset = 0;
 		setPosition(x, y);
 	}
 
 	public BitmapCursor(IBitmap<T> bmp, int index) {
 		m_bitmap = bmp;
 		setPosition(index);
+		m_offset = 0;
 	}
 
 	public void setBitmap(IBitmap<T> bmp) {
@@ -38,6 +42,11 @@ public abstract class BitmapCursor<T> implements ICursor2D<T> {
 
 	@Override
 	public void setPosition(int index) {
+		m_posIndex = index + m_offset;
+	}
+	
+	@Override
+	public void setAbsolutePosition(int index) {
 		m_posIndex = index;
 	}
 
@@ -49,6 +58,11 @@ public abstract class BitmapCursor<T> implements ICursor2D<T> {
 	@Override
 	public int getPosition() {
 		return m_posIndex;
+	}
+	
+	@Override
+	public int getRelativePosition() {
+		return m_posIndex - m_offset;
 	}
 
 	@Override
@@ -93,6 +107,16 @@ public abstract class BitmapCursor<T> implements ICursor2D<T> {
 
 	@Override
 	public void reset() {
-		m_posIndex = 0;
+		m_posIndex = m_offset;
+	}
+	
+	@Override
+	public void setOffset() {
+		m_offset = m_posIndex;
+	}
+	
+	@Override
+	public int getOffset() {
+		return m_offset;
 	}
 }

@@ -32,6 +32,10 @@ public class FastFloatBitmapCursor extends BitmapCursor<Float> {
 	public Float get() {
 		return m_bitmap.m_pixels[m_posIndex];
 	}
+	
+	public float getNative() {
+		return m_bitmap.m_pixels[m_posIndex];
+	}
 
 	@Override
 	public void set(Float value) {

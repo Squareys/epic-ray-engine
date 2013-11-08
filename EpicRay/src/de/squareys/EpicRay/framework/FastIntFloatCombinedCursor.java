@@ -42,6 +42,12 @@ public class FastIntFloatCombinedCursor implements
 		m_cursor1.setPosition(index);
 		m_cursor2.setPosition(index);
 	}
+	
+	@Override
+	public void setAbsolutePosition(int index) {
+		m_cursor1.setAbsolutePosition(index);
+		m_cursor2.setAbsolutePosition(index);
+	}
 
 	@Override
 	public int getPosition() {
@@ -116,5 +122,20 @@ public class FastIntFloatCombinedCursor implements
 	public void reset() {
 		m_cursor1.reset();
 		m_cursor2.reset();
+	}
+
+	@Override
+	public int getRelativePosition() {
+		return 0;
+	}
+
+	@Override
+	public void setOffset() {
+		return;
+	}
+
+	@Override
+	public int getOffset() {
+		return 0;
 	}
 }

@@ -38,7 +38,7 @@ public interface IResourceManager {
 	 * @param endy
 	 * @return
 	 */
-	public ITexture createTexture(IBitmap bitmap, int startx, int starty,
+	public ITexture createTexture(IBitmap<Integer> bitmap, int startx, int starty,
 			int endx, int endy);
 
 	/**
@@ -47,7 +47,7 @@ public interface IResourceManager {
 	 * @param bitmap
 	 * @return
 	 */
-	public ITexture createTexture(IBitmap bitmap);
+	public ITexture createTexture(IBitmap<Integer> bitmap);
 
 	/**
 	 * Get ITexture by Index

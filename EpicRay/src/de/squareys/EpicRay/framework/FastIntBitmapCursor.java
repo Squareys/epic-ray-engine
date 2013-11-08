@@ -30,6 +30,10 @@ public class FastIntBitmapCursor extends BitmapCursor<Integer> {
 	public Integer get() {
 		return m_bitmap.m_pixels[m_posIndex];
 	}
+	
+	public int getNative() {
+		return m_bitmap.m_pixels[m_posIndex];
+	}
 
 	@Override
 	public void set(Integer value) {

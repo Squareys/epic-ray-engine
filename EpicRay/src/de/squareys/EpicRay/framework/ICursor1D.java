@@ -42,11 +42,20 @@ public interface ICursor1D<T> extends Iterable<T>, Iterator<T> {
 	public void fwd(int n);
 
 	/**
-	 * Set the cursors position. Note: This does not check for out of bounds.
+	 * Set the cursors position relative to offset. 
+	 * Note: This does not check for out of bounds.
 	 * 
 	 * @param index
 	 */
 	public void setPosition(int index);
+	
+	/**
+	 * Set the cursors position. 
+	 * Note: This does not check for out of bounds.
+	 * 
+	 * @param index
+	 */
+	public void setAbsolutePosition(int index);
 
 	/**
 	 * Returns the cursors index position.
@@ -54,6 +63,11 @@ public interface ICursor1D<T> extends Iterable<T>, Iterator<T> {
 	 * @return
 	 */
 	public int getPosition();
+	
+	/**
+	 * Returns the cursors position relative to offset
+	 */
+	public int getRelativePosition();
 
 	/**
 	 * Copy the Cursor
@@ -78,7 +92,17 @@ public interface ICursor1D<T> extends Iterable<T>, Iterator<T> {
 	public T prev();
 
 	/**
-	 * reset position
+	 * reset position to offset
 	 */
 	public void reset();
+	
+	/**
+	 * Set the offset of the cursor to reset to at current position
+	 */
+	public void setOffset();
+	
+	/**
+	 * Get the offset of the cursor
+	 */
+	public int getOffset();
 }

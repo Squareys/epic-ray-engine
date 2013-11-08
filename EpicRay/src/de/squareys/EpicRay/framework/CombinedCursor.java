@@ -2,14 +2,19 @@ package de.squareys.EpicRay.framework;
 
 import java.util.Iterator;
 
+//TODO: May need a little rework to get offset in nicely...
 public class CombinedCursor<S, T> implements ICursor1D<Tuple<S, T>> {
 
 	protected ICursor1D<S> m_cursor1;
 	protected ICursor1D<T> m_cursor2;
+	
+	protected int m_offset;
 
 	public CombinedCursor(ICursor1D<S> c1, ICursor1D<T> c2) {
 		m_cursor1 = c1;
 		m_cursor2 = c2;
+		
+		m_offset = 0;
 	}
 
 	@Override
@@ -33,10 +38,16 @@ public class CombinedCursor<S, T> implements ICursor1D<Tuple<S, T>> {
 		m_cursor1.setPosition(index);
 		m_cursor2.setPosition(index);
 	}
+	
+	@Override
+	public void setAbsolutePosition(int index) {
+		m_cursor1.setAbsolutePosition(index);
+		m_cursor2.setAbsolutePosition(index);
+	}
 
 	@Override
 	public int getPosition() {
-		return m_cursor1.getPosition();
+		return 0;
 	}
 
 	public void set(S a, T b) {
@@ -97,6 +108,21 @@ public class CombinedCursor<S, T> implements ICursor1D<Tuple<S, T>> {
 	public void reset() {
 		m_cursor1.reset();
 		m_cursor2.reset();
+	}
+
+	@Override
+	public int getRelativePosition() {
+		return 0;
+	}
+
+	@Override
+	public void setOffset() {
+		return;
+	}
+
+	@Override
+	public int getOffset() {
+		return 0;
 	}
 
 }
