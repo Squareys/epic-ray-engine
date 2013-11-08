@@ -45,26 +45,6 @@ public class FastIntBitmapCursor extends BitmapCursor<Integer> {
 	}
 
 	@Override
-	public void setPosition(int index) {
-		m_posIndex = index;
-	}
-
-	@Override
-	public void setPosition(int x, int y) {
-		m_posIndex = m_bitmap.pointToIndex(x, y);
-	}
-
-	@Override
-	public int getPosition() {
-		return m_posIndex;
-	}
-
-	@Override
-	public Tuple<Integer, Integer> getPositionXY() {
-		return m_bitmap.indexToPoint(m_posIndex);
-	}
-
-	@Override
 	public Integer next() {
 		return m_bitmap.m_pixels[++m_posIndex];
 	}
