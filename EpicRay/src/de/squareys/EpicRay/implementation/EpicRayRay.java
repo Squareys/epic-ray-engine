@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import de.squareys.EpicRay.framework.CombinedCursor;
 import de.squareys.EpicRay.framework.ICursor1D;
+import de.squareys.EpicRay.framework.ICursor2D;
 import de.squareys.EpicRay.framework.IRay;
 import de.squareys.EpicRay.framework.ITexture;
 import de.squareys.EpicRay.framework.ITile;
@@ -325,6 +326,8 @@ public class EpicRayRay implements IRay {
 			float texY = 0.0f;
 			int lastTexY = -1;
 			
+			ICursor2D<Integer> texCursor = null;
+			
 			//store the initial Value of the pixel
 			
 			m_combined.setPosition(cur.drawStart);
@@ -355,9 +358,15 @@ public class EpicRayRay implements IRay {
 				if (texX > texture.getWidth() - 1) {
 					texX = texture.getWidth() - 1;
 				}
+				
+				texCursor = texture.getCursor();
+				texCursor.setPosition(texX, (int) texY); 
+				texCursor.bck();
 			}
 			
 			int color = ra.m_wallColor;
+			int ty = 0;
+			
 			// draw the pixels of the stripe as a vertical line
 			for (int i = 0; i < drawLength; ++i, m_combined.fwd()) {
 				// zBuffer Check
@@ -367,7 +376,7 @@ public class EpicRayRay implements IRay {
 
 				if (ra.m_textured) {
 					//Note: Unsafe, but fast ;)
-					int ty = (int) Math.floor(texY);
+					ty = (int) texY;
 					
 					if (ty != lastTexY) {
 						color = texture.getPixel(texX, ty);
@@ -377,6 +386,8 @@ public class EpicRayRay implements IRay {
 							// divided through two with a "shift" and an "and"
 							color = (color >> 1) & 8355711;
 						}
+						
+						lastTexY = ty;
 					}
 					
 					texY += toTexture;
@@ -448,10 +459,12 @@ public class EpicRayRay implements IRay {
 
 		float zValue = next.perpWallDist;
 		// draw the floor and ceiling
+		
+		int floorColor = ra.m_floorColor;
+		int ceilColor = ra.m_ceilColor;
+		
 		for (int y = 0; y < nInvLineHeight; y++) {
-			int floorColor = -1;
-			int ceilColor = -1;
-			zValue = ((float) m_height / ((float) m_height - 2.0f * (float) (cur.drawStart + y)));
+			zValue =  (float)m_height / (float)( m_height - ((cur.drawStart + y) << 1));
 
 			if (texCeil || texFloor) {
 				// float zValue =
@@ -497,9 +510,6 @@ public class EpicRayRay implements IRay {
 					floorColor = ra.m_floorColor;
 				}
 
-			} else {
-				floorColor = ra.m_floorColor;
-				ceilColor = ra.m_ceilColor;
 			}
 
 			m_combined.setPosition(y + cur.drawStart);
