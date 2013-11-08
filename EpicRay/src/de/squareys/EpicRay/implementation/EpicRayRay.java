@@ -198,6 +198,10 @@ public class EpicRayRay implements IRay {
 					/ m_dirY);
 		}
 		
+		if (next.perpWallDist == 0.0) {
+			next.perpWallDist = 0.001f;
+		}
+		
 		calculateNextLineHeight();
 		calculateNextLine();
 
@@ -209,6 +213,8 @@ public class EpicRayRay implements IRay {
         
         if (next.drawEnd >= m_height) {
                 next.drawEnd = m_height - 1;
+        } else if ( next.drawEnd < 0){
+        	next.drawEnd = 0;
         }
 
 
@@ -240,6 +246,10 @@ public class EpicRayRay implements IRay {
 				next.perpWallDist = Math
 						.abs((next.mapY - m_y + m_addY) / m_dirY);
 			}
+			
+			if ( next.perpWallDist == 0.0) {
+				next.perpWallDist = 0.001f;
+			}
 
 			hitTile = map.getTileAt(cur.mapX, cur.mapY);
 
@@ -261,6 +271,7 @@ public class EpicRayRay implements IRay {
         next.lineHeight = (int) ((float) m_height / next.perpWallDist);
         
         next.lineHeight -= next.lineHeight % 2;
+        
 	}
 	
 	private void calculateNextLine () {
@@ -280,6 +291,8 @@ public class EpicRayRay implements IRay {
         
         if (next.drawEnd >= m_height) {
                 next.drawEnd = m_height - 1;
+        } else if ( next.drawEnd < 0) {
+        	next.drawEnd = 0;
         }
 	}
 	
@@ -496,7 +509,7 @@ public class EpicRayRay implements IRay {
 				m_dest.set(ceilColor); // ceiling
 			}
 			
-			m_combined.setPosition(cur.drawEnd - y -1);
+			m_combined.setPosition(cur.drawEnd - y);
 
 			// zBuffer Check
 			if (m_zBuf.get() >= zValue) {

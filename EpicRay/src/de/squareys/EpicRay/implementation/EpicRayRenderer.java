@@ -82,6 +82,7 @@ public class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 		  float rayDirY = (float)m_camEntity.getViewDirectionY() + m_planeY * cameraX;
 		   
 		  cursor.setPosition(index);
+		  zCursor.setPosition(index);
 		  
 	      EpicRayRay ray = new EpicRayRay(m_height, (float)m_camEntity.getX(), (float)m_camEntity.getY(), rayDirX, rayDirY, 
 	    		  new RelativeCursor<Integer>(cursor), new RelativeCursor<Float>(zCursor));
