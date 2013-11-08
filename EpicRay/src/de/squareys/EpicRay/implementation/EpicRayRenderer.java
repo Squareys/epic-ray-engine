@@ -2,20 +2,14 @@ package de.squareys.EpicRay.implementation;
 
 import java.awt.Color;
 
-import de.squareys.EpicRay.framework.Bitmap;
 import de.squareys.EpicRay.framework.FastFloatBitmap;
+import de.squareys.EpicRay.framework.FastFloatBitmapCursor;
 import de.squareys.EpicRay.framework.FastIntBitmap;
-import de.squareys.EpicRay.framework.IBitmap;
-import de.squareys.EpicRay.framework.ICursor2D;
+import de.squareys.EpicRay.framework.FastIntBitmapCursor;
 import de.squareys.EpicRay.framework.IEntity;
-import de.squareys.EpicRay.framework.IGame;
 import de.squareys.EpicRay.framework.IRenderer;
-import de.squareys.EpicRay.framework.IRenderingAttributes;
-import de.squareys.EpicRay.framework.ISprite;
-import de.squareys.EpicRay.framework.ITile;
 import de.squareys.EpicRay.framework.ITileMap;
 import de.squareys.EpicRay.framework.IWorld;
-import de.squareys.EpicRay.framework.RelativeCursor;
 
 /**
  * EpicRayRenderer is an implementation of Renderer
@@ -67,8 +61,8 @@ public class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 		m_bitmap.clear(Color.gray.getRGB());
 		m_zBuffer.clear(Float.MAX_VALUE);
 		
-		ICursor2D<Integer> cursor = m_bitmap.getCursor();
-		ICursor2D<Float> zCursor = m_zBuffer.getCursor();
+		FastIntBitmapCursor cursor = (FastIntBitmapCursor) m_bitmap.getCursor();
+		FastFloatBitmapCursor zCursor = (FastFloatBitmapCursor) m_zBuffer.getCursor();
 		
 		float factor = (float) 2 / m_width;
 		float f2 = 0.0f;
@@ -81,11 +75,14 @@ public class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 	      float rayDirX = (float)m_camEntity.getViewDirectionX() + m_planeX * cameraX;
 		  float rayDirY = (float)m_camEntity.getViewDirectionY() + m_planeY * cameraX;
 		   
-		  cursor.setPosition(index);
-		  zCursor.setPosition(index);
+		  cursor.setAbsolutePosition(index);
+		  zCursor.setAbsolutePosition(index);
 		  
-	      EpicRayRay ray = new EpicRayRay(m_height, (float)m_camEntity.getX(), (float)m_camEntity.getY(), rayDirX, rayDirY, 
-	    		  new RelativeCursor<Integer>(cursor), new RelativeCursor<Float>(zCursor));
+		  cursor.setOffset();
+		  zCursor.setOffset();
+		  
+	      EpicRayRay ray = new EpicRayRay(m_height, (float)m_camEntity.getX(), (float) m_camEntity.getY(), rayDirX, rayDirY, 
+	    		  cursor, zCursor);
 	      
 	      ray.cast(tileMap);
 		}

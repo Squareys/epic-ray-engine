@@ -3,6 +3,8 @@ package de.squareys.EpicRay.implementation;
 import java.awt.Color;
 
 import de.squareys.EpicRay.framework.CombinedCursor;
+import de.squareys.EpicRay.framework.FastFloatBitmapCursor;
+import de.squareys.EpicRay.framework.FastIntBitmapCursor;
 import de.squareys.EpicRay.framework.ICursor1D;
 import de.squareys.EpicRay.framework.ICursor2D;
 import de.squareys.EpicRay.framework.IRay;
@@ -21,8 +23,8 @@ public class EpicRayRay implements IRay {
 	protected int m_stepX;
 	protected int m_stepY;
 
-	private ICursor1D<Integer> m_dest;
-	private ICursor1D<Float> m_zBuf;
+	private FastIntBitmapCursor m_dest;
+	private FastFloatBitmapCursor m_zBuf;
 	private CombinedCursor<Integer, Float> m_combined;
 
 	protected int m_height; // length of m_pixels
@@ -99,7 +101,7 @@ public class EpicRayRay implements IRay {
 	VariableStorage stor;
 
 	public EpicRayRay(int height, float startposX, float startposY,
-			float dirX, float dirY, ICursor1D<Integer> dest, ICursor1D<Float> zBuffer) {
+			float dirX, float dirY, FastIntBitmapCursor dest, FastFloatBitmapCursor zBuffer) {
 		m_x = startposX;
 		m_y = startposY;
 
@@ -325,14 +327,11 @@ public class EpicRayRay implements IRay {
 			float toTexture = 1.0f;
 			float texY = 0.0f;
 			int lastTexY = -1;
+			int ty;
 			
 			ICursor2D<Integer> texCursor = null;
 			
-			//store the initial Value of the pixel
-			
-			m_combined.setPosition(cur.drawStart);
-
-			int drawLength = cur.drawEnd - cur.drawStart;
+			int color = ra.m_wallColor;
 			
 			if (ra.m_textured) {
 				texture = ra.getWallTexture();
@@ -359,18 +358,27 @@ public class EpicRayRay implements IRay {
 					texX = texture.getWidth() - 1;
 				}
 				
+				ty = (int) texY;
 				texCursor = texture.getCursor();
-				texCursor.setPosition(texX, (int) texY); 
-				texCursor.bck();
+				texCursor.setPosition(texX, ty); 
+				
+				color = texCursor.get();
+				if (cur.side == 1) {
+					// make color darker for y-sides: R, G and B byte each
+					// divided through two with a "shift" and an "and"
+					color = (color >> 1) & 8355711;
+				}
+				
+				lastTexY = ty;
 			}
 			
-			int color = ra.m_wallColor;
-			int ty = 0;
+			m_combined.setPosition(cur.drawStart);
+			int drawLength = cur.drawEnd - cur.drawStart;
 			
 			// draw the pixels of the stripe as a vertical line
 			for (int i = 0; i < drawLength; ++i, m_combined.fwd()) {
 				// zBuffer Check
-				if (m_zBuf.get() < cur.perpWallDist) { // perpWallDist is our cur zValue.
+				if (m_zBuf.getNative() < cur.perpWallDist) { // perpWallDist is our cur zValue.
 					continue;
 				}
 
@@ -400,7 +408,7 @@ public class EpicRayRay implements IRay {
 
 		if (tile.isOpaque())
 			return; // no floor visible.
-
+		
 		int nInvLineHeight = next.lineStart - cur.drawStart;
 
 		if (nInvLineHeight < 1) {

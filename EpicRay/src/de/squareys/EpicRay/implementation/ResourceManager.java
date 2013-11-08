@@ -34,7 +34,7 @@ public class ResourceManager implements IResourceManager {
 	}
 
 	@Override
-	public IBitmap loadBitmap(String filename) {
+	public IBitmap<Integer> loadBitmap(String filename) {
 		URL file = getClass().getResource(filename);
 		
 		try {
@@ -73,7 +73,7 @@ public class ResourceManager implements IResourceManager {
 	}
 
 	@Override
-	public ITexture createTexture(IBitmap bitmap, int startx, int starty,
+	public ITexture createTexture(IBitmap<Integer> bitmap, int startx, int starty,
 			int endx, int endy) {
 		ITexture texture = new Texture(bitmap, startx, starty, endx, endy);
 		m_textures.add(texture);
@@ -82,7 +82,7 @@ public class ResourceManager implements IResourceManager {
 	}
 	
 	@Override
-	public ITexture createTexture(IBitmap bitmap) {
+	public ITexture createTexture(IBitmap<Integer> bitmap) {
 		ITexture texture = new Texture(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight());
 		m_textures.add(texture);
 		
