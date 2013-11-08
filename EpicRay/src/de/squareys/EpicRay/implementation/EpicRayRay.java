@@ -379,7 +379,8 @@ public class EpicRayRay implements IRay {
 					ty = (int) texY;
 					
 					if (ty != lastTexY) {
-						color = texture.getPixel(texX, ty);
+						texCursor.fwd(ty - lastTexY);
+						color = texCursor.get();
 						
 						if (cur.side == 1) {
 							// make color darker for y-sides: R, G and B byte each

@@ -136,7 +136,7 @@ public class Texture implements ITexture {
 
 	@Override
 	public BitmapCursor<Integer> getCursor() {
-		throw new RuntimeException("Not implemented!");
+		return m_parentBitmap.getCursor();
 	}
 
 	@Override
