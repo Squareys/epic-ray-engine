@@ -35,6 +35,11 @@ public interface ICursor1D <T> extends Iterable<T>, Iterator<T> {
 	public void fwd();
 	
 	/**
+	 * Move the cursor n positions forward
+	 */
+	public void fwd(int n);
+	
+	/**
 	 * Set the cursors position.
 	 * Note: This does not check for out of bounds.
 	 * @param index
@@ -57,6 +62,11 @@ public interface ICursor1D <T> extends Iterable<T>, Iterator<T> {
 	 * Move cursor back a position
 	 */
 	public void bck();
+	
+	/**
+	 * Move the cursor n positions back
+	 */
+	public void bck(int n);
 	
 	/**
 	 * bck() and get()

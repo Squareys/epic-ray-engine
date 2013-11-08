@@ -31,6 +31,12 @@ public class FastIntFloatCombinedCursor implements ICursor1D<Tuple<Integer, Floa
 	}
 
 	@Override
+	public void fwd(int n) {
+		m_cursor1.fwd(n);
+		m_cursor2.fwd(n);
+	}
+	
+	@Override
 	public void setPosition(int index) {
 		m_cursor1.setPosition(index);
 		m_cursor2.setPosition(index);
@@ -81,6 +87,12 @@ public class FastIntFloatCombinedCursor implements ICursor1D<Tuple<Integer, Floa
 	public void bck() {
 		m_cursor1.bck();
 		m_cursor2.bck();
+	}
+	
+	@Override
+	public void bck(int n) {
+		m_cursor1.bck(n);
+		m_cursor2.bck(n);
 	}
 
 	public FastIntBitmapCursor getCursorA() {

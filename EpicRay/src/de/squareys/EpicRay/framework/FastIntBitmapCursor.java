@@ -82,11 +82,6 @@ public class FastIntBitmapCursor extends BitmapCursor<Integer> {
 	}
 
 	@Override
-	public void bck() {
-		--m_posIndex;
-	}
-
-	@Override
 	public Integer prev() {
 		return m_bitmap.m_pixels[--m_posIndex];
 	}

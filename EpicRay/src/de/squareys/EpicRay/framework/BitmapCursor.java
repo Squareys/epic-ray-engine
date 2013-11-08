@@ -63,6 +63,21 @@ public abstract class BitmapCursor<T> implements ICursor2D<T> {
 	}
 	
 	@Override
+	public void fwd(int n) {
+		m_posIndex += n;
+	}
+	
+	@Override
+	public void bck() {
+		--m_posIndex;
+	}
+	
+	@Override
+	public void bck(int n) {
+		m_posIndex -= n;
+	}
+	
+	@Override
 	public Iterator<T> iterator() {
 		return this;
 	}

@@ -64,11 +64,6 @@ public class FastFloatBitmapCursor extends BitmapCursor<Float> {
 	}
 
 	@Override
-	public void bck() {
-		--m_posIndex;
-	}
-
-	@Override
 	public Float prev() {
 		return m_bitmap.m_pixels[--m_posIndex];
 	}

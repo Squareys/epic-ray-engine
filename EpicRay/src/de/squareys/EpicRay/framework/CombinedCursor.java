@@ -70,6 +70,12 @@ public class CombinedCursor<S, T> implements ICursor1D<Tuple<S, T>> {
 		m_cursor1.fwd();
 		m_cursor2.fwd();
 	}
+	
+	@Override
+	public void fwd(int n) {
+		m_cursor1.fwd(n);
+		m_cursor2.fwd(n);
+	}
 
 
 	@Override
@@ -82,6 +88,12 @@ public class CombinedCursor<S, T> implements ICursor1D<Tuple<S, T>> {
 	public void bck() {
 		m_cursor1.bck();
 		m_cursor2.bck();
+	}
+	
+	@Override
+	public void bck(int n) {
+		m_cursor1.bck(n);
+		m_cursor2.bck(n);
 	}
 
 	@Override

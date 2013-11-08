@@ -148,7 +148,6 @@ public class FastFloatBitmap implements IBitmap<Float> {
 
 	@Override
 	public int getLength() {
-		// TODO Auto-generated method stub
-		return 0;
+		return m_length;
 	}
 }

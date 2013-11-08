@@ -66,6 +66,11 @@ public class RelativeCursor<T> implements ICursor1D<T> {
 	public void fwd() {
 		m_cursor.fwd();
 	}
+	
+	@Override
+	public void fwd(int n) {
+		m_cursor.fwd(n);
+	}
 
 	@Override
 	public ICursor1D<T> copy() {
@@ -75,6 +80,11 @@ public class RelativeCursor<T> implements ICursor1D<T> {
 	@Override
 	public void bck() {
 		m_cursor.bck();
+	}
+	
+	@Override
+	public void bck(int n) {
+		m_cursor.bck(n);
 	}
 
 	@Override
