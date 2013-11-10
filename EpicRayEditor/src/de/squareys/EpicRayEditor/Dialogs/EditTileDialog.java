@@ -17,9 +17,9 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import de.squareys.EpicRay.framework.ITile;
-import de.squareys.EpicRay.implementation.EpicRayRenderingAttributes;
-import de.squareys.EpicRay.implementation.Tile;
+import de.squareys.EpicRay.EpicRay.EpicRayRenderingAttributes;
+import de.squareys.EpicRay.EpicRay.Tile;
+import de.squareys.EpicRay.GameLogic.ITile;
 import de.squareys.EpicRayEditor.Components.ColorEditor;
 import de.squareys.EpicRayEditor.Components.TileRenderPanel;
 

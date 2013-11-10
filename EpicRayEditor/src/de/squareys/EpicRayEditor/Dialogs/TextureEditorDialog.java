@@ -11,10 +11,10 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
 
-import de.squareys.EpicRay.framework.IBitmap;
-import de.squareys.EpicRay.framework.ITexture;
-import de.squareys.EpicRay.framework.ITile;
-import de.squareys.EpicRay.implementation.ResourceManager;
+import de.squareys.EpicRay.Bitmap.IBitmap;
+import de.squareys.EpicRay.EpicRay.ResourceManager;
+import de.squareys.EpicRay.GameLogic.ITile;
+import de.squareys.EpicRay.Texture.ITexture;
 import de.squareys.EpicRayEditor.Components.TexturePanel;
 
 public class TextureEditorDialog extends JDialog implements ActionListener {

@@ -8,7 +8,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
-import de.squareys.EpicRay.framework.ITile;
+import de.squareys.EpicRay.GameLogic.ITile;
 
 public class TileCellRenderer extends JPanel implements ListCellRenderer<ITile> {
 

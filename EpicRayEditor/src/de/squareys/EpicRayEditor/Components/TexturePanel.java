@@ -8,9 +8,9 @@ import java.awt.image.DataBufferInt;
 
 import javax.swing.JPanel;
 
-import de.squareys.EpicRay.framework.Bitmap;
-import de.squareys.EpicRay.framework.FastIntBitmap;
-import de.squareys.EpicRay.framework.ITexture;
+import de.squareys.EpicRay.Bitmap.Bitmap;
+import de.squareys.EpicRay.Bitmap.FastIntBitmap;
+import de.squareys.EpicRay.Texture.ITexture;
 
 public class TexturePanel extends JPanel {
 	private ITexture m_texture;

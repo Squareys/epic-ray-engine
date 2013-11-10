@@ -10,10 +10,10 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
 
-import de.squareys.EpicRay.framework.ITile;
-import de.squareys.EpicRay.framework.ITileMap;
-import de.squareys.EpicRay.implementation.EpicRayRenderingAttributes;
-import de.squareys.EpicRay.implementation.Tile;
+import de.squareys.EpicRay.EpicRay.EpicRayRenderingAttributes;
+import de.squareys.EpicRay.EpicRay.Tile;
+import de.squareys.EpicRay.GameLogic.ITile;
+import de.squareys.EpicRay.GameLogic.ITileMap;
 
 public class TileMapView2D extends JPanel implements MouseListener, MouseMotionListener {
 

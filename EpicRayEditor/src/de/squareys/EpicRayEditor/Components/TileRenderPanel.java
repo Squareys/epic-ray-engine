@@ -8,9 +8,9 @@ import java.awt.image.DataBufferInt;
 
 import javax.swing.JPanel;
 
-import de.squareys.EpicRay.framework.FastIntBitmap;
-import de.squareys.EpicRay.framework.ITile;
-import de.squareys.EpicRay.implementation.EpicRayRenderingAttributes;
+import de.squareys.EpicRay.Bitmap.FastIntBitmap;
+import de.squareys.EpicRay.EpicRay.EpicRayRenderingAttributes;
+import de.squareys.EpicRay.GameLogic.ITile;
 
 public class TileRenderPanel extends JPanel {
 

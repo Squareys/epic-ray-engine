@@ -5,8 +5,8 @@ import java.awt.FlowLayout;
 
 import javax.swing.JPanel;
 
-import de.squareys.EpicRay.framework.ITileMap;
-import de.squareys.EpicRay.implementation.Game;
+import de.squareys.EpicRay.EpicRay.Game;
+import de.squareys.EpicRay.GameLogic.ITileMap;
 
 public class GameView extends JPanel {
 	

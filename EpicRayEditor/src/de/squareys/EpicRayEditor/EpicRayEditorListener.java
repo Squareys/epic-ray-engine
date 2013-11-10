@@ -10,12 +10,12 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import de.squareys.EpicRay.framework.ITile;
-import de.squareys.EpicRay.framework.ITileMap;
-import de.squareys.EpicRay.implementation.EpicRayRenderingAttributes;
-import de.squareys.EpicRay.implementation.GameFile;
-import de.squareys.EpicRay.implementation.Tile;
-import de.squareys.EpicRay.implementation.TileMap;
+import de.squareys.EpicRay.EpicRay.EpicRayRenderingAttributes;
+import de.squareys.EpicRay.EpicRay.GameFile;
+import de.squareys.EpicRay.EpicRay.Tile;
+import de.squareys.EpicRay.EpicRay.TileMap;
+import de.squareys.EpicRay.GameLogic.ITile;
+import de.squareys.EpicRay.GameLogic.ITileMap;
 import de.squareys.EpicRayEditor.Dialogs.CreateTileMapDialog;
 import de.squareys.EpicRayEditor.Dialogs.EditTileDialog;
 import de.squareys.EpicRayEditor.Dialogs.TextureEditorDialog;
