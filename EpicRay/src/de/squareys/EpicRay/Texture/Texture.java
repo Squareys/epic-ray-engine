@@ -55,82 +55,13 @@ public class Texture implements ITexture {
 	}
 
 	@Override
-	public void drawBitmap(IBitmap<Integer> bitmap, int destX, int destY) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Integer getPixel(int x, int y) {
+	public int getPixel(int x, int y) {
 		return m_parentBitmap.getPixel(x, y);
 	}
 
 	@Override
-	public Integer getPixel(int index) {
+	public int getPixel(int index) {
 		return m_parentBitmap.getPixel(index);
-	}
-
-	@Override
-	public void putPixel(int x, int y, Integer color) {
-		m_parentBitmap.putPixel(x, y, color);
-	}
-
-	@Override
-	public void putPixel(int index, Integer color) {
-		m_parentBitmap.putPixel(index, color);
-	}
-
-	@Override
-	public void drawRect(int x, int y, int x2, int y2, Integer color) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void drawArc(int x, int y, int radius, float angle, Integer color) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void drawLine(int x1, int y1, int x2, int y2, Integer color) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void clear(Integer col) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public IBitmap<Integer> loadFromFile(String filename) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void drawOnto(IBitmap<Integer> bitmap) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void drawHorizontalStripe(IBitmap<Integer> dest, int x, int y,
-			int length) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void drawVerticalStripe(IBitmap<Integer> dest, int x, int y,
-			int length) {
-		int index = pointToIndex(x, y);
-		for (int i = y; i < y + length; i++, index++) {
-			dest.putPixel(x, i, m_parentBitmap.getPixel(index));
-		}
-
 	}
 
 	@Override
@@ -143,8 +74,4 @@ public class Texture implements ITexture {
 		return m_parentBitmap.getCursor();
 	}
 
-	@Override
-	public int getLength() {
-		return m_length;
-	}
 }
