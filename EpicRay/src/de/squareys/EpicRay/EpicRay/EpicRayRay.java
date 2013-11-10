@@ -2,10 +2,10 @@ package de.squareys.EpicRay.EpicRay;
 
 import java.awt.Color;
 
+import de.squareys.EpicRay.Bitmap.PowerOf2IntMipMap;
 import de.squareys.EpicRay.Cursor.CombinedCursor;
 import de.squareys.EpicRay.Cursor.FastFloatBitmapCursor;
 import de.squareys.EpicRay.Cursor.FastIntBitmapCursor;
-import de.squareys.EpicRay.Cursor.ICursor1D;
 import de.squareys.EpicRay.Cursor.ICursor2D;
 import de.squareys.EpicRay.GameLogic.ITile;
 import de.squareys.EpicRay.GameLogic.ITileMap;
@@ -335,6 +335,13 @@ public class EpicRayRay implements IRay {
 			
 			if (ra.m_textured) {
 				texture = ra.getWallTexture();
+				
+				if (texture instanceof PowerOf2IntMipMap) {
+					int miplevel = (int) Math.max(0, ((PowerOf2IntMipMap) texture).getNumMips() - getMaxExp(cur.lineHeight));
+					((PowerOf2IntMipMap) texture).setMipLevel(miplevel);
+				}
+				
+				
 				texX = (int) (cur.wallX * (float) texture.getWidth());
 
 				// code to flip the texture
@@ -415,8 +422,27 @@ public class EpicRayRay implements IRay {
 			return; // floor not visible here.
 		}
 
+		ITexture ceilTexture = null;
+		ITexture floorTexture = null;
+		
 		boolean texCeil = ra.m_textured && (ra.m_ceilTexture != null);
 		boolean texFloor = ra.m_textured && (ra.m_floorTexture != null);
+		
+		if ( texCeil ) {
+			ceilTexture = ra.m_ceilTexture;
+			if (ceilTexture instanceof PowerOf2IntMipMap) {
+				int miplevel = (int) Math.max(0, ((PowerOf2IntMipMap) ceilTexture).getNumMips() - getMaxExp(cur.lineHeight));
+				((PowerOf2IntMipMap) ceilTexture).setMipLevel(miplevel);
+			}
+		}
+		
+		if ( texFloor ) {
+			floorTexture = ra.m_floorTexture;
+			if (floorTexture instanceof PowerOf2IntMipMap) {
+				int miplevel = (int) Math.max(0, ((PowerOf2IntMipMap) floorTexture).getNumMips() - getMaxExp(cur.lineHeight));
+				((PowerOf2IntMipMap) floorTexture).setMipLevel(miplevel);
+			}
+		}
 
 		float startX = 0.0f;
 		float startY = 0.0f;
@@ -490,8 +516,8 @@ public class EpicRayRay implements IRay {
 
 
 				if (texCeil) {
-					int texW = ra.m_ceilTexture.getWidth();
-					int texH = ra.m_ceilTexture.getHeight();
+					int texW = ceilTexture.getWidth();
+					int texH = ceilTexture.getHeight();
 					
 					int texX = (int) (xFact * (float) texW) % texW;
 					int texY = (int) (yFact * (float) texH) % texH;
@@ -499,15 +525,13 @@ public class EpicRayRay implements IRay {
 					if (texX >= texW || texY >= texH || texX < 0 || texY < 0) {
 						ceilColor = new Color(255, 0, 255).getRGB();
 					} else {
-						ceilColor = ra.m_ceilTexture.getPixel(texX, texY);
+						ceilColor = ceilTexture.getPixel(texX, texY);
 					}
-				} else {
-					ceilColor = ra.m_ceilColor;
 				}
 
 				if (texFloor) {
-					int texW = ra.m_floorTexture.getWidth();
-					int texH = ra.m_floorTexture.getHeight();
+					int texW = floorTexture.getWidth();
+					int texH = floorTexture.getHeight();
 					
 					int texX = (int) (xFact * (float) texW) % texW;
 					int texY = (int) (yFact * (float) texH) % texH;
@@ -515,10 +539,8 @@ public class EpicRayRay implements IRay {
 					if (texX >= texW || texY >= texH || texX < 0 || texY < 0) {
 						floorColor = new Color(255, 0, 255).getRGB();
 					} else {
-						floorColor = ra.m_floorTexture.getPixel(texX, texY);
+						floorColor = floorTexture.getPixel(texX, texY);
 					}
-				} else {
-					floorColor = ra.m_floorColor;
 				}
 
 			}
@@ -537,5 +559,16 @@ public class EpicRayRay implements IRay {
 				m_dest.set(floorColor); // floor
 			}
 		}
-	}	
+	}
+
+	private final int[] power2 = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048};
+	
+	private int getMaxExp(int num) {
+		 for (int i = power2.length-1; i != 0; --i) {
+			 if (num > power2[i]) {
+				 return i;
+			 }
+		 }
+		 return 0;
+	}
 }

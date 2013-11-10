@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import de.squareys.EpicRay.Bitmap.FastIntBitmap;
 import de.squareys.EpicRay.Bitmap.IBitmap;
 import de.squareys.EpicRay.Bitmap.PowerOf2IntBitmap;
+import de.squareys.EpicRay.Bitmap.PowerOf2IntMipMap;
 import de.squareys.EpicRay.Resource.IResourceManager;
 import de.squareys.EpicRay.Resource.ISound;
 import de.squareys.EpicRay.Texture.ITexture;
@@ -75,18 +76,49 @@ public class ResourceManager implements IResourceManager {
 	@Override
 	public ITexture createTexture(IBitmap<Integer> bitmap, int startx, int starty,
 			int endx, int endy) {
-		ITexture texture = new Texture(bitmap, startx, starty, endx, endy);
-		m_textures.add(texture);
-		
-		return texture;
+		return null;
 	}
 	
 	@Override
 	public ITexture createTexture(IBitmap<Integer> bitmap) {
-		ITexture texture = new Texture(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+		ITexture texture = null;
+		if (bitmap.getHeight() == bitmap.getWidth() && bitmap instanceof PowerOf2IntBitmap) {
+			texture = createMitMap((PowerOf2IntBitmap) bitmap);
+		} else {
+			texture = new Texture(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight());
+		}
 		m_textures.add(texture);
 		
 		return texture;
+	}
+
+	private ITexture createMitMap(PowerOf2IntBitmap bitmap) {
+		int exp = (int) (Math.log(bitmap.getHeight())/ Math.log(2));
+		
+		PowerOf2IntBitmap[] bitmaps = new PowerOf2IntBitmap[exp];
+		
+		bitmaps[0] = bitmap;
+		
+		for (int i = 1; i < exp; ++i) {
+			bitmaps[i] = resizeSquaredBitmap(bitmap, 1 << exp-i);
+		}
+		
+		return new PowerOf2IntMipMap(bitmaps);
+	}
+
+	private PowerOf2IntBitmap resizeSquaredBitmap(PowerOf2IntBitmap bitmap, int size) {
+		PowerOf2IntBitmap resized = new PowerOf2IntBitmap(size, size);
+		
+		for (int x = 0; x < resized.getWidth(); ++x) {
+			int srcX = (int) ((float)x / (float) size * (float)bitmap.getWidth());
+			for (int y = 0; y < resized.getHeight(); ++y) {
+				int srcY = (int) ((float)y / (float) size * (float)bitmap.getHeight());
+				resized.putPixel(x, y, bitmap.getPixel(srcX, srcY));
+			}
+		}
+		
+		return resized;
 	}
 
 	public static IResourceManager getInstance() {

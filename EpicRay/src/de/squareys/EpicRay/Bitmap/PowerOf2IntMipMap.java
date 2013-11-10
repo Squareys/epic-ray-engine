@@ -12,6 +12,9 @@ public class PowerOf2IntMipMap implements ITexture {
 
 	public PowerOf2IntMipMap(PowerOf2IntBitmap[] bitmaps) {
 		m_bitmaps = bitmaps;
+		
+		m_curIndex = 0;
+		m_cur = m_bitmaps[0];
 	}
 
 	@Override
@@ -68,4 +71,5 @@ public class PowerOf2IntMipMap implements ITexture {
 	public int getNumMips() {
 		return m_bitmaps.length;
 	}
+	
 }
