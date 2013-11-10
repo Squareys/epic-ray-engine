@@ -2,18 +2,6 @@ package de.squareys.EpicRay.Bitmap;
 
 
 public abstract class AbstractBitmap<T> implements IBitmap<T> {
-	@Override
-	public void drawRect(int p_x, int p_y, int p_x2, int p_y2, T p_col) {
-		int index;
-
-		for (int x = p_x; x < p_x2; x++) {
-			index = this.pointToIndex(x, 0);
-			for (int y = p_y; p_y < p_y2; y++, index++) {
-				putPixel(index, p_col);
-			}
-		}
-
-	}
 
 	@Override
 	public void drawOnto(IBitmap<T> bitmap) {
@@ -40,16 +28,6 @@ public abstract class AbstractBitmap<T> implements IBitmap<T> {
 				putPixel(x + destX, y + destY, bitmap.getPixel(x, y));
 			}
 		}
-	}
-
-	@Override
-	public void drawArc(int x, int y, int radius, float angle, T value) {
-
-	}
-
-	@Override
-	public void drawLine(int x1, int y1, int x2, int y2, T value) {
-
 	}
 
 	@Override

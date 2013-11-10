@@ -28,4 +28,11 @@ public interface IDrawable<T> {
 	 * @param length
 	 */
 	public void drawVerticalStripe(IBitmap<T> dest, int x, int y, int length);
+	
+	/**
+	 * Fills the hole bitmap with specific color
+	 * 
+	 * @param col
+	 */
+	public void clear(T col);
 }

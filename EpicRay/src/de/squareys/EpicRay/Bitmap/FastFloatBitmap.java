@@ -29,27 +29,20 @@ public class FastFloatBitmap implements IBitmap<Float> {
 
 	@Override
 	public IBitmap<Float> loadFromFile(String filename) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void drawOnto(IBitmap<Float> bitmap) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void drawHorizontalStripe(IBitmap<Float> dest, int x, int y,
 			int length) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void drawVerticalStripe(IBitmap<Float> dest, int x, int y, int length) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -106,32 +99,6 @@ public class FastFloatBitmap implements IBitmap<Float> {
 	@Override
 	public void putPixel(int index, Float color) {
 		m_pixels[index] = color;
-	}
-
-	@Override
-	public void drawRect(int p_x, int p_y, int p_x2, int p_y2, Float p_col) {
-		int index;
-		float c = p_col;
-
-		index = p_x * m_height + p_y;
-		for (int x = p_x; x < p_x2; x++, index += m_height) {
-			for (int y = p_y; p_y < p_y2; y++, index++) {
-				putPixel(index, c);
-			}
-		}
-
-	}
-
-	@Override
-	public void drawArc(int x, int y, int radius, float angle, Float value) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void drawLine(int x1, int y1, int x2, int y2, Float value) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

@@ -86,43 +86,6 @@ public interface IBitmap<T> extends IResource<IBitmap<T>>, IDrawable<T> {
 	public void putPixel(int index, T value);
 
 	/**
-	 * Draw a rectangle from (x/y) to (x2/y2)
-	 * 
-	 * @param x
-	 * @param y
-	 * @param color
-	 * @param w
-	 * @param h
-	 */
-	public void drawRect(int x, int y, int x2, int y2, T value);
-
-	/**
-	 * Draw a Arc around (x/y) with radius and angle
-	 * 
-	 * @param x
-	 * @param y
-	 * @param r
-	 */
-	public void drawArc(int x, int y, int radius, float angle, T value);
-
-	/**
-	 * Draw a Line from (x1/y1) to (x2/y2)
-	 * 
-	 * @param x1
-	 * @param y1
-	 * @param x2
-	 * @param y2
-	 */
-	public void drawLine(int x1, int y1, int x2, int y2, T value);
-
-	/**
-	 * Fills the hole bitmap with specific color
-	 * 
-	 * @param col
-	 */
-	public void clear(T col);
-
-	/**
 	 * Get a cursor on this bitmap
 	 * 
 	 * @return
