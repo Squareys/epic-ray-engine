@@ -472,6 +472,8 @@ public class EpicRayRay implements IRay {
 		int floorColor = ra.m_floorColor;
 		int ceilColor = ra.m_ceilColor;
 		
+		float invDeltaDist = 1/(next.perpWallDist - cur.perpWallDist);
+		
 		for (int y = 0; y < nInvLineHeight; y++) {
 			zValue =  (float)m_height / (float)( m_height - ((cur.drawStart + y) << 1));
 
@@ -481,7 +483,7 @@ public class EpicRayRay implements IRay {
 				// cur.perpWallDist; //amazing hypnotizing results
 
 				float theFactor = (zValue - cur.perpWallDist)
-						/ (next.perpWallDist - cur.perpWallDist);
+						* invDeltaDist; 
 
 				float xFact = theFactor * diffX + startX;
 				float yFact = theFactor * diffY + startY;
