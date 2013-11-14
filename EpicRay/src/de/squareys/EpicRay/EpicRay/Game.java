@@ -40,7 +40,7 @@ public class Game extends Container implements IGame, Runnable {
 		
 		Toolkit.getDefaultToolkit().addAWTEventListener(CustomJoypad.getInstance(), AWTEvent.KEY_EVENT_MASK);
 		
-		m_player = new Player(tileMap.getWidth() / 2, tileMap.getHeight() / 2, 10, 10, null, m_world);
+		m_player = new Player(tileMap.getWidth() >> 1, tileMap.getHeight() >> 1, 10, 10, null, m_world);
 		
 		screen = new Viewport3D(m_world, m_player, windowWidth, windowHeight);
 		running = true;
@@ -77,6 +77,7 @@ public class Game extends Container implements IGame, Runnable {
 	
 	@Override
 	public void play() {
+		screen.createBufferStrategy();
 		thread = new Thread(this);
 		thread.start();
 	}

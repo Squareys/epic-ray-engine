@@ -22,13 +22,13 @@ public class Main extends JFrame {
 		super("EpicRay Game");
 		
 
-		IBitmap bmp = ResourceManager.getInstance().loadBitmap("CheepTexture.png");
+		IBitmap<Integer> bmp = ResourceManager.getInstance().loadBitmap("CheepTexture.png");
 		ResourceManager.getInstance().createTexture(bmp);
 		
-		IBitmap bmp1 = ResourceManager.getInstance().loadBitmap("CrappyHiresTexture.png");
+		IBitmap<Integer> bmp1 = ResourceManager.getInstance().loadBitmap("CrappyHiresTexture.png");
 		ResourceManager.getInstance().createTexture(bmp1);
 		
-		IBitmap floorTex = ResourceManager.getInstance().loadBitmap("Grass.png");
+		IBitmap<Integer> floorTex = ResourceManager.getInstance().loadBitmap("Grass.png");
 		ResourceManager.getInstance().createTexture(floorTex);
 		
 		setLayout(new FlowLayout());
@@ -45,8 +45,7 @@ public class Main extends JFrame {
 		pack();
 		setVisible(true);
 		
-		createBufferStrategy(3);
-		
+		//createBufferStrategy(3);
 		
 		game.play();
 	}

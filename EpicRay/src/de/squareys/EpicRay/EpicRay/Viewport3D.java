@@ -3,6 +3,7 @@ package de.squareys.EpicRay.EpicRay;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
+import de.squareys.EpicRay.Bitmap.FastIntBitmap;
 import de.squareys.EpicRay.Bitmap.IBitmap;
 import de.squareys.EpicRay.GameLogic.IEntity;
 import de.squareys.EpicRay.GameLogic.IWorld;
@@ -23,29 +24,34 @@ public class Viewport3D extends Screen {
 	}
 	
 	@Override
-	public void present() {
+	public final void present() {
 		renderer.render();
+		final FastIntBitmap result = (FastIntBitmap) renderer.getRenderResult();
 		
-		IBitmap<Integer> result = renderer.getRenderResult();
-		for (int x = 0; x < m_width; x++) {
-			for (int y = 0; y < m_height; y++){
-				putPixel(x, y, result.getPixel(x, y));
-			}
+		int i2 = 0;
+		int x = 0;
+		int y = 0;
+		
+		for (int i = 0; i < m_length; ++i) {
+				putPixel(i2, result.m_pixels[i]);
+				
+				i2 += m_width;
+				++y;
+				
+				if (y == m_height) {
+					i2 = ++x;
+					y = 0;
+				}
 		}
 		
 		draw(); 
 	}
 
 	
-	public void draw(){
-		BufferStrategy bs = getBufferStrategy();
-		if (bs == null) {
-			createBufferStrategy(3);
-			return;
-		}
-
-		Graphics g = bs.getDrawGraphics();
-		g.fillRect(0, 0, getWidth(), getHeight());
+	public final void draw(){
+		final BufferStrategy bs = getBufferStrategy();
+		
+		final Graphics g = bs.getDrawGraphics();
 		g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
 		g.dispose();
 		bs.show();

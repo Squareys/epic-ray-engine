@@ -15,6 +15,7 @@ public abstract class Screen extends Canvas {
 
 	protected int m_width;
 	protected int m_height;
+	protected int m_length;
 
 	protected int[] pixels;
 	protected BufferedImage img;
@@ -24,6 +25,7 @@ public abstract class Screen extends Canvas {
 
 		m_width = width;
 		m_height = height;
+		m_length = m_width * m_height;
 
 		img = new BufferedImage(m_width, m_height, BufferedImage.TYPE_INT_RGB);
 		pixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
@@ -34,11 +36,19 @@ public abstract class Screen extends Canvas {
 
 	public abstract void present();
 
-	public BufferedImage getImage() {
+	public final BufferedImage getImage() {
 		return img;
 	}
+	
+	public final void createBufferStrategy() {
+		createBufferStrategy(3);
+	}
 
-	public void putPixel(int x, int y, int col) {
+	public final void putPixel(int x, int y, int col) {
 		pixels[y * m_width + x] = col;
+	}
+	
+	public final void putPixel(int i, int col) {
+		pixels[ i ] = col;
 	}
 }

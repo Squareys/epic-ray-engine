@@ -208,18 +208,6 @@ public class EpicRayRay implements IRay {
 		calculateNextLineHeight();
 		calculateNextLine();
 
-        if (next.drawStart < 0) {
-                next.drawStart = 0;
-        }
-
-        next.drawEnd = next.lineEnd;
-        
-        if (next.drawEnd >= m_height) {
-                next.drawEnd = m_height - 1;
-        } else if ( next.drawEnd < 0){
-        	next.drawEnd = 0;
-        }
-
 
 		// cast the ray
 		do {
@@ -293,7 +281,7 @@ public class EpicRayRay implements IRay {
         next.drawEnd = next.lineEnd;
         
         if (next.drawEnd >= m_height) {
-                next.drawEnd = m_height - 1;
+            next.drawEnd = m_height - 1;
         } else if ( next.drawEnd < 0) {
         	next.drawEnd = 0;
         }
