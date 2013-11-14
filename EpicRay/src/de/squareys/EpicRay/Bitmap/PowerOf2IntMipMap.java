@@ -1,7 +1,9 @@
 package de.squareys.EpicRay.Bitmap;
 
 import de.squareys.EpicRay.Cursor.BitmapCursor;
+import de.squareys.EpicRay.EpicRay.ResourceManager;
 import de.squareys.EpicRay.Texture.ITexture;
+import de.squareys.EpicRay.Texture.Texture;
 import de.squareys.EpicRay.Util.Tuple;
 
 public class PowerOf2IntMipMap implements ITexture {
@@ -66,6 +68,10 @@ public class PowerOf2IntMipMap implements ITexture {
 			m_curIndex = lvl;
 			m_cur = m_bitmaps[m_curIndex];
 		}
+	}
+	
+	public PowerOf2IntMipMap copy() {
+		return new PowerOf2IntMipMap(m_bitmaps);
 	}
 
 	public int getNumMips() {

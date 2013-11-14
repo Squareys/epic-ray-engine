@@ -17,16 +17,16 @@ public abstract class BitmapCursor<T> implements ICursor2D<T> {
 		m_offset = 0;
 	}
 
-	public BitmapCursor(IBitmap<T> bmp, int x, int y) {
+	public BitmapCursor(IBitmap<T> bmp, int x, int y, int offset) {
 		m_bitmap = bmp;
-		m_offset = 0;
+		m_offset = offset;
 		setPosition(x, y);
 	}
 
-	public BitmapCursor(IBitmap<T> bmp, int index) {
+	public BitmapCursor(IBitmap<T> bmp, int index, int offset) {
 		m_bitmap = bmp;
-		setPosition(index);
-		m_offset = 0;
+		setAbsolutePosition(index);
+		m_offset = offset;
 	}
 
 	public void setBitmap(IBitmap<T> bmp) {

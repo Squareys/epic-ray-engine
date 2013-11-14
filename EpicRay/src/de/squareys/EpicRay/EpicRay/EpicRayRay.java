@@ -14,20 +14,20 @@ import de.squareys.EpicRay.Texture.ITexture;
 
 public class EpicRayRay implements IRay {
 
-	protected float m_x;
-	protected float m_y;
+	protected final float m_x;
+	protected final float m_y;
 
-	protected float m_dirX;
-	protected float m_dirY;
+	protected final float m_dirX;
+	protected final float m_dirY;
 	
 	protected int m_stepX;
 	protected int m_stepY;
 
-	private FastIntBitmapCursor m_dest;
-	private FastFloatBitmapCursor m_zBuf;
-	private CombinedCursor<Integer, Float> m_combined;
+	private final FastIntBitmapCursor m_dest;
+	private final FastFloatBitmapCursor m_zBuf;
+	private final CombinedCursor<Integer, Float> m_combined;
 
-	protected int m_height; // length of m_pixels
+	protected final int m_height; // length of m_pixels
 
 	@Deprecated
 	protected float m_length; // distance traveled
@@ -52,7 +52,7 @@ public class EpicRayRay implements IRay {
 		int drawStart;
 		int drawEnd;
 
-		public float wallX;
+		float wallX;
 
 		public RenderVariables() {
 			perpWallDist = 1.0f;
@@ -75,8 +75,8 @@ public class EpicRayRay implements IRay {
 	protected class VariableStorage {
 		boolean cur;
 
-		RenderVariables a;
-		RenderVariables b;
+		final RenderVariables a;
+		final RenderVariables b;
 
 		public VariableStorage() {
 			cur = false;
@@ -85,23 +85,23 @@ public class EpicRayRay implements IRay {
 			b = new RenderVariables();
 		}
 
-		RenderVariables getVariables() {
+		final RenderVariables getVariables() {
 			return (cur) ? a : b;
 		}
 
-		RenderVariables getNextVariables() {
+		final RenderVariables getNextVariables() {
 			return (cur) ? b : a;
 		}
 
-		void exchange() {
+		final void exchange() {
 			cur = !cur;
 		}
 	}
 
-	VariableStorage stor;
+	final VariableStorage stor;
 
-	public EpicRayRay(int height, float startposX, float startposY,
-			float dirX, float dirY, FastIntBitmapCursor dest, FastFloatBitmapCursor zBuffer) {
+	public EpicRayRay(final int height, final float startposX, final float startposY,
+			final float dirX, final float dirY, final FastIntBitmapCursor dest, FastFloatBitmapCursor zBuffer) {
 		m_x = startposX;
 		m_y = startposY;
 
@@ -154,7 +154,7 @@ public class EpicRayRay implements IRay {
 	float m_addY;
 
 	@Override
-	public void cast(ITileMap map) {
+	public void cast(final ITileMap map) {
 		RenderVariables cur = stor.getVariables();
 		RenderVariables next = stor.getNextVariables();
 
@@ -163,8 +163,8 @@ public class EpicRayRay implements IRay {
 		next.mapY = (int) m_y;
 
 		// distance of side to next side
-		double dirXSq = m_dirX * m_dirX;
-		double dirYSq = m_dirY * m_dirY;
+		final double dirXSq = m_dirX * m_dirX;
+		final double dirYSq = m_dirY * m_dirY;
 		
 		m_deltaDistX = (float) Math.sqrt(1 + dirYSq / dirXSq);
 		m_deltaDistY = (float) Math.sqrt(1 + dirXSq / dirYSq);
@@ -268,8 +268,8 @@ public class EpicRayRay implements IRay {
 		} while (!hit);
 	}
 
-	private void calculateNextLineHeight() {
-		RenderVariables next = stor.getNextVariables();
+	private final void calculateNextLineHeight() {
+		final RenderVariables next = stor.getNextVariables();
 		// Calculate height of line to draw on screen
         next.lineHeight = (int) ((float) m_height / next.perpWallDist);
         
@@ -277,8 +277,8 @@ public class EpicRayRay implements IRay {
         
 	}
 	
-	private void calculateNextLine () {
-		RenderVariables next = stor.getNextVariables();
+	private final void calculateNextLine () {
+		final RenderVariables next = stor.getNextVariables();
 		
         // calculate lowest and highest pixel to fill in current stripe
         next.lineStart = (m_height - next.lineHeight) >> 1;
@@ -299,13 +299,13 @@ public class EpicRayRay implements IRay {
         }
 	}
 	
-	private void drawTile(ITile tile, boolean outOfWorld) {
+	private void drawTile(final ITile tile, boolean outOfWorld) {
 		if (outOfWorld) {
 			return;
 		}
 
-		RenderVariables cur = stor.getVariables();
-		RenderVariables next = stor.getNextVariables();
+		final RenderVariables cur = stor.getVariables();
+		final RenderVariables next = stor.getNextVariables();
 
 		calculateNextLineHeight();
 		calculateNextLine();
@@ -337,6 +337,7 @@ public class EpicRayRay implements IRay {
 				texture = ra.getWallTexture();
 				
 				if (texture instanceof PowerOf2IntMipMap) {
+					texture = ((PowerOf2IntMipMap) texture).copy(); //for thread safety
 					int miplevel = (int) Math.max(0, ((PowerOf2IntMipMap) texture).getNumMips() - getMaxExp(cur.lineHeight));
 					((PowerOf2IntMipMap) texture).setMipLevel(miplevel);
 				}
@@ -380,7 +381,7 @@ public class EpicRayRay implements IRay {
 			}
 			
 			m_combined.setPosition(cur.drawStart);
-			int drawLength = cur.drawEnd - cur.drawStart;
+			final int drawLength = cur.drawEnd - cur.drawStart;
 			
 			// draw the pixels of the stripe as a vertical line
 			for (int i = 0; i < drawLength; ++i, m_combined.fwd()) {
@@ -431,6 +432,7 @@ public class EpicRayRay implements IRay {
 		if ( texCeil ) {
 			ceilTexture = ra.m_ceilTexture;
 			if (ceilTexture instanceof PowerOf2IntMipMap) {
+				ceilTexture = ((PowerOf2IntMipMap) ceilTexture).copy(); //for thread safety
 				int miplevel = (int) Math.max(0, ((PowerOf2IntMipMap) ceilTexture).getNumMips() - getMaxExp(cur.lineHeight));
 				((PowerOf2IntMipMap) ceilTexture).setMipLevel(miplevel);
 			}
@@ -439,6 +441,7 @@ public class EpicRayRay implements IRay {
 		if ( texFloor ) {
 			floorTexture = ra.m_floorTexture;
 			if (floorTexture instanceof PowerOf2IntMipMap) {
+				floorTexture = ((PowerOf2IntMipMap) floorTexture).copy(); //for thread safety
 				int miplevel = (int) Math.max(0, ((PowerOf2IntMipMap) floorTexture).getNumMips() - getMaxExp(cur.lineHeight));
 				((PowerOf2IntMipMap) floorTexture).setMipLevel(miplevel);
 			}

@@ -12,13 +12,13 @@ public class FastFloatBitmapCursor extends BitmapCursor<Float> {
 		m_bitmap = bmp;
 	}
 
-	public FastFloatBitmapCursor(FastFloatBitmap bmp, int index) {
-		super(bmp, index);
+	public FastFloatBitmapCursor(FastFloatBitmap bmp, int index, int offset) {
+		super(bmp, index, offset);
 		m_bitmap = bmp;
 	}
 
-	public FastFloatBitmapCursor(FastFloatBitmap bmp, int x, int y) {
-		super(bmp, x, y);
+	public FastFloatBitmapCursor(FastFloatBitmap bmp, int x, int y, int offset) {
+		super(bmp, x, y, offset);
 		m_bitmap = bmp;
 	}
 
@@ -60,7 +60,7 @@ public class FastFloatBitmapCursor extends BitmapCursor<Float> {
 
 	@Override
 	public ICursor1D<Float> copy() {
-		return new FastFloatBitmapCursor(m_bitmap, m_posIndex);
+		return new FastFloatBitmapCursor(m_bitmap, m_posIndex, m_offset);
 	}
 
 	@Override

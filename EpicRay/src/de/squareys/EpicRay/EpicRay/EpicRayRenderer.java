@@ -1,6 +1,6 @@
 package de.squareys.EpicRay.EpicRay;
 
-import java.awt.Color;
+import java.util.ArrayList;
 
 import de.squareys.EpicRay.Bitmap.FastFloatBitmap;
 import de.squareys.EpicRay.Bitmap.FastIntBitmap;
@@ -52,28 +52,30 @@ public class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 	
 	@Override
 	public void render() {
+		renderThreaded();
+		if(true) return;
 		ITileMap tileMap = m_world.getTileMap();
 		
 		//calculate perpendicular camera plane
 		m_planeX = (float)-m_camEntity.getViewDirectionY() * m_planeLength; //only works if rayDir is normalized!
 		m_planeY = (float)m_camEntity.getViewDirectionX() * m_planeLength;
 		
-		m_bitmap.clear(Color.gray.getRGB());
+		//m_bitmap.clear(Color.gray.getRGB());
 		m_zBuffer.clear(Float.MAX_VALUE);
 		
-		FastIntBitmapCursor cursor = (FastIntBitmapCursor) m_bitmap.getCursor();
-		FastFloatBitmapCursor zCursor = (FastFloatBitmapCursor) m_zBuffer.getCursor();
+		final FastIntBitmapCursor cursor = (FastIntBitmapCursor) m_bitmap.getCursor();
+		final FastFloatBitmapCursor zCursor = (FastFloatBitmapCursor) m_zBuffer.getCursor();
 		
-		float factor = (float) 2 / m_width;
+		final float factor = (float) 2 / m_width;
 		float f2 = 0.0f;
 		int index = 0;
 		
 		for(int x = 0; x < m_width; x++, f2 += factor, index += m_height){
 	      //calculate ray position and direction 
-	      float cameraX = (float) f2 - 1.0f; //x-coordinate in camera space
+		  final float cameraX = (float) f2 - 1.0f; //x-coordinate in camera space
 	      
-	      float rayDirX = (float)m_camEntity.getViewDirectionX() + m_planeX * cameraX;
-		  float rayDirY = (float)m_camEntity.getViewDirectionY() + m_planeY * cameraX;
+		  final float rayDirX = (float)m_camEntity.getViewDirectionX() + m_planeX * cameraX;
+		  final float rayDirY = (float)m_camEntity.getViewDirectionY() + m_planeY * cameraX;
 		   
 		  cursor.setAbsolutePosition(index);
 		  zCursor.setAbsolutePosition(index);
@@ -81,11 +83,82 @@ public class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 		  cursor.setOffset();
 		  zCursor.setOffset();
 		  
-	      EpicRayRay ray = new EpicRayRay(m_height, (float)m_camEntity.getX(), (float) m_camEntity.getY(), rayDirX, rayDirY, 
-	    		  cursor, zCursor);
+		  final EpicRayRay ray = new EpicRayRay(m_height, (float)m_camEntity.getX(), (float) m_camEntity.getY(), rayDirX, rayDirY, 
+				  (FastIntBitmapCursor)cursor.copy(), (FastFloatBitmapCursor)zCursor.copy());
 	      
-	      ray.cast(tileMap);
+		  ray.cast(tileMap);
 		}
+	}
+	
+	public void renderThreaded() {
+		ITileMap tileMap = m_world.getTileMap();
+		
+		//calculate perpendicular camera plane
+		m_planeX = (float)-m_camEntity.getViewDirectionY() * m_planeLength; //only works if rayDir is normalized!
+		m_planeY = (float)m_camEntity.getViewDirectionX() * m_planeLength;
+		
+		//m_bitmap.clear(Color.gray.getRGB());
+		m_zBuffer.clear(Float.MAX_VALUE);
+		
+		final FastIntBitmapCursor cursor = (FastIntBitmapCursor) m_bitmap.getCursor();
+		final FastFloatBitmapCursor zCursor = (FastFloatBitmapCursor) m_zBuffer.getCursor();
+		
+		final float factor = (float) 2 / m_width;
+		float f2 = 0.0f;
+		int index = 0;
+		
+		ArrayList<EpicRayRay> rays = new ArrayList<EpicRayRay>();
+		
+		for(int x = 0; x < m_width; x++, f2 += factor, index += m_height){
+	      //calculate ray position and direction 
+		  final float cameraX = (float) f2 - 1.0f; //x-coordinate in camera space
+	      
+		  final float rayDirX = (float)m_camEntity.getViewDirectionX() + m_planeX * cameraX;
+		  final float rayDirY = (float)m_camEntity.getViewDirectionY() + m_planeY * cameraX;
+		   
+		  cursor.setAbsolutePosition(index);
+		  zCursor.setAbsolutePosition(index);
+		  
+		  cursor.setOffset();
+		  zCursor.setOffset();
+		  
+		  final EpicRayRay ray = new EpicRayRay(m_height, (float)m_camEntity.getX(), (float) m_camEntity.getY(), rayDirX, rayDirY, 
+				  (FastIntBitmapCursor)cursor.copy(), (FastFloatBitmapCursor)zCursor.copy());
+	      
+		  rays.add(ray);
+		}
+		
+		int numThreads = 4;
+		
+		int raysPerThread = (int) (rays.size() / numThreads);
+		int overshoot = rays.size() - raysPerThread * numThreads;
+		
+		RenderThread[] threads = new RenderThread[numThreads];
+		
+		int startIndex = 0;
+		int endIndex = 0;
+		
+		for (int i = 0; i < numThreads; ++i) {
+			endIndex = startIndex + raysPerThread;
+			
+			if (overshoot > 0) {
+				endIndex++;
+				overshoot--;
+			}
+			
+			threads[i] = new RenderThread(tileMap, startIndex, endIndex, rays);
+			threads[i].start();
+			
+			startIndex += endIndex - startIndex;
+		}
+		
+		for (Thread t : threads) {
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		} 
 	}
 
 	@Override
@@ -95,5 +168,36 @@ public class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 
 	public void setCameraEntity(IEntity e){
 		m_camEntity = e;
+	}
+	
+	
+	class RenderThread extends Thread {
+		ITileMap m_map;
+		
+		boolean m_running = false;
+		
+		int m_xfrom, m_xto;
+		
+		ArrayList<EpicRayRay> m_rays;
+		
+		public RenderThread (ITileMap map, int from, int to, ArrayList<EpicRayRay> rays) {
+			super();
+			m_map = map;
+			m_xfrom = from;
+			m_xto = to;
+			
+			m_rays = rays;
+		}
+		
+		@Override
+		public synchronized void run() {
+			m_running = true;
+			
+			for (int i = m_xfrom; i < m_xto; ++i) {
+				m_rays.get(i).cast(m_map);
+			}
+			
+			m_running = false;
+		}
 	}
 }

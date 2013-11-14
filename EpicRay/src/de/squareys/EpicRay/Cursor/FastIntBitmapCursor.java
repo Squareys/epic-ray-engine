@@ -10,64 +10,64 @@ public class FastIntBitmapCursor extends BitmapCursor<Integer> {
 		m_bitmap = bmp;
 	}
 
-	public FastIntBitmapCursor(FastIntBitmap bmp, int index) {
-		super(bmp, index);
+	public FastIntBitmapCursor(FastIntBitmap bmp, int index, int offset) {
+		super(bmp, index, offset);
 		m_bitmap = bmp;
 	}
 
-	public FastIntBitmapCursor(FastIntBitmap bmp, int x, int y) {
-		super(bmp, x, y);
+	public FastIntBitmapCursor(FastIntBitmap bmp, int x, int y, int offset) {
+		super(bmp, x, y, offset);
 		m_bitmap = bmp;
 	}
 
-	public void setBitmap(FastIntBitmap bmp) {
+	public final void setBitmap(FastIntBitmap bmp) {
 		this.m_bitmap = bmp;
 	}
 
-	public int getNativeInt() {
+	public final int getNativeInt() {
 		return m_bitmap.m_pixels[m_posIndex];
 	}
 
 	@Override
-	public Integer get() {
+	public final Integer get() {
 		return m_bitmap.m_pixels[m_posIndex];
 	}
 	
-	public int getNative() {
+	public final int getNative() {
 		return m_bitmap.m_pixels[m_posIndex];
 	}
 
 	@Override
-	public void set(Integer value) {
+	public final void set(Integer value) {
 		m_bitmap.m_pixels[m_posIndex] = value;
 	}
 
-	public void set(int value) {
+	public final void set(int value) {
 		m_bitmap.m_pixels[m_posIndex] = value;
 	}
 
 	@Override
-	public Integer next() {
+	public final Integer next() {
 		return m_bitmap.m_pixels[++m_posIndex];
 	}
 
 	@Override
-	public void nextX() {
+	public final void nextX() {
 		m_posIndex += m_bitmap.getHeight();
 	}
 
 	@Override
-	public void nextY() {
+	public final void nextY() {
 		++m_posIndex;
 	}
 
 	@Override
-	public ICursor1D<Integer> copy() {
-		return new FastIntBitmapCursor(m_bitmap, m_posIndex);
+	public final ICursor1D<Integer> copy() {
+		return new FastIntBitmapCursor(m_bitmap, m_posIndex, m_offset);
 	}
 
 	@Override
-	public Integer prev() {
+	public final Integer prev() {
 		return m_bitmap.m_pixels[--m_posIndex];
 	}
 }

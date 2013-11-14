@@ -20,60 +20,60 @@ public class CombinedCursor<S, T> implements ICursor1D<Tuple<S, T>> {
 	}
 
 	@Override
-	public Tuple<S, T> get() {
+	public final Tuple<S, T> get() {
 		return new Tuple<S, T>(m_cursor1.get(), m_cursor2.get());
 	}
 
 	@Override
-	public void set(Tuple<S, T> value) {
+	public final void set(Tuple<S, T> value) {
 		m_cursor1.set(value.getA());
 		m_cursor2.set(value.getB());
 	}
 
 	@Override
-	public Tuple<S, T> next() {
+	public final Tuple<S, T> next() {
 		return new Tuple<S, T>(m_cursor1.next(), m_cursor2.next());
 	}
 
 	@Override
-	public void setPosition(int index) {
+	public final void setPosition(int index) {
 		m_cursor1.setPosition(index);
 		m_cursor2.setPosition(index);
 	}
 	
 	@Override
-	public void setAbsolutePosition(int index) {
+	public final void setAbsolutePosition(int index) {
 		m_cursor1.setAbsolutePosition(index);
 		m_cursor2.setAbsolutePosition(index);
 	}
 
 	@Override
-	public int getPosition() {
+	public final int getPosition() {
 		return 0;
 	}
 
-	public void set(S a, T b) {
+	public final void set(S a, T b) {
 		m_cursor1.set(a);
 		m_cursor2.set(b);
 	}
 
 	@Override
-	public Iterator<Tuple<S, T>> iterator() {
+	public final Iterator<Tuple<S, T>> iterator() {
 		return this;
 	}
 
 	@Override
-	public boolean hasNext() {
+	public final boolean hasNext() {
 		return m_cursor1.hasNext() && m_cursor2.hasNext();
 	}
 
 	@Override
-	public void remove() {
+	public final void remove() {
 		return;
 	}
 
 	@Override
-	public void fwd() {
+	public final void fwd() {
 		m_cursor1.fwd();
 		m_cursor2.fwd();
 	}
@@ -90,40 +90,40 @@ public class CombinedCursor<S, T> implements ICursor1D<Tuple<S, T>> {
 	}
 
 	@Override
-	public void bck() {
+	public final void bck() {
 		m_cursor1.bck();
 		m_cursor2.bck();
 	}
 
 	@Override
-	public void bck(int n) {
+	public final void bck(int n) {
 		m_cursor1.bck(n);
 		m_cursor2.bck(n);
 	}
 
 	@Override
-	public Tuple<S, T> prev() {
+	public final Tuple<S, T> prev() {
 		return new Tuple<S, T>(m_cursor1.prev(), m_cursor2.prev());
 	}
 
 	@Override
-	public void reset() {
+	public final void reset() {
 		m_cursor1.reset();
 		m_cursor2.reset();
 	}
 
 	@Override
-	public int getRelativePosition() {
+	public final int getRelativePosition() {
 		return 0;
 	}
 
 	@Override
-	public void setOffset() {
+	public final void setOffset() {
 		return;
 	}
 
 	@Override
-	public int getOffset() {
+	public final int getOffset() {
 		return 0;
 	}
 

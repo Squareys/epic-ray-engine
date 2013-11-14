@@ -4,12 +4,12 @@ import de.squareys.EpicRay.Bitmap.IBitmap;
 
 public class HorizontalFirstBitmapCursor<T> extends BitmapCursor<T> {
 
-	public HorizontalFirstBitmapCursor(IBitmap<T> bmp, int x, int y) {
-		super(bmp, x, y);
+	public HorizontalFirstBitmapCursor(IBitmap<T> bmp, int x, int y, int offset) {
+		super(bmp, x, y, offset);
 	}
 
-	public HorizontalFirstBitmapCursor(IBitmap<T> bmp, int index) {
-		super(bmp, index);
+	public HorizontalFirstBitmapCursor(IBitmap<T> bmp, int index, int offset) {
+		super(bmp, index, offset);
 	}
 
 	public HorizontalFirstBitmapCursor(IBitmap<T> bmp) {
@@ -34,7 +34,7 @@ public class HorizontalFirstBitmapCursor<T> extends BitmapCursor<T> {
 
 	@Override
 	public ICursor1D<T> copy() {
-		return new HorizontalFirstBitmapCursor<T>(m_bitmap, m_posIndex);
+		return new HorizontalFirstBitmapCursor<T>(m_bitmap, m_posIndex, m_offset);
 	}
 
 	@Override
