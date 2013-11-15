@@ -9,12 +9,12 @@ import de.squareys.EpicRay.Resource.IGameFile;
 
 public class TileMap implements ITileMap {
 	
-	protected ITile m_tiles[];
+	private ITile m_tiles[];
 	
-	protected int m_width;
-	protected int m_height;
+	private int m_width;
+	private int m_height;
 
-	protected boolean m_editable;
+	private boolean m_editable;
 	
 	public TileMap(){
 		m_width = 0;
@@ -44,7 +44,7 @@ public class TileMap implements ITileMap {
 		}
 	}
 	
-	public void autoGenerate(){
+	public final void autoGenerate(){
 		EpicRayRenderingAttributes ra = new EpicRayRenderingAttributes();
 		ra.m_wallColor = Color.blue.getRGB();
 		ra.m_wallTexture = ResourceManager.getInstance().getTexture(0);
@@ -121,10 +121,10 @@ public class TileMap implements ITileMap {
 	}
 
 	@Override
-	public ITile getTileAt(int x, int y) {
-		if (x >= m_width || y >= m_height || x < 0 || y < 0) {
-			return null;
-		} 
+	public final ITile getTileAt(int x, int y) {
+//		if (x >= m_width || y >= m_height || x < 0 || y < 0) {
+//			return null;
+//		} 
 		
 		return m_tiles[x + y * m_width];
 	}
@@ -140,7 +140,7 @@ public class TileMap implements ITileMap {
 	}
 
 	@Override
-	public ITile getTileAtPos(double x, double y) {
+	public final ITile getTileAtPos(double x, double y) {
 		return getTileAt((int) x, (int) y);
 	}
 

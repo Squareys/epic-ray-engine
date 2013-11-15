@@ -13,13 +13,13 @@ import de.squareys.EpicRay.Util.Tuple;
 
 public class FastFloatBitmap implements IBitmap<Float> {
 
-	private int m_width;
-	private int m_height;
-	private int m_length;
+	private final int m_width;
+	private final int m_height;
+	private final int m_length;
 
-	public float m_pixels[];
+	public final float m_pixels[];
 
-	public FastFloatBitmap(int width, int height) {
+	public FastFloatBitmap(final int width, final int height) {
 		m_width = width;
 		m_height = height;
 		m_length = m_width * m_height;
@@ -28,30 +28,30 @@ public class FastFloatBitmap implements IBitmap<Float> {
 	}
 
 	@Override
-	public IBitmap<Float> loadFromFile(String filename) {
+	public final IBitmap<Float> loadFromFile(String filename) {
 		return null;
 	}
 
 	@Override
-	public void drawOnto(IBitmap<Float> bitmap) {
+	public final void drawOnto(IBitmap<Float> bitmap) {
 	}
 
 	@Override
-	public void drawHorizontalStripe(IBitmap<Float> dest, int x, int y,
+	public final void drawHorizontalStripe(IBitmap<Float> dest, int x, int y,
 			int length) {
 	}
 
 	@Override
-	public void drawVerticalStripe(IBitmap<Float> dest, int x, int y, int length) {
+	public final void drawVerticalStripe(IBitmap<Float> dest, int x, int y, int length) {
 	}
 
 	@Override
-	public int pointToIndex(int x, int y) {
+	public final int pointToIndex(int x, int y) {
 		return (x * m_height + y);
 	}
 
 	@Override
-	public Tuple<Integer, Integer> indexToPoint(int index) {
+	public final Tuple<Integer, Integer> indexToPoint(int index) {
 		int y = index % m_height;
 		int x = (index - y) / m_height;
 
@@ -59,12 +59,12 @@ public class FastFloatBitmap implements IBitmap<Float> {
 	}
 
 	@Override
-	public int getWidth() {
+	public final int getWidth() {
 		return m_width;
 	}
 
 	@Override
-	public int getHeight() {
+	public final int getHeight() {
 		return m_height;
 	}
 
@@ -82,41 +82,41 @@ public class FastFloatBitmap implements IBitmap<Float> {
 	}
 
 	@Override
-	public Float getPixel(int x, int y) {
+	public final Float getPixel(int x, int y) {
 		return m_pixels[pointToIndex(x, y)];
 	}
 
 	@Override
-	public Float getPixel(int index) {
+	public final Float getPixel(int index) {
 		return new Float(m_pixels[index]);
 	}
 
 	@Override
-	public void putPixel(int x, int y, Float color) {
+	public final void putPixel(int x, int y, Float color) {
 		m_pixels[pointToIndex(x, y)] = color;
 	}
 
 	@Override
-	public void putPixel(int index, Float color) {
+	public final void putPixel(int index, Float color) {
 		m_pixels[index] = color;
 	}
 
 	@Override
-	public void clear(Float col) {
-		float c = col; // no conversion every time.
+	public final void clear(final Float col) {
+		final float c = col; // no conversion every time.
 
-		for (int i = 0; i < m_length; i++) {
+		for (int i = 0; i < m_length; ++i) {
 			m_pixels[i] = c;
 		}
 	}
 
 	@Override
-	public BitmapCursor<Float> getCursor() {
+	public final BitmapCursor<Float> getCursor() {
 		return new FastFloatBitmapCursor(this);
 	}
 
 	@Override
-	public int getLength() {
+	public final int getLength() {
 		return m_length;
 	}
 }

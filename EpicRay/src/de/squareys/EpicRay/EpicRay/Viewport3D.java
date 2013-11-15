@@ -1,10 +1,10 @@
 package de.squareys.EpicRay.EpicRay;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 import de.squareys.EpicRay.Bitmap.FastIntBitmap;
-import de.squareys.EpicRay.Bitmap.IBitmap;
 import de.squareys.EpicRay.GameLogic.IEntity;
 import de.squareys.EpicRay.GameLogic.IWorld;
 import de.squareys.EpicRay.Util.Screen;
@@ -52,7 +52,9 @@ public class Viewport3D extends Screen {
 		final BufferStrategy bs = getBufferStrategy();
 		
 		final Graphics g = bs.getDrawGraphics();
+		g.setColor(Color.WHITE);
 		g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
+		g.drawString(m_fps + " fps", 0, 10);
 		g.dispose();
 		bs.show();
 	}

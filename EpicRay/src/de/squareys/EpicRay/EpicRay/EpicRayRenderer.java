@@ -41,7 +41,7 @@ public final class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 										// calculated for fov.
 
 	private boolean m_threaded;
-	private final int m_numThreads = 4;
+	private final int m_numThreads = 5;
 
 	public EpicRayRenderer(final IWorld world, final IEntity camEntity,
 			final int width, final int height) {
@@ -112,7 +112,7 @@ public final class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 		}
 	}
 
-	private final void renderThreaded(final ArrayList<EpicRayRay> rays, ITileMap tileMap) {
+	private final void renderThreaded(final ArrayList<EpicRayRay> rays, final ITileMap tileMap) {
 		int raysPerThread = (int) (rays.size() / m_numThreads);
 		int overshoot = rays.size() - raysPerThread * m_numThreads;
 

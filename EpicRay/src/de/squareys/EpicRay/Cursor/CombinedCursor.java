@@ -4,18 +4,17 @@ import java.util.Iterator;
 
 import de.squareys.EpicRay.Util.Tuple;
 
-//TODO: May need a little rework to get offset in nicely...
 public class CombinedCursor<S, T> implements ICursor1D<Tuple<S, T>> {
 
-	protected ICursor1D<S> m_cursor1;
-	protected ICursor1D<T> m_cursor2;
-	
+	private final ICursor1D<S> m_cursor1;
+	private final ICursor1D<T> m_cursor2;
+
 	protected int m_offset;
 
-	public CombinedCursor(ICursor1D<S> c1, ICursor1D<T> c2) {
+	public CombinedCursor(final ICursor1D<S> c1, final ICursor1D<T> c2) {
 		m_cursor1 = c1;
 		m_cursor2 = c2;
-		
+
 		m_offset = 0;
 	}
 
@@ -36,13 +35,13 @@ public class CombinedCursor<S, T> implements ICursor1D<Tuple<S, T>> {
 	}
 
 	@Override
-	public final void setPosition(int index) {
+	public final void setPosition(final int index) {
 		m_cursor1.setPosition(index);
 		m_cursor2.setPosition(index);
 	}
-	
+
 	@Override
-	public final void setAbsolutePosition(int index) {
+	public final void setAbsolutePosition(final int index) {
 		m_cursor1.setAbsolutePosition(index);
 		m_cursor2.setAbsolutePosition(index);
 	}
@@ -52,7 +51,7 @@ public class CombinedCursor<S, T> implements ICursor1D<Tuple<S, T>> {
 		return 0;
 	}
 
-	public final void set(S a, T b) {
+	public final void set(final S a, final T b) {
 		m_cursor1.set(a);
 		m_cursor2.set(b);
 	}
@@ -79,14 +78,14 @@ public class CombinedCursor<S, T> implements ICursor1D<Tuple<S, T>> {
 	}
 
 	@Override
-	public void fwd(int n) {
+	public void fwd(final int n) {
 		m_cursor1.fwd(n);
 		m_cursor2.fwd(n);
 	}
 
 	@Override
 	public ICursor1D<Tuple<S, T>> copy() {
-		return new CombinedCursor<S, T>(m_cursor1, m_cursor2);
+		return new CombinedCursor<S, T>(m_cursor1.copy(), m_cursor2.copy());
 	}
 
 	@Override
@@ -96,7 +95,7 @@ public class CombinedCursor<S, T> implements ICursor1D<Tuple<S, T>> {
 	}
 
 	@Override
-	public final void bck(int n) {
+	public final void bck(final int n) {
 		m_cursor1.bck(n);
 		m_cursor2.bck(n);
 	}
@@ -127,4 +126,11 @@ public class CombinedCursor<S, T> implements ICursor1D<Tuple<S, T>> {
 		return 0;
 	}
 
+	public final ICursor1D<S> getCursor1() {
+		return m_cursor1;
+	}
+
+	public final ICursor1D<T> getCursor2() {
+		return m_cursor2;
+	}
 }

@@ -141,7 +141,7 @@ public class Game extends Container implements IGame, Runnable {
 
 				tickCount++;
 				if (tickCount % 60 == 0) {
-					System.out.println(frames + " fps");
+					screen.setFPS(frames);
 					lastTime += 1000;
 					frames = 0;
 				}

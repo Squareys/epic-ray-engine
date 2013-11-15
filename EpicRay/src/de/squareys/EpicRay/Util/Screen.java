@@ -51,4 +51,10 @@ public abstract class Screen extends Canvas {
 	public final void putPixel(int i, int col) {
 		pixels[ i ] = col;
 	}
+	
+	protected int m_fps = 0;
+
+	public void setFPS(int frames) {
+		m_fps = frames;
+	}
 }

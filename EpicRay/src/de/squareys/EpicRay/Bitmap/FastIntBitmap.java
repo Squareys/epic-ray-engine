@@ -13,13 +13,13 @@ import de.squareys.EpicRay.Util.Tuple;
 
 public class FastIntBitmap extends AbstractBitmap<Integer> {
 
-	protected int m_width;
-	protected int m_height;
-	protected int m_length;
+	private final int m_width;
+	private final int m_height;
+	private final int m_length;
 
-	public int m_pixels[];
+	public final int m_pixels[];
 
-	public FastIntBitmap(int width, int height) {
+	public FastIntBitmap(final int width, final int height) {
 		m_width = width;
 		m_height = height;
 		m_length = m_width * m_height;
@@ -28,12 +28,12 @@ public class FastIntBitmap extends AbstractBitmap<Integer> {
 	}
 
 	@Override
-	public int pointToIndex(int x, int y) {
+	public int pointToIndex(final int x, final int y) {
 		return (x * m_height + y);
 	}
 
 	@Override
-	public Tuple<Integer, Integer> indexToPoint(int index) {
+	public Tuple<Integer, Integer> indexToPoint(final int index) {
 		int y = index % m_height;
 		int x = (index - y) / m_height;
 
@@ -41,40 +41,40 @@ public class FastIntBitmap extends AbstractBitmap<Integer> {
 	}
 
 	@Override
-	public int getWidth() {
+	public final int getWidth() {
 		return m_width;
 	}
 
 	@Override
-	public int getHeight() {
+	public final int getHeight() {
 		return m_height;
 	}
 
 	@Override
-	public Integer getPixel(int x, int y) {
+	public Integer getPixel(final int x, final int y) {
 		return m_pixels[pointToIndex(x, y)];
 	}
 
 	@Override
-	public Integer getPixel(int index) {
+	public Integer getPixel(final int index) {
 		return new Integer(m_pixels[index]);
 	}
 
 	@Override
-	public void putPixel(int x, int y, Integer color) {
+	public void putPixel(final int x, final int y, final Integer color) {
 		m_pixels[pointToIndex(x, y)] = color;
 	}
 
 	@Override
-	public void putPixel(int index, Integer color) {
+	public void putPixel(final int index, final Integer color) {
 		m_pixels[index] = color;
 	}
 
 	@Override
-	public void clear(Integer col) {
-		int c = col; // no conversion every time.
+	public void clear(final Integer col) {
+		final int c = col; // no conversion every time.
 
-		for (int i = 0; i < m_length; i++) {
+		for (int i = 0; i < m_length; ++i) {
 			m_pixels[i] = c;
 		}
 	}
@@ -85,7 +85,7 @@ public class FastIntBitmap extends AbstractBitmap<Integer> {
 	}
 
 	@Override
-	public int getLength() {
+	public final int getLength() {
 		return m_length;
 	}
 
