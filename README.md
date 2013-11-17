@@ -25,6 +25,7 @@ The current features are implemented at the moment
   - Floor/Ceiling Rendering: texture or single color
   - Keyboard movement and world collision
   - zBuffer (makes way for fog and masked texture implementation)
+  - Threaded Rendering
 - Editor: 
   - Basic tilemap editor
   - Basic tilecreator/editor
