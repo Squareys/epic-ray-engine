@@ -480,13 +480,24 @@ public class EpicRayRay implements IRay {
 
 		final float invDeltaDist = 1.0f / (next.perpWallDist - cur.perpWallDist);
 
-		CombinedCursor<Integer, Float> ceilCursor = (CombinedCursor<Integer, Float>) m_combined
+		
+		//Ceiling Cursor
+		FastIntBitmapCursor ceilCursorC = (FastIntBitmapCursor) m_dest
 				.copy();
-		ceilCursor.setPosition(cur.drawStart);
+		FastFloatBitmapCursor ceilCursorZ = (FastFloatBitmapCursor) m_zBuf
+				.copy();
+		
+		ceilCursorC.setPosition(cur.drawStart);
+		ceilCursorZ.setPosition(cur.drawStart);
 
-		CombinedCursor<Integer, Float> floorCursor = (CombinedCursor<Integer, Float>) m_combined
+		//Floor Cursor
+		FastIntBitmapCursor floorCursorC = (FastIntBitmapCursor) m_dest
 				.copy();
-		floorCursor.setPosition(cur.drawEnd);
+		FastFloatBitmapCursor floorCursorZ = (FastFloatBitmapCursor) m_zBuf
+				.copy();
+		
+		floorCursorC.setPosition(cur.drawEnd);
+		floorCursorZ.setPosition(cur.drawEnd);
 
 		int ceilTexH = 0, ceilTexW = 0;
 		int floorTexH = 0, floorTexW = 0;
@@ -501,8 +512,9 @@ public class EpicRayRay implements IRay {
 			floorTexH = floorTexture.getHeight() - 1;
 		}
 
-		for (int y = 0; y < nInvLineHeight; ++y, ceilCursor.fwd(), floorCursor
-				.bck()) {
+		for (int y = 0; y < nInvLineHeight; ++y, 
+				ceilCursorC.fwd(), ceilCursorZ.fwd(), 
+				floorCursorC.bck(), floorCursorZ.bck()) {
 			final float zValue = (float) m_height
 					/ (float) (m_height - ((cur.drawStart + y) << 1));
 
@@ -531,13 +543,13 @@ public class EpicRayRay implements IRay {
 			}
 
 			// zBuffer Check
-			if (ceilCursor.getCursor2().get() > zValue) {
-				ceilCursor.getCursor1().set(ceilColor); // ceiling
+			if (ceilCursorZ.getNative() > zValue) {
+				ceilCursorC.set(ceilColor); // ceiling
 			}
 
 			// zBuffer Check
-			if (floorCursor.getCursor2().get() > zValue) {
-				floorCursor.getCursor1().set(floorColor); // floor
+			if (floorCursorZ.getNative() > zValue) {
+				floorCursorC.set(floorColor); // floor
 			}
 		}
 	}

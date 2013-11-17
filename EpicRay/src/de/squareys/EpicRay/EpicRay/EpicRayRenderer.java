@@ -55,7 +55,7 @@ public final class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 		m_world = world;
 		m_camEntity = camEntity;
 
-		m_threaded = false;
+		m_threaded = true;
 	}
 
 	@Override
@@ -102,6 +102,7 @@ public final class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 			return;
 		} else {
 			renderOnThisThread(rays, tileMap);
+			return;
 		}
 
 	}
@@ -149,7 +150,7 @@ public final class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 		return m_bitmap;
 	}
 
-	public void setCameraEntity(IEntity e) {
+	public final void setCameraEntity(IEntity e) {
 		m_camEntity = e;
 	}
 
@@ -158,9 +159,10 @@ public final class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 
 		boolean m_running = false;
 
-		int m_xfrom, m_xto;
+		private final int m_xfrom;
+		private final int m_xto;
 
-		ArrayList<EpicRayRay> m_rays;
+		private final ArrayList<EpicRayRay> m_rays;
 
 		public RenderThread(ITileMap map, int from, int to,
 				ArrayList<EpicRayRay> rays) {
@@ -173,7 +175,7 @@ public final class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 		}
 
 		@Override
-		public synchronized void run() {
+		public final synchronized void run() {
 			m_running = true;
 
 			for (int i = m_xfrom; i < m_xto; ++i) {

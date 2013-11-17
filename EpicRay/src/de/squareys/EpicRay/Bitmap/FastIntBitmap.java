@@ -17,7 +17,7 @@ public class FastIntBitmap extends AbstractBitmap<Integer> {
 	private final int m_height;
 	private final int m_length;
 
-	public final int m_pixels[];
+	public int m_pixels[];
 
 	public FastIntBitmap(final int width, final int height) {
 		m_width = width;
