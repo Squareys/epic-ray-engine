@@ -14,7 +14,7 @@ The description says "Modern" raycasting engine. This is becaus I am looking to 
 
 Recently I had the idea to make EpicRay optionally use hardware accelleration. Who knows, maybe one day :)
 
-For floor rendering I used my own "algorithm". I wanted to be able to have seperate textures/colors for each tile without having to cast each pixel. My way may be a speedup to the classic way.
+For floor rendering I used my own "algorithm". I wanted to be able to have seperate textures/colors for each tile without having to cast a ray for each pixel. My way may be a speedup to the classic way.
 
 Features
 --------
@@ -25,6 +25,7 @@ The current features are implemented at the moment
   - Floor/Ceiling Rendering: texture or single color
   - Keyboard movement and world collision
   - zBuffer (makes way for fog and masked texture implementation)
+  - Threaded Rendering
 - Editor: 
   - Basic tilemap editor
   - Basic tilecreator/editor
