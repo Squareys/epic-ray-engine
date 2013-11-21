@@ -1,7 +1,6 @@
 package de.squareys.EpicRay.Resource;
 
 import de.squareys.EpicRay.Bitmap.IBitmap;
-import de.squareys.EpicRay.Texture.ITexture;
 
 /**
  * ResourceManager
@@ -29,28 +28,7 @@ public interface IResourceManager {
 	 * @param filename
 	 * @return
 	 */
-	public IBitmap loadBitmap(String filename);
-
-	/**
-	 * Creates a texture as a subbitmap on a bitmap
-	 * 
-	 * @param bitmap
-	 * @param startx
-	 * @param starty
-	 * @param endx
-	 * @param endy
-	 * @return
-	 */
-	public ITexture createTexture(IBitmap<Integer> bitmap, int startx, int starty,
-			int endx, int endy);
-
-	/**
-	 * Creates a texture from a complete Bitmap
-	 * 
-	 * @param bitmap
-	 * @return
-	 */
-	public ITexture createTexture(IBitmap<Integer> bitmap);
+	public IBitmap<Integer> loadBitmap(String filename);
 
 	/**
 	 * Get ITexture by Index
@@ -58,5 +36,5 @@ public interface IResourceManager {
 	 * @param index
 	 * @return
 	 */
-	public ITexture getTexture(int index);
+	public IBitmap<Integer> getBitmap(int index);
 }

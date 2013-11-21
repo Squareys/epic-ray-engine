@@ -1,6 +1,6 @@
 package de.squareys.EpicRay.Rendering;
 
-import de.squareys.EpicRay.Texture.ITexture;
+import de.squareys.EpicRay.Bitmap.IBitmap;
 
 /**
  * TODO: Think about whether to extend Saveable
@@ -43,5 +43,5 @@ public interface ISprite {
 	 * 
 	 * @return
 	 */
-	public ITexture getTexture();
+	public IBitmap<Integer> getTexture();
 }

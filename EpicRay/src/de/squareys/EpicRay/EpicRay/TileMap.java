@@ -47,19 +47,19 @@ public class TileMap implements ITileMap {
 	public final void autoGenerate(){
 		EpicRayRenderingAttributes ra = new EpicRayRenderingAttributes();
 		ra.m_wallColor = Color.blue.getRGB();
-		ra.m_wallTexture = ResourceManager.getInstance().getTexture(0);
+		ra.m_wallTexture = ResourceManager.getInstance().getBitmap(0);
 		ra.m_floorColor = Color.white.getRGB();
 		ra.m_textured = true;
 		
 		EpicRayRenderingAttributes ra0 = new EpicRayRenderingAttributes();
 		ra0.m_textured = true;
-		ra0.m_floorTexture = ResourceManager.getInstance().getTexture(2);
-		ra0.m_ceilTexture = ResourceManager.getInstance().getTexture(1);
+		ra0.m_floorTexture = ResourceManager.getInstance().getBitmap(2);
+		ra0.m_ceilTexture = ResourceManager.getInstance().getBitmap(1);
 		
 		EpicRayRenderingAttributes ra1 = new EpicRayRenderingAttributes();
 		ra1.m_wallColor = Color.yellow.getRGB();
 		ra1.m_textured = true;
-		ra1.m_wallTexture = ResourceManager.getInstance().getTexture(1);
+		ra1.m_wallTexture = ResourceManager.getInstance().getBitmap(1);
 		
 		Tile wall1Tile = new Tile("TileMapGenWall1", true, true, ra); //Wall
 		Tile wall2Tile  = new Tile("TileMapGenWall2", true, true, ra1);

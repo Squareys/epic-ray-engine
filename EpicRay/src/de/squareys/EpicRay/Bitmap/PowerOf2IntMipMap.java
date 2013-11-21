@@ -1,12 +1,9 @@
 package de.squareys.EpicRay.Bitmap;
 
 import de.squareys.EpicRay.Cursor.BitmapCursor;
-import de.squareys.EpicRay.EpicRay.ResourceManager;
-import de.squareys.EpicRay.Texture.ITexture;
-import de.squareys.EpicRay.Texture.Texture;
 import de.squareys.EpicRay.Util.Tuple;
 
-public class PowerOf2IntMipMap implements ITexture {
+public class PowerOf2IntMipMap extends AbstractBitmap<Integer> {
 
 	private int m_curIndex;
 	private final PowerOf2IntBitmap[] m_bitmaps;
@@ -45,17 +42,20 @@ public class PowerOf2IntMipMap implements ITexture {
 	}
 
 	@Override
-	public final IBitmap<Integer> getParentBitmap() {
-		return m_cur;
+	public final Integer getPixel(int index) {
+		return new Integer(m_cur.getPixel(index));
 	}
-
-	@Override
-	public final int getPixel(int index) {
+	
+	public final int getNative(int index) {
 		return m_cur.getPixel(index);
 	}
 
 	@Override
-	public final int getPixel(final int x, final int y) {
+	public final Integer getPixel(final int x, final int y) {
+		return m_cur.getPixel(x, y);
+	}
+	
+	public final int getNative(final int x, final int y) {
 		return m_cur.getPixel(x, y);
 	}
 
@@ -76,6 +76,21 @@ public class PowerOf2IntMipMap implements ITexture {
 
 	public final int getNumMips() {
 		return m_bitmaps.length;
+	}
+
+	@Override
+	public void putPixel(int x, int y, Integer value) {
+		m_cur.putPixel(x, y, value);
+	}
+
+	@Override
+	public void putPixel(int index, Integer value) {
+		m_cur.putPixel(index, value);
+	}
+
+	@Override
+	public IBitmap<Integer> loadFromFile(String filename) {
+		return null;
 	}
 	
 }

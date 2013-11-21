@@ -1,7 +1,7 @@
 package de.squareys.EpicRay.EpicRay;
 
+import de.squareys.EpicRay.Bitmap.IBitmap;
 import de.squareys.EpicRay.Rendering.ISprite;
-import de.squareys.EpicRay.Texture.ITexture;
 
 /**
  * Simple implementation of ISprite
@@ -19,9 +19,9 @@ public class Sprite implements ISprite {
 	private int m_w;
 	private int m_h;
 	
-	private ITexture m_texture;
+	private IBitmap<Integer> m_texture;
 	
-	public Sprite (int p_x, int p_y, int p_w, int p_h, ITexture p_texture){
+	public Sprite (int p_x, int p_y, int p_w, int p_h, IBitmap<Integer> p_texture){
 		m_x = p_x;
 		m_y = p_y;
 		
@@ -52,7 +52,7 @@ public class Sprite implements ISprite {
 	}
 
 	@Override
-	public ITexture getTexture() {
+	public IBitmap<Integer> getTexture() {
 		return m_texture;
 	}
 

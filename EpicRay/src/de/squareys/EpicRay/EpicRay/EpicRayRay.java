@@ -1,7 +1,6 @@
 package de.squareys.EpicRay.EpicRay;
 
-import java.awt.Color;
-
+import de.squareys.EpicRay.Bitmap.IBitmap;
 import de.squareys.EpicRay.Bitmap.PowerOf2IntMipMap;
 import de.squareys.EpicRay.Cursor.CombinedCursor;
 import de.squareys.EpicRay.Cursor.FastFloatBitmapCursor;
@@ -10,7 +9,6 @@ import de.squareys.EpicRay.Cursor.ICursor2D;
 import de.squareys.EpicRay.GameLogic.ITile;
 import de.squareys.EpicRay.GameLogic.ITileMap;
 import de.squareys.EpicRay.Rendering.IRay;
-import de.squareys.EpicRay.Texture.ITexture;
 
 public class EpicRayRay implements IRay {
 
@@ -315,7 +313,7 @@ public class EpicRayRay implements IRay {
 
 		if ((ra.m_textured && ra.m_wallTexture != null) || ra.m_wallColor != -1) {
 			int texX = 0;
-			ITexture texture = null;
+			IBitmap<Integer> texture = null;
 			float toTexture = 1.0f;
 			float texY = 0.0f;
 			int lastTexY = -1;
@@ -412,8 +410,8 @@ public class EpicRayRay implements IRay {
 			return; // floor not visible here.
 		}
 
-		ITexture ceilTexture = null;
-		ITexture floorTexture = null;
+		IBitmap<Integer> ceilTexture = null;
+		IBitmap<Integer> floorTexture = null;
 
 		final boolean texCeil = ra.m_textured && (ra.m_ceilTexture != null);
 		final boolean texFloor = ra.m_textured && (ra.m_floorTexture != null);
@@ -554,7 +552,7 @@ public class EpicRayRay implements IRay {
 		}
 	}
 
-	private final ITexture getMipMapTexture(ITexture texture, int lineHeight) {
+	private final IBitmap<Integer> getMipMapTexture(IBitmap<Integer> texture, int lineHeight) {
 		if (texture instanceof PowerOf2IntMipMap) {
 			texture = ((PowerOf2IntMipMap) texture).copy(); // for
 															// thread

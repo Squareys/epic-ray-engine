@@ -1,7 +1,6 @@
 package de.squareys.EpicRay.EpicRay;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.net.URL;
 import java.util.Vector;
 
@@ -13,21 +12,17 @@ import de.squareys.EpicRay.Bitmap.PowerOf2IntBitmap;
 import de.squareys.EpicRay.Bitmap.PowerOf2IntMipMap;
 import de.squareys.EpicRay.Resource.IResourceManager;
 import de.squareys.EpicRay.Resource.ISound;
-import de.squareys.EpicRay.Texture.ITexture;
-import de.squareys.EpicRay.Texture.Texture;
 import de.squareys.EpicRay.Util.Tuple;
 
 public class ResourceManager implements IResourceManager {
 	private static ResourceManager m_instance;
 	
 	private Vector<ISound> m_sounds;
-	private Vector<IBitmap<?>> m_bitmaps;
-	private Vector<ITexture> m_textures;
+	private Vector<IBitmap<Integer>> m_bitmaps;
 	
 	private ResourceManager(){
 		m_sounds   = new Vector<ISound>();
-		m_bitmaps  = new Vector<IBitmap<?>>();
-		m_textures = new Vector<ITexture>();
+		m_bitmaps  = new Vector<IBitmap<Integer>>();
 	}
 
 	@Override
@@ -76,28 +71,18 @@ public class ResourceManager implements IResourceManager {
 	private boolean isPowerOf2(int x) {
 		return (x & (x - 1)) == 0;
 	}
-
-	@Override
-	public ITexture createTexture(IBitmap<Integer> bitmap, int startx, int starty,
-			int endx, int endy) {
-		return null;
-	}
 	
-	@Override
-	public ITexture createTexture(IBitmap<Integer> bitmap) {
+	public IBitmap<Integer> createTexture(IBitmap<Integer> bitmap) {
 
-		ITexture texture = null;
+		IBitmap<Integer> texture = bitmap;
 		if (bitmap.getHeight() == bitmap.getWidth() && bitmap instanceof PowerOf2IntBitmap) {
 			texture = createMitMap((PowerOf2IntBitmap) bitmap);
-		} else {
-			texture = new Texture(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight());
-		}
-		m_textures.add(texture);
+		} 
 		
 		return texture;
 	}
 
-	private ITexture createMitMap(PowerOf2IntBitmap bitmap) {
+	private IBitmap<Integer> createMitMap(PowerOf2IntBitmap bitmap) {
 		int exp = (int) (Math.log(bitmap.getHeight())/ Math.log(2));
 		
 		PowerOf2IntBitmap[] bitmaps = new PowerOf2IntBitmap[exp];
@@ -132,9 +117,9 @@ public class ResourceManager implements IResourceManager {
 		return m_instance;
 	}
 	
-	public ITexture getTexture(int index){
+	public IBitmap<Integer> getBitmap(int index){
 		//if (index >= m_textures.size()) return null;
-		return m_textures.get(index);
+		return m_bitmaps.get(index);
 	}
 	
 }

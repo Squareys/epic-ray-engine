@@ -2,10 +2,9 @@ package de.squareys.EpicRay.EpicRay;
 
 import java.io.IOException;
 
+import de.squareys.EpicRay.Bitmap.IBitmap;
 import de.squareys.EpicRay.Rendering.IRenderingAttributes;
 import de.squareys.EpicRay.Resource.IGameFile;
-import de.squareys.EpicRay.Texture.ITexture;
-import de.squareys.EpicRay.Util.*;
 
 public class EpicRayRenderingAttributes implements IRenderingAttributes {
 	public int m_wallColor;
@@ -14,9 +13,9 @@ public class EpicRayRenderingAttributes implements IRenderingAttributes {
 	
 	public boolean m_textured;
 	
-	public ITexture m_wallTexture;
-	public ITexture m_floorTexture;
-	public ITexture m_ceilTexture;
+	public IBitmap<Integer> m_wallTexture;
+	public IBitmap<Integer> m_floorTexture;
+	public IBitmap<Integer> m_ceilTexture;
 
 	public EpicRayRenderingAttributes(){
 		m_wallColor = -1;
@@ -42,15 +41,15 @@ public class EpicRayRenderingAttributes implements IRenderingAttributes {
 		m_ceilTexture = ra.m_ceilTexture;
 	}
 
-	public ITexture getWallTexture(){
+	public IBitmap<Integer> getWallTexture(){
 		return m_wallTexture;
 	}
 	
-	public ITexture getFloorTexture(){
+	public IBitmap<Integer> getFloorTexture(){
 		return m_floorTexture;
 	}
 	
-	public ITexture getCeilingTexture(){
+	public IBitmap<Integer> getCeilingTexture(){
 		return m_ceilTexture;
 	}
 	
