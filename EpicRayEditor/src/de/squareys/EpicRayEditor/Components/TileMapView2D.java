@@ -3,6 +3,7 @@ package de.squareys.EpicRayEditor.Components;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -61,14 +62,16 @@ public class TileMapView2D extends JPanel implements MouseListener, MouseMotionL
 	}
 
 	@Override
-	public void paint(final Graphics g){
-		super.paint(g);
+	public void paint(final Graphics g1){
+		super.paint(g1);
 		
 		if (m_tileMap == null) return;
 		
+		Graphics2D g = (Graphics2D) g1;
 		/*BufferedImage buffer = new BufferedImage(m_tileW * m_tileMap.getWidth(), m_tileH * m_tileMap.getHeight(), BufferedImage.TYPE_INT_RGB);
 		Graphics2D g2D = (Graphics2D) buffer.getGraphics(); */
 		
+		g.setBackground(Color.darkGray);
 		g.clearRect(0, 0, getWidth(), getHeight());
 		
 		for (int y = 0; y < m_tileMap.getHeight(); y++){
@@ -78,7 +81,17 @@ public class TileMapView2D extends JPanel implements MouseListener, MouseMotionL
 				EpicRayRenderingAttributes ra = (EpicRayRenderingAttributes) tile.getRenderingAttributes();
 				
 				if (ra == null) continue;
-				g.setColor(new Color(ra.m_wallColor));
+				
+				if (ra.m_wallColor != -1) {
+					g.setColor(new Color(ra.m_wallColor));
+				} else if (ra.m_ceilColor != -1) {
+					g.setColor(new Color(ra.m_ceilColor));
+				} else if (ra.m_floorColor != -1) {
+					g.setColor(new Color(ra.m_floorColor));
+				} else {
+					continue;
+				}
+				
 				g.fillRect(x*m_tileW, y*m_tileH, m_tileW, m_tileH);
 			}
 		}
@@ -89,7 +102,6 @@ public class TileMapView2D extends JPanel implements MouseListener, MouseMotionL
 			g.drawRect(m_mouseX, m_mouseY, m_tileW, m_tileH);
 		}
 		
-		//((Graphics2D) g).drawImage(buffer, null, 0, 0);
 	}
 	
 	public void setTileMap(ITileMap tileMap){
