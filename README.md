@@ -7,7 +7,7 @@ If you are interested in helping me with this project, be free to contact me via
 
 This is a "true" raycasting engine. Meaning, the rendering code actually uses raycasting techniques and doesn't just try to produce a look-alike result. An editor comes along in the code aswell.
 
-Be aware that this project is still in it's early alphas. There will be API-breaks and I will not try to avoid them too much.
+Be aware that this project is still in its early alphas. There will be API-breaks and I will not try to avoid them too much.
 
 Technical
 --------
