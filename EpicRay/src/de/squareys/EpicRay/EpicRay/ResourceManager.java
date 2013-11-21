@@ -1,6 +1,7 @@
 package de.squareys.EpicRay.EpicRay;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.net.URL;
 import java.util.Vector;
 
@@ -34,10 +35,7 @@ public class ResourceManager implements IResourceManager {
 		throw new RuntimeException("Unimplemented Method!");
 	}
 
-	@Override
-	public IBitmap<Integer> loadBitmap(String filename) {
-		URL file = getClass().getResource(filename);
-		
+	public IBitmap<Integer> loadBitmap(URL file) {
 		try {
 			BufferedImage img = ImageIO.read(file);
 
@@ -67,6 +65,12 @@ public class ResourceManager implements IResourceManager {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	@Override
+	public IBitmap<Integer> loadBitmap(String filename) {
+		URL file = getClass().getResource(filename);
+		return loadBitmap(file);
 	}
 	
 	private boolean isPowerOf2(int x) {
@@ -121,7 +125,7 @@ public class ResourceManager implements IResourceManager {
 		return resized;
 	}
 
-	public static IResourceManager getInstance() {
+	public static ResourceManager getInstance() {
 		if (m_instance == null){
 			m_instance = new ResourceManager();
 		}

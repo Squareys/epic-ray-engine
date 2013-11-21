@@ -55,7 +55,7 @@ public final class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 		m_world = world;
 		m_camEntity = camEntity;
 
-		m_threaded = true;
+		m_threaded = false;
 	}
 
 	@Override
