@@ -16,7 +16,6 @@ import javax.swing.JScrollPane;
 
 import de.squareys.EpicRay.Bitmap.IBitmap;
 import de.squareys.EpicRay.EpicRay.ResourceManager;
-import de.squareys.EpicRay.Texture.ITexture;
 import de.squareys.EpicRayEditor.Components.GUIUtils;
 import de.squareys.EpicRayEditor.Components.TexturePanel;
 
@@ -27,7 +26,7 @@ public class TextureEditorDialog extends JDialog implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1497693934528315218L;
 	
-	private JList<ITexture> m_textureList;
+	private JList<IBitmap<Integer>> m_textureList;
 	private TexturePanel m_texturePanel;
 	
 	private JButton m_closeButton;
@@ -48,7 +47,7 @@ public class TextureEditorDialog extends JDialog implements ActionListener {
 		m_texturePanel = new TexturePanel();
 		m_texturePanel.setPreferredSize(new Dimension(200, 200));
 		
-		m_textureList  = new JList<ITexture>();
+		m_textureList  = new JList<IBitmap<Integer>>();
 		JScrollPane listScroll = new JScrollPane(m_textureList);
 		listScroll.setPreferredSize(new Dimension(200, 300));
 		
@@ -95,7 +94,7 @@ public class TextureEditorDialog extends JDialog implements ActionListener {
 				try {
 					bitmap = ResourceManager.getInstance().loadBitmap(fc.getSelectedFile().toURI().toURL());
 				
-					ITexture tex = ResourceManager.getInstance().createTexture(bitmap);
+					IBitmap<Integer> tex = ResourceManager.getInstance().createTexture(bitmap);
 					
 					m_texturePanel.setTexture(tex);
 					m_texturePanel.repaint();

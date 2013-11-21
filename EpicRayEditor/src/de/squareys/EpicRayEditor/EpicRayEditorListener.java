@@ -1,10 +1,9 @@
 package de.squareys.EpicRayEditor;
 
-import java.util.Random;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.util.Random;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
@@ -12,15 +11,12 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import de.squareys.EpicRay.Bitmap.IBitmap;
 import de.squareys.EpicRay.EpicRay.EpicRayRenderingAttributes;
 import de.squareys.EpicRay.EpicRay.GameFile;
-import de.squareys.EpicRay.EpicRay.ResourceManager;
 import de.squareys.EpicRay.EpicRay.Tile;
 import de.squareys.EpicRay.EpicRay.TileMap;
 import de.squareys.EpicRay.GameLogic.ITile;
 import de.squareys.EpicRay.GameLogic.ITileMap;
-import de.squareys.EpicRay.Texture.ITexture;
 import de.squareys.EpicRayEditor.Dialogs.CreateTileMapDialog;
 import de.squareys.EpicRayEditor.Dialogs.EditTileDialog;
 import de.squareys.EpicRayEditor.Dialogs.TextureEditorDialog;

@@ -8,12 +8,11 @@ import java.awt.image.DataBufferInt;
 
 import javax.swing.JPanel;
 
-import de.squareys.EpicRay.Bitmap.Bitmap;
 import de.squareys.EpicRay.Bitmap.FastIntBitmap;
-import de.squareys.EpicRay.Texture.ITexture;
+import de.squareys.EpicRay.Bitmap.IBitmap;
 
 public class TexturePanel extends JPanel {
-	private ITexture m_texture;
+	private IBitmap<Integer> m_texture;
 	private FastIntBitmap m_bitmap;
 	
 	private BufferedImage m_img;
@@ -22,15 +21,15 @@ public class TexturePanel extends JPanel {
 		m_texture = null;
 	}
 	
-	public TexturePanel(ITexture texture){
+	public TexturePanel(IBitmap<Integer> texture){
 		setTexture(texture);
 	}
 	
-	public void setTexture(ITexture texture){
+	public void setTexture(IBitmap<Integer> texture){
 		m_texture = texture;
 		
-		int w = m_texture.getParentBitmap().getWidth();
-		int h = m_texture.getParentBitmap().getHeight();
+		int w = m_texture.getWidth();
+		int h = m_texture.getHeight();
 		
 		setPreferredSize(new Dimension(w, h));
 		
@@ -55,7 +54,7 @@ public class TexturePanel extends JPanel {
 		m_bitmap.clear(Color.white.getRGB());
 		
 		if (m_texture != null) {		
-			m_bitmap.drawBitmap(m_texture.getParentBitmap(), 0, 0);
+			m_bitmap.drawBitmap(m_texture, 0, 0);
 		} 
 	}
 }
