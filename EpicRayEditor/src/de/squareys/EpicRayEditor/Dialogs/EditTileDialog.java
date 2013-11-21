@@ -1,5 +1,6 @@
 package de.squareys.EpicRayEditor.Dialogs;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -21,6 +22,7 @@ import de.squareys.EpicRay.EpicRay.EpicRayRenderingAttributes;
 import de.squareys.EpicRay.EpicRay.Tile;
 import de.squareys.EpicRay.GameLogic.ITile;
 import de.squareys.EpicRayEditor.Components.ColorEditor;
+import de.squareys.EpicRayEditor.Components.GUIUtils;
 import de.squareys.EpicRayEditor.Components.TileRenderPanel;
 
 /**
@@ -67,19 +69,17 @@ public class EditTileDialog extends JDialog implements ActionListener, ChangeLis
 	private boolean m_positiveClose;
 	
 	private ITile m_tile;
-	EpicRayRenderingAttributes m_ra;
+	EpicRayRenderingAttributes m_ra; //a shortcut
 	
 	public EditTileDialog(Frame aFrame, ITile tile){
 		super(aFrame, true);
 		
-		m_tile = new Tile (tile, false);
-		m_ra = new EpicRayRenderingAttributes((EpicRayRenderingAttributes) tile.getRenderingAttributes());
-		m_tile.setRenderingAttributes(m_ra);
+		m_tile = tile;
+		m_ra = (EpicRayRenderingAttributes) tile.getRenderingAttributes();
 		
 		//---GUI---
 		
 		setTitle("Edit Tile");
-	
 		
 		m_tilePreview = new TileRenderPanel(200);
 		m_tilePreview.setTile(m_tile);
@@ -91,8 +91,10 @@ public class EditTileDialog extends JDialog implements ActionListener, ChangeLis
 		
 		m_wallColEdit = new ColorEditor(m_ra.m_wallColor);
 		m_wallColEdit.addChangeListener(this);
+		
 		m_floorColEdit = new ColorEditor(m_ra.m_floorColor);
 		m_floorColEdit.addChangeListener(this);
+		
 		m_ceilColEdit = new ColorEditor(m_ra.m_ceilColor);
 		m_ceilColEdit.addChangeListener(this);
 						
@@ -107,23 +109,22 @@ public class EditTileDialog extends JDialog implements ActionListener, ChangeLis
 		m_createBtn.setActionCommand("done");
 
 		Insets noInset = new Insets(0, 0, 0, 0);
-		GridBagConstraints gbc_preview 	 = new GridBagConstraints(0, 0, 2, 1, 1.0, 1.0, GridBagConstraints.FIRST_LINE_START, GridBagConstraints.BOTH, noInset, 0, 0);
-		GridBagConstraints gbc_nameLabel = new GridBagConstraints(0, 1, 1, 1, 0.5, 0.5, GridBagConstraints.CENTER, GridBagConstraints.BOTH, noInset, 0, 0);
-		GridBagConstraints gbc_nameField = new GridBagConstraints(1, 1, 1, 1, 0.5, 0.5, GridBagConstraints.CENTER, GridBagConstraints.BOTH, noInset, 0, 0);
-		GridBagConstraints gbc_solid	 = new GridBagConstraints(0, 2, 1, 1, 0.5, 0.5, GridBagConstraints.CENTER, GridBagConstraints.BOTH, noInset, 0, 0);
-		GridBagConstraints gbc_opaque	 = new GridBagConstraints(1, 2, 1, 1, 0.5, 0.5, GridBagConstraints.CENTER, GridBagConstraints.BOTH, noInset, 0, 0);
-		GridBagConstraints gbc_wallLbl	 = new GridBagConstraints(0, 3, 1, 1, 0.5, 0.5, GridBagConstraints.CENTER, GridBagConstraints.BOTH, noInset, 0, 0);
-		GridBagConstraints gbc_wallEdit	 = new GridBagConstraints(1, 3, 1, 1, 0.5, 0.5, GridBagConstraints.CENTER, GridBagConstraints.BOTH, noInset, 0, 0);
-		GridBagConstraints gbc_floorLbl	 = new GridBagConstraints(0, 4, 1, 1, 0.5, 0.5, GridBagConstraints.CENTER, GridBagConstraints.BOTH, noInset, 0, 0);
-		GridBagConstraints gbc_floorEdit = new GridBagConstraints(1, 4, 1, 1, 0.5, 0.5, GridBagConstraints.CENTER, GridBagConstraints.BOTH, noInset, 0, 0);
-		GridBagConstraints gbc_ceilLbl	 = new GridBagConstraints(0, 5, 1, 1, 0.5, 0.5, GridBagConstraints.CENTER, GridBagConstraints.BOTH, noInset, 0, 0);
-		GridBagConstraints gbc_ceilEdit  = new GridBagConstraints(1, 5, 1, 1, 0.5, 0.5, GridBagConstraints.CENTER, GridBagConstraints.BOTH, noInset, 0, 0);
-		GridBagConstraints gbc_createBtn = new GridBagConstraints(0, 6, 1, 1, 0.5, 0.5, GridBagConstraints.CENTER, GridBagConstraints.BOTH, noInset, 0, 0);
-		GridBagConstraints gbc_cancelBtn = new GridBagConstraints(1, 6, 1, 1, 0.5, 0.5, GridBagConstraints.CENTER, GridBagConstraints.BOTH, noInset, 0, 0);
+		GridBagConstraints gbc_preview 	 = new GridBagConstraints(0, 0, 2, 1, 1.0, 1.0, GUIUtils.FIRST_LINE_START, GridBagConstraints.BOTH, noInset, 0, 0);
+		GridBagConstraints gbc_nameLabel = new GridBagConstraints(0, 1, 1, 1, 0.5, 0.5, GUIUtils.FIRST_LINE_START, GUIUtils.BOTH, noInset, 0, 0);
+		GridBagConstraints gbc_nameField = new GridBagConstraints(1, 1, 1, 1, 0.5, 0.5, GUIUtils.FIRST_LINE_START, GUIUtils.BOTH, noInset, 0, 0);
+		GridBagConstraints gbc_solid	 = new GridBagConstraints(0, 2, 1, 1, 0.5, 0.5, GUIUtils.FIRST_LINE_START, GUIUtils.BOTH, noInset, 0, 0);
+		GridBagConstraints gbc_opaque	 = new GridBagConstraints(1, 2, 1, 1, 0.5, 0.5, GUIUtils.FIRST_LINE_START, GUIUtils.BOTH, noInset, 0, 0);
+		GridBagConstraints gbc_wallLbl	 = new GridBagConstraints(0, 3, 1, 1, 0.5, 0.5, GUIUtils.FIRST_LINE_START, GUIUtils.BOTH, noInset, 0, 0);
+		GridBagConstraints gbc_wallEdit	 = new GridBagConstraints(1, 3, 1, 1, 0.5, 0.5, GUIUtils.FIRST_LINE_START, GUIUtils.BOTH, noInset, 0, 0);
+		GridBagConstraints gbc_floorLbl	 = new GridBagConstraints(0, 4, 1, 1, 0.5, 0.5, GUIUtils.FIRST_LINE_START, GUIUtils.BOTH, noInset, 0, 0);
+		GridBagConstraints gbc_floorEdit = new GridBagConstraints(1, 4, 1, 1, 0.5, 0.5, GUIUtils.FIRST_LINE_START, GUIUtils.BOTH, noInset, 0, 0);
+		GridBagConstraints gbc_ceilLbl	 = new GridBagConstraints(0, 5, 1, 1, 0.5, 0.5, GUIUtils.FIRST_LINE_START, GUIUtils.BOTH, noInset, 0, 0);
+		GridBagConstraints gbc_ceilEdit  = new GridBagConstraints(1, 5, 1, 1, 0.5, 0.5, GUIUtils.FIRST_LINE_START, GUIUtils.BOTH, noInset, 0, 0);
+		GridBagConstraints gbc_createBtn = new GridBagConstraints(0, 6, 1, 1, 0.5, 0.5, GUIUtils.FIRST_LINE_START, GUIUtils.BOTH, noInset, 0, 0);
+		GridBagConstraints gbc_cancelBtn = new GridBagConstraints(1, 6, 1, 1, 0.5, 0.5, GUIUtils.FIRST_LINE_START, GUIUtils.BOTH, noInset, 0, 0);
 		
 		m_contentPanel = new JPanel();
 		m_contentPanel.setLayout(new GridBagLayout());
-		m_contentPanel.setPreferredSize(new Dimension(200, 500));
 		
 		m_contentPanel.add(m_tilePreview, gbc_preview);
 		
@@ -165,7 +166,6 @@ public class EditTileDialog extends JDialog implements ActionListener, ChangeLis
 			m_tile.setOpaque(m_opaqueCB.isSelected());
 			m_tile.setSolid (m_solidCB.isSelected());
 			m_tile.setName(m_nameField.getText());
-			m_tile.setRenderingAttributes(m_ra);
 			
 			m_positiveClose = true;
 			this.setVisible(false);
@@ -179,9 +179,15 @@ public class EditTileDialog extends JDialog implements ActionListener, ChangeLis
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		m_ra.m_ceilColor = m_ceilColEdit.getColor().getRGB();
-		m_ra.m_floorColor = m_floorColEdit.getColor().getRGB();
-		m_ra.m_wallColor = m_wallColEdit.getColor().getRGB();
+		Color ceil = m_ceilColEdit.getColor();
+		Color floor = m_floorColEdit.getColor();
+		Color wall = m_wallColEdit.getColor();
+		
+		m_ra.m_ceilColor  = (ceil != null)  ? ceil.getRGB()  : -1;
+		m_ra.m_floorColor = (floor != null) ? floor.getRGB() : -1;
+		m_ra.m_wallColor  = (wall != null)  ? wall.getRGB()  : -1;
+		
+		m_tile.setOpaque(m_opaqueCB.isSelected());
 		
 		m_tilePreview.repaint();
 	}

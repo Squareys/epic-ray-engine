@@ -23,6 +23,7 @@ public class TileRenderPanel extends JPanel {
 	
 	public TileRenderPanel(int w){
 		m_size = w;
+		
 		setPreferredSize(new Dimension(w, w));
 		
 		m_bitmap = new FastIntBitmap(w, w);
@@ -46,6 +47,24 @@ public class TileRenderPanel extends JPanel {
 
 	public void present() {
 		m_bitmap.clear(Color.white.getRGB());
+		
+		boolean curCol = false;
+		
+		for (int x = 0; x < m_bitmap.getWidth(); ++x) {
+			for (int y = 0; y < m_bitmap.getHeight(); ++y) {
+				if (y % 25 == 0) {
+					curCol = !curCol;
+				}
+				
+				if (curCol) {
+					m_bitmap.putPixel(x, y, Color.GRAY.getRGB());
+				}
+			}
+			
+			if (x % 25 == 0) {
+				curCol = !curCol;
+			}
+		}
 		
 		if (m_tile != null) {		
 			int halfSize = (int) Math.floor(m_size /2);

@@ -111,6 +111,10 @@ public class EpicRayEditorListener implements ActionListener, ListSelectionListe
 						
 						if (!m_mainView.m_tileListModel.contains(t)) {
 							m_mainView.m_tileListModel.addElement(t);
+						} else {
+							//make tiles references
+							int index = m_mainView.m_tileListModel.indexOf(t);
+							tileMap.setTileAt(x, y, m_mainView.m_tileListModel.getElementAt(index));
 						}
 					}
 				}
@@ -126,17 +130,13 @@ public class EpicRayEditorListener implements ActionListener, ListSelectionListe
 		
 		if (command.equals("newTile")){
 			EpicRayRenderingAttributes def = new EpicRayRenderingAttributes();
-			m_curTile = new Tile(generateTypeID(), false, false, def);
-			
-			editTile();
-			
-			m_tileListModel.addElement(m_curTile);
+			editTile(new Tile(generateTypeID(), false, false, def));
 			
 			return;
 		}
 		
 		if (command.equals("editTile")){
-			editTile();
+			editTile(m_curTile);
 			return;
 		}
 		
@@ -167,15 +167,21 @@ public class EpicRayEditorListener implements ActionListener, ListSelectionListe
         dialog.dispose();
 	}
 
-	private void editTile(){
-		EditTileDialog dialog = new EditTileDialog(m_editor, m_curTile);
+	private void editTile(ITile t){
+		EditTileDialog dialog = new EditTileDialog(m_editor, t);
 		
 		dialog.setLocationRelativeTo(m_editor);
         dialog.setVisible(true);
         
         //evaluate on dialog
         if (dialog.success()){
-        	m_curTile = new Tile(dialog.getTile(), false);
+        	ITile retTile = dialog.getTile();
+        	
+        	if (!m_tileListModel.contains(t)) {
+        		m_tileListModel.addElement(retTile);
+        	}
+        	
+        	m_mainView.m_tileMapView.repaint();
         }
         
         dialog.dispose();
@@ -190,9 +196,17 @@ public class EpicRayEditorListener implements ActionListener, ListSelectionListe
 		Object source = e.getSource();
 		
 		if (source instanceof ListSelectionModel){
-			m_curTile = m_tileListModel.getElementAt(((ListSelectionModel) source).getMinSelectionIndex());
+			if (m_tileListModel.isEmpty()) return;
+			
+			int index = ((ListSelectionModel) source).getMinSelectionIndex();
+			
+			if (index == -1) return;
+			
+			m_curTile = m_tileListModel.getElementAt(index);
 			
 			m_mainView.m_tileMapView.setBrushTile(m_curTile);
+			
+			return;
 		}
 	}
 
