@@ -133,7 +133,6 @@ public class Game extends Container implements IGame, Runnable {
 
 			boolean ticked = false;
 			while (unprocessedSeconds > secondsPerTick) {
-
 				update();
 				
 				unprocessedSeconds -= secondsPerTick;
@@ -142,7 +141,7 @@ public class Game extends Container implements IGame, Runnable {
 				tickCount++;
 				if (tickCount % 60 == 0) {
 					screen.setFPS(frames);
-					lastTime += 1000;
+					lastTime += 100;
 					frames = 0;
 				}
 			}

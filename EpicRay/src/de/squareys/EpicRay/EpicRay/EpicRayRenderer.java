@@ -1,6 +1,14 @@
 package de.squareys.EpicRay.EpicRay;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.RunnableFuture;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import de.squareys.EpicRay.Bitmap.FastFloatBitmap;
 import de.squareys.EpicRay.Bitmap.FastIntBitmap;
@@ -42,6 +50,8 @@ public final class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 
 	private boolean m_threaded;
 	private final int m_numThreads = 5;
+	
+	private ExecutorService m_threadPool;
 
 	public EpicRayRenderer(final IWorld world, final IEntity camEntity,
 			final int width, final int height) {
@@ -55,7 +65,7 @@ public final class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 		m_world = world;
 		m_camEntity = camEntity;
 
-		m_threaded = false;
+		m_threaded = true;
 	}
 
 	@Override
@@ -92,56 +102,36 @@ public final class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 					(float) m_camEntity.getViewDirectionX() + m_planeX * f2,
 					(float) m_camEntity.getViewDirectionY() + m_planeY * f2,
 					(FastIntBitmapCursor) cursor.copy(),
-					(FastFloatBitmapCursor) zCursor.copy());
+					(FastFloatBitmapCursor) zCursor.copy(), 
+					tileMap);
 
 			rays.add(ray);
 		}
 		
 		if (m_threaded) {
-			renderThreaded(rays, tileMap);
+			renderThreaded(rays);
 			return;
 		} else {
-			renderOnThisThread(rays, tileMap);
+			for (EpicRayRay ray : rays) {
+				ray.run();
+			}
 			return;
 		}
 
 	}
 
-	private final void renderOnThisThread(final ArrayList<EpicRayRay> rays, final ITileMap tileMap) {
+	private final void renderThreaded(final ArrayList<EpicRayRay> rays) {
+		m_threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()-1);
+		
+		Future<?> last = null;
 		for (EpicRayRay ray : rays) {
-			ray.cast(tileMap);
+			last = m_threadPool.submit(ray);
 		}
-	}
-
-	private final void renderThreaded(final ArrayList<EpicRayRay> rays, final ITileMap tileMap) {
-		int raysPerThread = (int) (rays.size() / m_numThreads);
-		int overshoot = rays.size() - raysPerThread * m_numThreads;
-
-		RenderThread[] threads = new RenderThread[m_numThreads];
-
-		int startIndex = 0;
-		int endIndex = 0;
-
-		for (int i = 0; i < m_numThreads; ++i) {
-			endIndex = startIndex + raysPerThread;
-
-			if (overshoot > 0) {
-				endIndex++;
-				overshoot--;
-			}
-
-			threads[i] = new RenderThread(tileMap, startIndex, endIndex, rays);
-			threads[i].start();
-
-			startIndex += endIndex - startIndex;
-		}
-
-		for (Thread t : threads) {
-			try {
-				t.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		
+		try {
+			m_threadPool.shutdown();
+			m_threadPool.awaitTermination(100, TimeUnit.MILLISECONDS);
+		} catch (InterruptedException e) {
 		}
 	}
 
@@ -152,37 +142,5 @@ public final class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 
 	public final void setCameraEntity(IEntity e) {
 		m_camEntity = e;
-	}
-
-	class RenderThread extends Thread {
-		ITileMap m_map;
-
-		boolean m_running = false;
-
-		private final int m_xfrom;
-		private final int m_xto;
-
-		private final ArrayList<EpicRayRay> m_rays;
-
-		public RenderThread(ITileMap map, int from, int to,
-				ArrayList<EpicRayRay> rays) {
-			super();
-			m_map = map;
-			m_xfrom = from;
-			m_xto = to;
-
-			m_rays = rays;
-		}
-
-		@Override
-		public final synchronized void run() {
-			m_running = true;
-
-			for (int i = m_xfrom; i < m_xto; ++i) {
-				m_rays.get(i).cast(m_map);
-			}
-
-			m_running = false;
-		}
 	}
 }

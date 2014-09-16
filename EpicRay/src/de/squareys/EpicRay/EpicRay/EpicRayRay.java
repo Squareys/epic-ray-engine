@@ -10,7 +10,7 @@ import de.squareys.EpicRay.GameLogic.ITile;
 import de.squareys.EpicRay.GameLogic.ITileMap;
 import de.squareys.EpicRay.Rendering.IRay;
 
-public class EpicRayRay implements IRay {
+public class EpicRayRay implements IRay, Runnable {
 
 	protected final float m_x;
 	protected final float m_y;
@@ -24,6 +24,8 @@ public class EpicRayRay implements IRay {
 	private final FastIntBitmapCursor m_dest;
 	private final FastFloatBitmapCursor m_zBuf;
 	private final CombinedCursor<Integer, Float> m_combined;
+	
+	private final ITileMap m_tileMap;
 
 	protected final int m_height; // length of m_pixels
 
@@ -100,7 +102,7 @@ public class EpicRayRay implements IRay {
 
 	public EpicRayRay(final int height, final float startposX,
 			final float startposY, final float dirX, final float dirY,
-			final FastIntBitmapCursor dest, FastFloatBitmapCursor zBuffer) {
+			final FastIntBitmapCursor dest, FastFloatBitmapCursor zBuffer, final ITileMap tilemap) {
 		m_x = startposX;
 		m_y = startposY;
 
@@ -147,6 +149,8 @@ public class EpicRayRay implements IRay {
 
 		m_addX = (m_stepX == 1) ? 0.0f : 1.0f;
 		m_addY = (m_stepY == 1) ? 0.0f : 1.0f;
+		
+		m_tileMap = tilemap;
 
 	}
 
@@ -579,5 +583,10 @@ public class EpicRayRay implements IRay {
 			}
 		}
 		return 0;
+	}
+
+	@Override
+	public void run() {
+		cast(m_tileMap);
 	}
 }
