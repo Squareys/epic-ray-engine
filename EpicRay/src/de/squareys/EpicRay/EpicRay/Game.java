@@ -52,7 +52,7 @@ public class Game extends Container implements IGame, Runnable {
 		setPreferredSize(new Dimension(windowWidth, windowHeight));
 	}
 	
-	private void update(){
+	private void update(float timeDiff){
 		CustomJoypad joypad = (CustomJoypad) CustomJoypad.getInstance();
 		
 		if (joypad.keyIsDown(CustomJoypad.KEY_FORWARD)){
@@ -72,7 +72,7 @@ public class Game extends Container implements IGame, Runnable {
 			m_player.setSpin(0);
 		}
 		
-		m_player.onUpdate();
+		m_player.onUpdate(timeDiff);
 	}
 	
 	@Override
@@ -113,35 +113,44 @@ public class Game extends Container implements IGame, Runnable {
 	}
 	
 	public void run() {
-		int frames = 0;
 		
 		double unprocessedSeconds = 0;
 		long lastTime = System.nanoTime();
-		double secondsPerTick = 1 / 100.0;
+		
+		/* gamelogic updates per second */
+		final int ticksPerSecond = 150;
+		final double secondsPerTick = 1 / (float) ticksPerSecond;
+		
+		int frames = 0;
 		int tickCount = 0;
 
 		requestFocus();
 
+		long now;
+		long passedTime;
+		boolean ticked;
+		
 		while (running) {
-			long now = System.nanoTime();
-			long passedTime = now - lastTime;
+			now = System.nanoTime();
+			passedTime = now - lastTime;
 			lastTime = now;
+			
 			if (passedTime < 0) passedTime = 0;
 			if (passedTime > 100000000) passedTime = 100000000;
 
 			unprocessedSeconds += passedTime / 1000000000.0;
 
-			boolean ticked = false;
+			ticked = false;
 			while (unprocessedSeconds > secondsPerTick) {
-				update();
+				update((float)secondsPerTick);
 				
 				unprocessedSeconds -= secondsPerTick;
 				ticked = true;
 
 				tickCount++;
-				if (tickCount % 60 == 0) {
+				if (tickCount % ticksPerSecond == 0) {
+					/* reset framerate counter once a second */
 					screen.setFPS(frames);
-					lastTime += 100;
 					frames = 0;
 				}
 			}

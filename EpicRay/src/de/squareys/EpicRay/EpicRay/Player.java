@@ -18,8 +18,8 @@ public class Player extends DynamicEntity {
 		m_dirX = -1.0f;
 		m_dirY = 0.0f;
 		
-		m_speed = 0.2f;
-		m_spinSpeed = 0.02f;
+		m_speed = 2.0f;
+		m_spinSpeed = 0.01f;
 	}
 
 	public void setSpin(int spin) {
@@ -27,15 +27,17 @@ public class Player extends DynamicEntity {
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void onUpdate(float timeDiff) {
+		super.onUpdate(timeDiff);
 		
 		if (m_spin != 0) {
+			float spin = m_spin * m_speed * timeDiff;
+			
 			float oldDirX = m_dirX;
-			m_dirX = m_dirX * (float) Math.cos(m_spin * m_spinSpeed) - m_dirY
-					* (float) Math.sin(m_spin * m_spinSpeed);
-			m_dirY = oldDirX * (float) Math.sin(m_spin * m_spinSpeed) + m_dirY
-					* (float) Math.cos(m_spin * m_spinSpeed);
+			m_dirX = m_dirX * (float) Math.cos(spin) - m_dirY
+					* (float) Math.sin(spin);
+			m_dirY = oldDirX * (float) Math.sin(spin) + m_dirY
+					* (float) Math.cos(spin);
 			
 			float l = (float) Math.sqrt(m_dirX * m_dirX + m_dirY * m_dirY);
 			

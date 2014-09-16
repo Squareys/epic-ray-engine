@@ -36,7 +36,7 @@ public class World implements IWorld {
 	}
 
 	@Override
-	public void onUpdate() {
+	public void onUpdate(float timeDiff) {
 		//Do nothing yet
 	}
 

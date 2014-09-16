@@ -75,13 +75,11 @@ public class StaticEntity implements IEntity {
 	@Override
 	public void onCollision(Collideable c) {
 		//nothing will happen with this entity on collision
-		
 	}
 
 	@Override
-	public void onUpdate() {
+	public void onUpdate(float timeDiff) {
 		//do nothing, we're static!
-		
 	}
 	
 	@Override

@@ -24,12 +24,12 @@ public class DynamicEntity extends StaticEntity {
 	}
 
 	@Override
-	public void onUpdate() {
+	public void onUpdate(float timeDiff) {
 		float oldX = m_x;
 		float oldY = m_y;
 		
-		m_x += m_vx * m_speed;
-		m_y += m_vy * m_speed;
+		m_x += m_vx * m_speed * timeDiff;
+		m_y += m_vy * m_speed * timeDiff;
 		
 		ITile tile = m_world.getTileMap().getTileAtPos(m_x, m_y);
 		
@@ -43,6 +43,10 @@ public class DynamicEntity extends StaticEntity {
 		}
 	}
 	
+	/**
+	 * Set multiples of length of movement dir vector this Entity travels per second. (TODO)
+	 * @param speed
+	 */
 	public void setSpeed(float speed){
 		m_speed = speed;
 	}
