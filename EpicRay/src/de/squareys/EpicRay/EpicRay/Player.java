@@ -5,7 +5,7 @@ import de.squareys.EpicRay.Rendering.ISprite;
 
 public class Player extends DynamicEntity {
 	protected int m_spin = 0;
-	protected double m_spinSpeed;
+	protected float m_spinSpeed;
 
 	
 	public static final int DIR_FORWARD = 0;
@@ -15,11 +15,11 @@ public class Player extends DynamicEntity {
 			IWorld world) {
 		super(p_x, p_y, p_w, p_h, sprite, world);
 
-		m_dirX = -1.0;
-		m_dirY = 0.0;
+		m_dirX = -1.0f;
+		m_dirY = 0.0f;
 		
-		m_speed = 0.2;
-		m_spinSpeed = 0.02;
+		m_speed = 0.2f;
+		m_spinSpeed = 0.02f;
 	}
 
 	public void setSpin(int spin) {
@@ -31,13 +31,13 @@ public class Player extends DynamicEntity {
 		super.onUpdate();
 		
 		if (m_spin != 0) {
-			double oldDirX = m_dirX;
-			m_dirX = m_dirX * Math.cos(m_spin * m_spinSpeed) - m_dirY
-					* Math.sin(m_spin * m_spinSpeed);
-			m_dirY = oldDirX * Math.sin(m_spin * m_spinSpeed) + m_dirY
-					* Math.cos(m_spin * m_spinSpeed);
+			float oldDirX = m_dirX;
+			m_dirX = m_dirX * (float) Math.cos(m_spin * m_spinSpeed) - m_dirY
+					* (float) Math.sin(m_spin * m_spinSpeed);
+			m_dirY = oldDirX * (float) Math.sin(m_spin * m_spinSpeed) + m_dirY
+					* (float) Math.cos(m_spin * m_spinSpeed);
 			
-			double l = Math.sqrt(m_dirX * m_dirX + m_dirY * m_dirY);
+			float l = (float) Math.sqrt(m_dirX * m_dirX + m_dirY * m_dirY);
 			
 			m_dirX /= l; //just in case, normalize
 			m_dirY /= l;

@@ -61,7 +61,7 @@ public class Game extends Container implements IGame, Runnable {
 		} else if (joypad.keyIsDown(CustomJoypad.KEY_BACKWARD)){
 			m_player.setLocalMovementDir(Player.DIR_BACKWARD);
 		} else {
-			m_player.setMovementDir(0.0, 0.0);
+			m_player.setMovementDir(0.0f, 0.0f);
 		}
 		
 		if (joypad.keyIsDown(CustomJoypad.KEY_TURN_LEFT)){

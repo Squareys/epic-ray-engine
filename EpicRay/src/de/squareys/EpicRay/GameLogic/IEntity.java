@@ -22,14 +22,14 @@ public interface IEntity extends Collideable, Updateable {
 	 * 
 	 * @return
 	 */
-	public double getX();
+	public float getX();
 
 	/**
 	 * Returns the Entities y position
 	 * 
 	 * @return
 	 */
-	public double getY();
+	public float getY();
 
 	/**
 	 * Returns the Entities width
@@ -70,12 +70,12 @@ public interface IEntity extends Collideable, Updateable {
 	/**
 	 * Get the X direction the entity is looking
 	 */
-	public double getViewDirectionX();
+	public float getViewDirectionX();
 
 	/**
 	 * Get the Y direction the entity is looking
 	 * 
 	 * @return
 	 */
-	public double getViewDirectionY();
+	public float getViewDirectionY();
 }

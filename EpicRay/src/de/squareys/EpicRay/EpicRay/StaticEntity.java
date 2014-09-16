@@ -11,14 +11,14 @@ public class StaticEntity implements IEntity {
 	protected IWorld m_world;
 	protected ITile m_currentTile; //Tile the Entity is currently in
 	
-	protected double m_x;
-	protected double m_y;
+	protected float m_x;
+	protected float m_y;
 	
 	protected int m_w;
 	protected int m_h;
 
-	protected double m_dirX;
-	protected double m_dirY;
+	protected float m_dirX;
+	protected float m_dirY;
 	
 	public StaticEntity(int p_x, int p_y, int p_w, int p_h, ISprite sprite, IWorld world){
 		m_x = p_x;
@@ -43,12 +43,12 @@ public class StaticEntity implements IEntity {
 	}
 
 	@Override
-	public double getX() {
+	public float getX() {
 		return m_x;
 	}
 
 	@Override
-	public double getY() {
+	public float getY() {
 		return m_y;
 	}
 
@@ -88,12 +88,14 @@ public class StaticEntity implements IEntity {
 	public void setCurrentTile(ITile tile) {
 		m_currentTile = tile;
 	}
+	
 	@Override
-	public double getViewDirectionX() {
+	public float getViewDirectionX() {
 		return m_dirX;
 	}
+	
 	@Override
-	public double getViewDirectionY() {
+	public float getViewDirectionY() {
 		return m_dirY;
 	}
 

@@ -97,10 +97,10 @@ public final class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 			zCursor.setOffset();
 
 			final EpicRayRay ray = new EpicRayRay(m_height,
-					(float) m_camEntity.getX(), 
-					(float) m_camEntity.getY(),
-					(float) m_camEntity.getViewDirectionX() + m_planeX * f2,
-					(float) m_camEntity.getViewDirectionY() + m_planeY * f2,
+					m_camEntity.getX(), 
+					m_camEntity.getY(),
+					m_camEntity.getViewDirectionX() + m_planeX * f2,
+					m_camEntity.getViewDirectionY() + m_planeY * f2,
 					(FastIntBitmapCursor) cursor.copy(),
 					(FastFloatBitmapCursor) zCursor.copy(), 
 					tileMap);
