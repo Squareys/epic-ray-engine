@@ -44,12 +44,10 @@ public final class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 	private float m_planeX = 0;
 	private float m_planeY = 0.66f;
 
-	private final int fov = 66;
-	private final float m_planeLength = .66f; // (Math.tan(fov/2)); //must be
-										// calculated for fov.
+	private final int fov = 90;
+	private final float m_planeLength;
 
 	private boolean m_threaded;
-	private final int m_numThreads = 5;
 	
 	private ExecutorService m_threadPool;
 
@@ -66,6 +64,8 @@ public final class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 		m_camEntity = camEntity;
 
 		m_threaded = true;
+		
+		m_planeLength = 0.66f;//Math.abs((float) (Math.tan((double)fov * Math.PI / 50.0)));
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public final class EpicRayRenderer implements IRenderer<FastIntBitmap> {
 
 		final float factor = 2.0f / m_width;
 		float f2 = -1.0f;
-		ArrayList<EpicRayRay> rays = new ArrayList<EpicRayRay>();
+		final ArrayList<EpicRayRay> rays = new ArrayList<EpicRayRay>();
 
 		for (int index = 0; index < m_length; f2 += factor, index += m_height) {
 			// calculate ray position and direction

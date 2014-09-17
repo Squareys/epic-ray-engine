@@ -255,7 +255,9 @@ public class EpicRayRay implements IRay, Runnable {
 			}
 
 			// draw the tile:
-			drawTile(hitTile, outOfWorld);
+			if (!outOfWorld) {
+				drawTile(hitTile);
+			}
 		} while (!hit);
 	}
 
@@ -264,7 +266,7 @@ public class EpicRayRay implements IRay, Runnable {
 		// Calculate height of line to draw on screen
 		next.lineHeight = (int) ((float) m_height / next.perpWallDist);
 
-		next.lineHeight -= next.lineHeight % 2;
+		next.lineHeight -= next.lineHeight & 1; // <=> % 2
 
 	}
 
@@ -290,11 +292,12 @@ public class EpicRayRay implements IRay, Runnable {
 		}
 	}
 
-	private void drawTile(final ITile tile, boolean outOfWorld) {
-		if (outOfWorld) {
-			return;
-		}
-
+	/*
+	 * Draw a tile.
+	 * 
+	 * @param tile Tile to draw, not null.
+	 */
+	private void drawTile(final ITile tile) {
 		final RenderVariables cur = stor.getVariables();
 		final RenderVariables next = stor.getNextVariables();
 
@@ -315,98 +318,98 @@ public class EpicRayRay implements IRay, Runnable {
 		final EpicRayRenderingAttributes ra = (EpicRayRenderingAttributes) tile
 				.getRenderingAttributes();
 
-		if ((ra.m_textured && ra.m_wallTexture != null) || ra.m_wallColor != -1) {
-			int texX = 0;
-			IBitmap<Integer> texture = null;
-			float toTexture = 1.0f;
+		if ((ra.m_textured && ra.m_wallTexture != null)) {
+			final IBitmap<Integer> texture = getMipMapTexture(ra.getWallTexture(), cur.lineHeight);
+			final ICursor2D<Integer> texCursor = texture.getCursor();
+			final float toTexture = (float) texture.getHeight()
+					/ (float) cur.lineHeight;
 			float texY = 0.0f;
-			int lastTexY = -1;
+
+			int texX = (int) (cur.wallX * (float) texture.getWidth());
+			// code to flip the texture
+			if (cur.side == 0 && m_dirX > 0) {
+				texX = texture.getWidth() - texX - 1;
+			} else if (cur.side == 1 && m_dirY < 0) {
+				texX = texture.getWidth() - texX - 1;
+			}
+
+			if (cur.lineStart < 0) {
+				texY = toTexture * -cur.lineStart;
+			}
+
+			if (texX < 0) {
+				texX = 0;
+			}
+			
+			if (texX > texture.getWidth() - 1) {
+				texX = texture.getWidth() - 1;
+			}
+			
+			int lastTexY;
 			int ty;
-
-			ICursor2D<Integer> texCursor = null;
-
-			int color = ra.m_wallColor;
-
-			if (ra.m_textured) {
-				texture = getMipMapTexture(ra.getWallTexture(), cur.lineHeight);
-
-				texX = (int) (cur.wallX * (float) texture.getWidth());
-
-				// code to flip the texture
-				if (cur.side == 0 && m_dirX > 0) {
-					texX = texture.getWidth() - texX - 1;
-				} else if (cur.side == 1 && m_dirY < 0) {
-					texX = texture.getWidth() - texX - 1;
-				}
-
-				toTexture = (float) texture.getHeight()
-						/ (float) cur.lineHeight;
-
-				if (cur.lineStart < 0) {
-					texY = toTexture * -cur.lineStart;
-				}
-
-				if (texX < 0) {
-					texX = 0;
-				}
-
-				if (texX > texture.getWidth() - 1) {
-					texX = texture.getWidth() - 1;
-				}
-
-				ty = (int) texY;
-				texCursor = texture.getCursor();
-				texCursor.setPosition(texX, ty);
-
-				color = texCursor.get();
-				if (cur.side == 1) {
-					// make color darker for y-sides: R, G and B byte each
-					// divided through two with a "shift" and an "and"
-					color = (color >> 1) & 8355711;
-				}
-
-				lastTexY = ty;
+			lastTexY = ty = (int) texY;
+			texCursor.setPosition(texX, ty);
+			
+			int color = texCursor.get();
+			if (cur.side == 1) {
+				// make color darker for y-sides: R, G and B byte each
+				// divided through two
+				color = (color >> 1) & 8355711;
 			}
 
 			m_combined.setPosition(cur.drawStart);
 			final int drawLength = cur.drawEnd - cur.drawStart;
+			
+			// draw the pixels of the stripe as a vertical line
+			for (int i = 0; i < drawLength; ++i, m_combined.fwd()) {
+				// zBuffer Check
+				if (m_zBuf.getNative() < cur.perpWallDist) {
+					// perpWallDist is our cur zValue.
+					continue;
+				}
+				
+				// Note: Unsafe, but fast ;)
+				ty = (int) texY;
+				
+				if (ty != lastTexY) {
+					texCursor.fwd(ty - lastTexY);
+					color = texCursor.get();
+					
+					if (cur.side == 1) {
+						// make color darker for y-sides: R, G and B byte
+						// each divided through two
+						color = (color >> 1) & 8355711;
+					}
+					
+					lastTexY = ty;
+				}
+				
+				texY += toTexture;
+				
+				m_zBuf.set(cur.perpWallDist);
+				m_dest.set(color);
+			}
+		} else if (ra.m_wallColor != -1) {
+			m_combined.setPosition(cur.drawStart);
+			final int drawLength = cur.drawEnd - cur.drawStart;
+			
+			final int color = ra.m_wallColor;
 
 			// draw the pixels of the stripe as a vertical line
 			for (int i = 0; i < drawLength; ++i, m_combined.fwd()) {
 				// zBuffer Check
-				if (m_zBuf.getNative() < cur.perpWallDist) { // perpWallDist is
-																// our cur
-																// zValue.
+				if (m_zBuf.getNative() < cur.perpWallDist) {
+					// perpWallDist is our cur zValue.
 					continue;
 				}
 
-				if (ra.m_textured) {
-					// Note: Unsafe, but fast ;)
-					ty = (int) texY;
-
-					if (ty != lastTexY) {
-						texCursor.fwd(ty - lastTexY);
-						color = texCursor.get();
-
-						if (cur.side == 1) {
-							// make color darker for y-sides: R, G and B byte
-							// each
-							// divided through two with a "shift" and an "and"
-							color = (color >> 1) & 8355711;
-						}
-
-						lastTexY = ty;
-					}
-
-					texY += toTexture;
-				}
 				m_zBuf.set(cur.perpWallDist);
 				m_dest.set(color);
 			}
 		}
 
 		if (tile.isOpaque())
-			return; // no floor visible.
+			return; // no floor or ceiling visible.
 
 		final int nInvLineHeight = next.lineStart - cur.drawStart;
 
@@ -414,19 +417,11 @@ public class EpicRayRay implements IRay, Runnable {
 			return; // floor not visible here.
 		}
 
-		IBitmap<Integer> ceilTexture = null;
-		IBitmap<Integer> floorTexture = null;
+		final IBitmap<Integer> ceilTexture = getMipMapTexture(ra.m_ceilTexture, cur.lineHeight);;
+		final IBitmap<Integer> floorTexture = getMipMapTexture(ra.m_floorTexture, cur.lineHeight);;
 
 		final boolean texCeil = ra.m_textured && (ra.m_ceilTexture != null);
 		final boolean texFloor = ra.m_textured && (ra.m_floorTexture != null);
-
-		if (texCeil) {
-			ceilTexture = getMipMapTexture(ra.m_ceilTexture, cur.lineHeight);
-		}
-
-		if (texFloor) {
-			floorTexture = getMipMapTexture(ra.m_floorTexture, cur.lineHeight);
-		}
 
 		float startX = 0.0f;
 		float startY = 0.0f;
@@ -483,48 +478,39 @@ public class EpicRayRay implements IRay, Runnable {
 		final float invDeltaDist = 1.0f / (next.perpWallDist - cur.perpWallDist);
 
 		
-		//Ceiling Cursor
-		FastIntBitmapCursor ceilCursorC = (FastIntBitmapCursor) m_dest
+		// Ceiling Cursor
+		final FastIntBitmapCursor ceilCursorC = (FastIntBitmapCursor) m_dest
 				.copy();
-		FastFloatBitmapCursor ceilCursorZ = (FastFloatBitmapCursor) m_zBuf
+		final FastFloatBitmapCursor ceilCursorZ = (FastFloatBitmapCursor) m_zBuf
 				.copy();
 		
 		ceilCursorC.setPosition(cur.drawStart);
 		ceilCursorZ.setPosition(cur.drawStart);
 
-		//Floor Cursor
-		FastIntBitmapCursor floorCursorC = (FastIntBitmapCursor) m_dest
+		// Floor Cursor
+		final FastIntBitmapCursor floorCursorC = (FastIntBitmapCursor) m_dest
 				.copy();
-		FastFloatBitmapCursor floorCursorZ = (FastFloatBitmapCursor) m_zBuf
+		final FastFloatBitmapCursor floorCursorZ = (FastFloatBitmapCursor) m_zBuf
 				.copy();
 		
 		floorCursorC.setPosition(cur.drawEnd);
 		floorCursorZ.setPosition(cur.drawEnd);
 
-		int ceilTexH = 0, ceilTexW = 0;
-		int floorTexH = 0, floorTexW = 0;
-
-		if (texCeil) {
-			ceilTexH = ceilTexture.getWidth() - 1;
-			ceilTexW = ceilTexture.getHeight() - 1;
-		}
-
-		if (texFloor) {
-			floorTexW = floorTexture.getWidth() - 1;
-			floorTexH = floorTexture.getHeight() - 1;
-		}
+		final int ceilTexW = (texCeil) ? ceilTexture.getWidth() - 1 : 0;
+		final int ceilTexH = (texCeil) ? ceilTexture.getHeight() - 1 : 0;
+		
+		final int floorTexW = (texFloor) ? floorTexture.getWidth() - 1 : 0;
+		final int floorTexH = (texFloor) ? floorTexture.getHeight() - 1 : 0;
+		
+		float zValue;
 
 		for (int y = 0; y < nInvLineHeight; ++y, 
 				ceilCursorC.fwd(), ceilCursorZ.fwd(), 
 				floorCursorC.bck(), floorCursorZ.bck()) {
-			final float zValue = (float) m_height
+			zValue = (float) m_height
 					/ (float) (m_height - ((cur.drawStart + y) << 1));
 
 			if (texCeil || texFloor) {
-				// float zValue =
-				// ((float)m_height/2.0*(float)(drawStart+y+1)) -
-				// cur.perpWallDist; //amazing hypnotizing results
-
 				final float theFactor = (zValue - cur.perpWallDist)
 						* invDeltaDist;
 
@@ -557,28 +543,28 @@ public class EpicRayRay implements IRay, Runnable {
 	}
 
 	private final IBitmap<Integer> getMipMapTexture(IBitmap<Integer> texture, int lineHeight) {
+		if (texture == null) {
+			return null;
+		}
+				
 		if (texture instanceof PowerOf2IntMipMap) {
-			texture = ((PowerOf2IntMipMap) texture).copy(); // for
-															// thread
-															// safety
-			final int miplevel = (int) Math.max(0,
-					((PowerOf2IntMipMap) texture).getNumMips()
-							- getMaxExp(lineHeight));
-
-			((PowerOf2IntMipMap) texture).setMipLevel(miplevel);
-
-			return texture;
+			return ((PowerOf2IntMipMap) texture).getMipImage(
+						// calculate mip level
+						(int) Math.max(0, 
+							((PowerOf2IntMipMap) texture).getNumMips() - getMaxExp(lineHeight)
+						)
+					);
 		}
 
 		return texture;
 	}
 
-	private final int[] power2 = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024,
+	private final int[] POWER_OF_2 = { 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024,
 			2048 };
 
-	private int getMaxExp(int num) {
-		for (int i = power2.length - 1; i != 0; --i) {
-			if (num > power2[i]) {
+	private final int getMaxExp(final int num) {
+		for (int i = POWER_OF_2.length; i >= 0; --i) {
+			if (num > POWER_OF_2[i]) {
 				return i;
 			}
 		}

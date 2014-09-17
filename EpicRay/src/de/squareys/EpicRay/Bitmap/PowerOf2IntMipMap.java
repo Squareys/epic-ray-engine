@@ -70,6 +70,18 @@ public class PowerOf2IntMipMap extends AbstractBitmap<Integer> {
 		}
 	}
 	
+	public PowerOf2IntBitmap getMipCurrentImage() {
+		return m_cur;
+	}
+	
+	public PowerOf2IntBitmap getMipImage(final int lvl) {
+		if (lvl >= 0 && lvl < m_bitmaps.length) {
+			return m_bitmaps[m_curIndex];
+		}
+		
+		return null;
+	}
+	
 	public final PowerOf2IntMipMap copy() {
 		return new PowerOf2IntMipMap(m_bitmaps);
 	}
