@@ -1,6 +1,6 @@
-package de.squareys.EpicRay.Cursor;
+package de.squareys.epicray.cursor;
 
-import de.squareys.EpicRay.Bitmap.IBitmap;
+import de.squareys.epicray.bitmap.IBitmap;
 
 public class VerticalFirstBitmapCursor<T> extends BitmapCursor<T> {
 

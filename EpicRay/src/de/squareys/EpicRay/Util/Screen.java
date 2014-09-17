@@ -1,14 +1,12 @@
-package de.squareys.EpicRay.Util;
+package de.squareys.epicray.util;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
-import javax.swing.JPanel;
-
-import de.squareys.EpicRay.Bitmap.IBitmap;
-import de.squareys.EpicRay.Rendering.IRenderer;
+import de.squareys.epicray.bitmap.IBitmap;
+import de.squareys.epicray.rendering.IRenderer;
 
 public abstract class Screen extends Canvas {
 	protected IRenderer<? extends IBitmap<Integer>> renderer;

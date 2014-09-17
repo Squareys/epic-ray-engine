@@ -1,8 +1,8 @@
-package de.squareys.EpicRay.Bitmap;
+package de.squareys.epicray.bitmap;
 
-import de.squareys.EpicRay.Cursor.BitmapCursor;
-import de.squareys.EpicRay.Resource.IResource;
-import de.squareys.EpicRay.Util.Tuple;
+import de.squareys.epicray.cursor.BitmapCursor;
+import de.squareys.epicray.resource.IResource;
+import de.squareys.epicray.util.Tuple;
 
 public interface IBitmap<T> extends IResource<IBitmap<T>>, IDrawable<T> {
 

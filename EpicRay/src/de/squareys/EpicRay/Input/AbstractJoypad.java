@@ -1,9 +1,8 @@
-package de.squareys.EpicRay.Input;
+package de.squareys.epicray.input;
 
 import java.awt.AWTEvent;
 import java.awt.event.AWTEventListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 /**
  * Abstract Joypad

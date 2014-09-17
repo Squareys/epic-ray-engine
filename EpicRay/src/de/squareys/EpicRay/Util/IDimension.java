@@ -1,4 +1,4 @@
-package de.squareys.EpicRay.Util;
+package de.squareys.epicray.util;
 
 public interface IDimension {
 	public int getWidth();

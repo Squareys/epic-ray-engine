@@ -1,6 +1,6 @@
-package de.squareys.EpicRay.Rendering;
+package de.squareys.epicray.rendering;
 
-import de.squareys.EpicRay.Resource.Saveable;
+import de.squareys.epicray.resource.Saveable;
 
 /**
  * Rendering Attributes Interface

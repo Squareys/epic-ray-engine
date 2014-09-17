@@ -1,10 +1,10 @@
-package de.squareys.EpicRay.GameLogic;
+package de.squareys.epicray.gamelogic;
 
 import java.util.List;
 
-import de.squareys.EpicRay.Rendering.IRenderingAttributes;
-import de.squareys.EpicRay.Rendering.ISprite;
-import de.squareys.EpicRay.Resource.Saveable;
+import de.squareys.epicray.rendering.IRenderingAttributes;
+import de.squareys.epicray.rendering.ISprite;
+import de.squareys.epicray.resource.Saveable;
 
 public interface ITile extends Saveable<ITile> {
 

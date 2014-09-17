@@ -1,6 +1,6 @@
-package de.squareys.EpicRay.Cursor;
+package de.squareys.epicray.cursor;
 
-import de.squareys.EpicRay.Bitmap.FastIntBitmap;
+import de.squareys.epicray.bitmap.FastIntBitmap;
 
 public class FastIntBitmapCursor extends BitmapCursor<Integer> {
 	protected FastIntBitmap m_bitmap;

@@ -1,8 +1,6 @@
-package de.squareys.EpicRay.Cursor;
+package de.squareys.epicray.cursor;
 
-import java.util.Iterator;
-
-import de.squareys.EpicRay.Bitmap.FastFloatBitmap;
+import de.squareys.epicray.bitmap.FastFloatBitmap;
 
 public class FastFloatBitmapCursor extends BitmapCursor<Float> {
 	protected FastFloatBitmap m_bitmap;

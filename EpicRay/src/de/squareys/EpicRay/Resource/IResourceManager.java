@@ -1,6 +1,6 @@
-package de.squareys.EpicRay.Resource;
+package de.squareys.epicray.resource;
 
-import de.squareys.EpicRay.Bitmap.IBitmap;
+import de.squareys.epicray.bitmap.IBitmap;
 
 /**
  * ResourceManager

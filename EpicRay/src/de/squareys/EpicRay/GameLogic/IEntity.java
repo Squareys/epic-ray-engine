@@ -1,6 +1,6 @@
-package de.squareys.EpicRay.GameLogic;
+package de.squareys.epicray.gamelogic;
 
-import de.squareys.EpicRay.Rendering.ISprite;
+import de.squareys.epicray.rendering.ISprite;
 
 /**
  * Interface for Entities

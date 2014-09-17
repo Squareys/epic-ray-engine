@@ -1,6 +1,6 @@
-package de.squareys.EpicRay.Rendering;
+package de.squareys.epicray.rendering;
 
-import de.squareys.EpicRay.GameLogic.ITileMap;
+import de.squareys.epicray.gamelogic.ITileMap;
 
 /**
  * IRay Interface

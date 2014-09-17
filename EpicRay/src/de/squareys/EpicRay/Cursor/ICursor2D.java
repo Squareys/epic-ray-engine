@@ -1,6 +1,6 @@
-package de.squareys.EpicRay.Cursor;
+package de.squareys.epicray.cursor;
 
-import de.squareys.EpicRay.Util.Tuple;
+import de.squareys.epicray.util.Tuple;
 
 public interface ICursor2D<T> extends ICursor1D<T> {
 

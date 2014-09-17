@@ -1,4 +1,4 @@
-package de.squareys.EpicRay.Util;
+package de.squareys.epicray.util;
 
 public class Tuple<A, B> {
 

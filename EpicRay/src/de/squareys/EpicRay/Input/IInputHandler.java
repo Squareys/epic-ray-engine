@@ -1,4 +1,4 @@
-package de.squareys.EpicRay.Input;
+package de.squareys.epicray.input;
 
 /**
  * TODO: Incomplete and Bad

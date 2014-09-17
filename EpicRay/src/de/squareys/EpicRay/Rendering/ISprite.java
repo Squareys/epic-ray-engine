@@ -1,6 +1,6 @@
-package de.squareys.EpicRay.Rendering;
+package de.squareys.epicray.rendering;
 
-import de.squareys.EpicRay.Bitmap.IBitmap;
+import de.squareys.epicray.bitmap.IBitmap;
 
 /**
  * TODO: Think about whether to extend Saveable

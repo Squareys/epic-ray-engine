@@ -1,4 +1,4 @@
-package de.squareys.EpicRay.type;
+package de.squareys.epicray.type;
 
 public interface IType<T> {
 

@@ -1,9 +1,9 @@
-package de.squareys.EpicRay.Cursor;
+package de.squareys.epicray.cursor;
 
 import java.util.Iterator;
 
-import de.squareys.EpicRay.Bitmap.IBitmap;
-import de.squareys.EpicRay.Util.Tuple;
+import de.squareys.epicray.bitmap.IBitmap;
+import de.squareys.epicray.util.Tuple;
 
 public abstract class BitmapCursor<T> implements ICursor2D<T> {
 	protected IBitmap<T> m_bitmap;

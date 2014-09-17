@@ -1,8 +1,8 @@
-package de.squareys.EpicRay.Cursor;
+package de.squareys.epicray.cursor;
 
 import java.util.Iterator;
 
-import de.squareys.EpicRay.Util.Tuple;
+import de.squareys.epicray.util.Tuple;
 
 public class CombinedCursor<S, T> implements ICursor1D<Tuple<S, T>> {
 

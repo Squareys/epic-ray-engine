@@ -1,4 +1,4 @@
-package de.squareys.EpicRay.Cursor;
+package de.squareys.epicray.cursor;
 
 import java.util.Iterator;
 

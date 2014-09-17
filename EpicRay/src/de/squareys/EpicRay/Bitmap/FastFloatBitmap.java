@@ -1,8 +1,8 @@
-package de.squareys.EpicRay.Bitmap;
+package de.squareys.epicray.bitmap;
 
-import de.squareys.EpicRay.Cursor.BitmapCursor;
-import de.squareys.EpicRay.Cursor.FastFloatBitmapCursor;
-import de.squareys.EpicRay.Util.Tuple;
+import de.squareys.epicray.cursor.BitmapCursor;
+import de.squareys.epicray.cursor.FastFloatBitmapCursor;
+import de.squareys.epicray.util.Tuple;
 
 /**
  * A Vertical First Bitmap

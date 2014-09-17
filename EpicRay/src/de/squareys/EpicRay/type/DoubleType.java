@@ -1,4 +1,4 @@
-package de.squareys.EpicRay.type;
+package de.squareys.epicray.type;
 
 public class DoubleType implements IType<Double> {
 	private double m_val;

@@ -1,6 +1,6 @@
-package de.squareys.EpicRay.Bitmap;
+package de.squareys.epicray.bitmap;
 
-import de.squareys.EpicRay.Util.Tuple;
+import de.squareys.epicray.util.Tuple;
 
 public class PowerOf2IntBitmap extends FastIntBitmap {
 

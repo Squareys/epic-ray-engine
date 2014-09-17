@@ -1,8 +1,8 @@
-package de.squareys.EpicRay.GameLogic;
+package de.squareys.epicray.gamelogic;
 
 import java.util.List;
 
-import de.squareys.EpicRay.Resource.Saveable;
+import de.squareys.epicray.resource.Saveable;
 
 public interface IWorld extends Saveable<IWorld>, Updateable {
 	/**

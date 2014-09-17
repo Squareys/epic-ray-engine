@@ -1,6 +1,6 @@
-package de.squareys.EpicRay.GameLogic;
+package de.squareys.epicray.gamelogic;
 
-import de.squareys.EpicRay.Resource.Saveable;
+import de.squareys.epicray.resource.Saveable;
 
 public interface ITileMap extends Saveable<ITileMap> {
 

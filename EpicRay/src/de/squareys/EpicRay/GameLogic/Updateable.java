@@ -1,4 +1,4 @@
-package de.squareys.EpicRay.GameLogic;
+package de.squareys.epicray.gamelogic;
 
 /**
  * Interface for all updateable classes. 

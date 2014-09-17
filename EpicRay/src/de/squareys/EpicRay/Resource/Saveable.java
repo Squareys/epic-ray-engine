@@ -1,4 +1,4 @@
-package de.squareys.EpicRay.Resource;
+package de.squareys.epicray.resource;
 
 import java.io.IOException;
 

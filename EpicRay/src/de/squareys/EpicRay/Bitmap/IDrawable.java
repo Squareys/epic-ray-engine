@@ -1,4 +1,4 @@
-package de.squareys.EpicRay.Bitmap;
+package de.squareys.epicray.bitmap;
 
 public interface IDrawable<T> {
 	/**

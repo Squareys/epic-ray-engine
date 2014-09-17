@@ -1,6 +1,6 @@
-package de.squareys.EpicRay.Resource;
+package de.squareys.epicray.resource;
 
-import de.squareys.EpicRay.Util.Screen;
+import de.squareys.epicray.util.Screen;
 
 public interface IGame {
 
