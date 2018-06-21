@@ -1,7 +1,9 @@
 EpicRay
 =======
 
-*Archived version of "A Modern Raycasting Engine in Java"*
+*Archived, badly documented, buggy and untested, but fun and well-optimized "Modern Raycasting Engine in Java"*
+
+![epic-ray-engine.png](img/epic-ray-engine.png)
 
 I abandoned this project, but if you are interested in working on it, please do open a pullrequest.
 
@@ -9,10 +11,31 @@ This is a "true" raycasting engine. What that is supposed to mean is that the re
 actually uses raycasting techniques and doesn't just try to immitate the look. An editor
 comes along in the code aswell.
 
+Find more screenshots [here](img/)
+
 # Building
 
 This repository contains two [Eclipse](https://www.eclipse.org/downloads/) projects.
 There are no further dependencies, it should "just work".
+
+Simply open Eclipse, right-click in the "Package Explorer", "Import" > "Existing Projects into Workspace",
+then select the repository root directory and hit "Finish".
+
+# Launching
+
+In Eclipse, right-click "EpicRay" or "EpicRayEditor" and "Run As..." > "Java Application".
+
+A example map file can be found under `EpicRayEditor/file.dat`. You should resize the Window after loading it,
+it looks like there is a bug which doesn't force the redraw.
+
+# Getting Started
+
+`main(...)` is in `de.squareys.epicray.engine.Main`.
+
+`de.squareys.epicray.engine.EpicRayRenderer` generates `EpicRayRay`s, which are the
+"work unit" for the thread pool.
+
+I hope you can work from there.
 
 # Features
 
