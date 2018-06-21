@@ -3,7 +3,7 @@ EpicRay
 
 *Archived, badly documented, buggy and untested, but fun and well-optimized "Modern Raycasting Engine in Java"*
 
-![epic-ray-engine.png](img/epic-ray-engine.png)
+![epic-ray-engine.png](imgs/epic-ray-engine.png)
 
 I abandoned this project, but if you are interested in working on it, please do open a pullrequest.
 
@@ -11,7 +11,7 @@ This is a "true" raycasting engine. What that is supposed to mean is that the re
 actually uses raycasting techniques and doesn't just try to immitate the look. An editor
 comes along in the code aswell.
 
-Find more screenshots [here](img/)
+Find more screenshots [here](https://github.com/Squareys/epic-ray-engine/tree/master/imgs)
 
 # Building
 
