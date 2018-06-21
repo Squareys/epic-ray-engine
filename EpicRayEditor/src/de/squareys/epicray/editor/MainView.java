@@ -37,6 +37,7 @@ public class MainView extends JPanel {
 		gbc_tmv.gridx = 0;
 		gbc_tmv.gridy = 0;
 		gbc_tmv.weightx = 1.0;
+		gbc_tmv.weighty = 1.0;
 		
 		m_tileMapView = new TileMapView2D(new TileMap(30, 40, true));
 		JScrollPane tileMapViewScroll = new JScrollPane(m_tileMapView);
@@ -44,12 +45,13 @@ public class MainView extends JPanel {
 		this.add(tileMapViewScroll, gbc_tmv);
 		
 		GridBagConstraints gbc_ctp = new GridBagConstraints(); //current Tile Panel
-		gbc_ctp.fill = GridBagConstraints.BOTH;
+		gbc_ctp.fill = GridBagConstraints.VERTICAL;
 		gbc_ctp.gridwidth = 3;
 		gbc_ctp.gridheight = 1;
 		gbc_ctp.gridx = 1;
 		gbc_ctp.gridy = 0;
 		gbc_ctp.weightx = .5;
+		gbc_ctp.weighty = 1.0;
 		m_curTilePanel = new JPanel();
 		m_curTilePanel.setPreferredSize(new Dimension(150, 150));
 		
@@ -61,7 +63,8 @@ public class MainView extends JPanel {
 		gbc_tl.gridheight = 2;
 		gbc_tl.gridx = 1;
 		gbc_tl.gridy = 1;
-		gbc_tl.weightx = .5;
+		gbc_tl.weightx = 0.0;
+		gbc_tl.weighty = 1.0;
 		
 		m_tileListModel = new DefaultListModel<ITile>();
 		m_tileList = new JList<ITile>(m_tileListModel);
