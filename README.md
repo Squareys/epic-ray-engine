@@ -5,7 +5,14 @@ EpicRay
 
 I abandoned this project, but if you are interested in working on it, please do open a pullrequest.
 
-This is a "true" raycasting engine. What that is supposed to mean is that the rendering code actually uses raycasting techniques and doesn't just try to immitate the look. An editor comes along in the code aswell.
+This is a "true" raycasting engine. What that is supposed to mean is that the rendering code
+actually uses raycasting techniques and doesn't just try to immitate the look. An editor
+comes along in the code aswell.
+
+# Building
+
+This repository contains two [Eclipse](https://www.eclipse.org/downloads/) projects.
+There are no further dependencies, it should "just work".
 
 # Features
 
